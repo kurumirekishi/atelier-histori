@@ -106,6 +106,8 @@ section{padding:96px 24px;}
 .tcard::after{content:'✦';position:absolute;right:16px;bottom:8px;font-size:54px;line-height:1;color:rgba(201,168,76,0.13);pointer-events:none;}
 .work:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(22,34,46,0.1);}
 .work-media{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--navy);}
+.work-media.pad{aspect-ratio:4/3;background:var(--ivory);}
+.work-media.pad img{object-fit:contain;}
 .work-media img,.work-media video{width:100%;height:100%;object-fit:cover;}
 .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
 .play span{width:56px;height:56px;border-radius:50%;background:rgba(22,34,46,0.55);border:1px solid rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;transition:background .25s;}
@@ -344,15 +346,17 @@ footer{background:var(--navy);color:#8FA0AC;text-align:center;padding:44px 24px;
             <span class="work-link">noteで読む</span>
           </div>
         </a>
-        <div class="work tcard">
-          <div class="work-body" style="padding-top:26px;">
+        <div class="work">
+          <div class="work-media pad"><img src="assets/otsu.jpg" alt="おーつーさんのnote部・ファンミーティング・推し本企画のデザイン制作物" loading="lazy"></div>
+          <div class="work-body">
             <span class="work-badge">Design Support</span>
             <div class="work-title">コンテンツ制作 長期サポート</div>
             <p class="work-desc">おーつーさんの活動に共感し、デザイン面でサポート。太陽のような人柄と熱量を、それぞれのデザインに合わせて表現しています。</p>
           </div>
         </div>
-        <div class="work tcard">
-          <div class="work-body" style="padding-top:26px;">
+        <div class="work">
+          <div class="work-media pad"><img src="assets/pamphlet.jpg" alt="学校パンフレット「つながる未来」とバドミントン体験チラシの制作物" loading="lazy"></div>
+          <div class="work-body">
             <span class="work-badge">Pamphlet / Flyer</span>
             <div class="work-title">地域活動のパンフレット・チラシ</div>
             <p class="work-desc">地域の活動を応援するパンフレットやチラシを制作しています。</p>
