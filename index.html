@@ -105,7 +105,7 @@ section{padding:96px 24px;}
 .work::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--gold-line));z-index:2;}
 .tcard::after{content:'✦';position:absolute;right:16px;bottom:8px;font-size:54px;line-height:1;color:rgba(201,168,76,0.13);pointer-events:none;}
 .work:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(22,34,46,0.1);}
-.work-media{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--navy);}
+.work-media{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--navy);margin:18px 22px 0;}
 .work-media.pad{aspect-ratio:4/3;background:var(--ivory);}
 .work-media.pad img{object-fit:contain;}
 .work-media img,.work-media video{width:100%;height:100%;object-fit:cover;}
@@ -120,7 +120,7 @@ section{padding:96px 24px;}
 .work-desc{font-size:0.82rem;color:var(--ink-soft);line-height:1.9;}
 .work-link{margin-top:auto;font-size:0.75rem;letter-spacing:0.14em;color:var(--teal);}
 .work-link:hover{text-decoration:underline;}
-.spotify-card{padding:0;}
+.spotify-card{padding:18px 22px;}
 .spotify-card iframe{border:0;width:100%;height:100%;min-height:352px;display:block;}
 .works-more{text-align:center;margin-top:48px;}
 .works-more a{font-family:var(--mincho);font-size:0.85rem;letter-spacing:0.18em;color:var(--teal);border-bottom:1px solid var(--teal);padding-bottom:3px;}
@@ -338,8 +338,9 @@ footer{background:var(--navy);color:#8FA0AC;text-align:center;padding:44px 24px;
             <p class="work-desc">お城や城下町を楽しみ、地域を盛り上げるプロジェクト。もっと多くの人に伝えたくて制作しました。</p>
           </div>
         </div>
-        <a class="work tcard" href="https://note.com/digitaljokers/n/n6e54d451b6af" target="_blank" rel="noopener">
-          <div class="work-body" style="padding-top:26px;">
+        <a class="work" href="https://note.com/digitaljokers/n/n6e54d451b6af" target="_blank" rel="noopener">
+          <div class="work-media"><img src="assets/matsue.jpg" alt="松江城前に勢揃いした、まつえ時代案内人の武者たち" loading="lazy"></div>
+          <div class="work-body">
             <span class="work-badge">Interview</span>
             <div class="work-title">松江市インタビュー記事</div>
             <p class="work-desc">松江の人たちが持つ、土地やお城への愛情と熱量。イベントそのものだけでなく、裏側の想いや情熱を多くの人に届けたいと思い執筆しました。</p>
