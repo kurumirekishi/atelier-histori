@@ -698,14 +698,14 @@ const toyoBuild=new Era({born:1583,died:1615.4,death:'burn',label:'豊臣の天�
   hall(E,cx-3,G+2.2,cz-3,3.2,2,0.6,0.7,'#2a2624','#2d2c2e',{trim:'#d6a936'});
   for(const [dx,dz] of [[-13.6,-12.6],[13.6,-12.6],[-13.6,12.6],[13.6,12.6]]) buildKeep(E,cx+dx,G+1.0,cz+dz,turret('#221f1d','#2d2c2e'));
 }
-const sogamae=new Era({born:1594,died:1615,death:'fade',label:'惣構の空堀',center:new THREE.Vector3(10,6.2,2)});
-{ const y=heightAt(3,2,1600); sogamae.at(y); sogamae.box(54,0.14,2.4,'#5f4f3d',3,y-0.05,2.4,{rough:1}); sogamae.box(54,0.55,0.9,'#8b7656',3,y,0.6,{rough:1}); }
-const sanada=new Era({born:1614,died:1615,death:'fade',label:'真田丸',center:new THREE.Vector3(16,7,10)});
+const sogamae=new Era({born:1594,died:1615,death:'fade',label:'惣構の空堀',center:new THREE.Vector3(10,6.2,18)});
+{ const y=heightAt(3,18,1600); sogamae.at(y); sogamae.box(54,0.14,2.4,'#5f4f3d',3,y-0.05,18.4,{rough:1}); sogamae.box(54,0.55,0.9,'#8b7656',3,y,16.6,{rough:1}); }
+const sanada=new Era({born:1614,died:1615,death:'fade',label:'真田丸',center:new THREE.Vector3(16,7,26)});
 {
-  const y=heightAt(16,10,1614); sanada.at(y);
-  sanada.geo(new THREE.CylinderGeometry(4.4,4.4,0.06,28,1,false,0,Math.PI).rotateY(-Math.PI/2).translate(0,0.03,0),'#5c4b39',16,y,10,{lines:false});
-  sanada.geo(new THREE.CylinderGeometry(3.2,3.6,0.9,28,1,false,0,Math.PI).rotateY(-Math.PI/2).translate(0,0.45,0),'#8c7555',16,y,10);
-  for(let k=0;k<5;k++){ const a=Math.PI*(0.1+k*0.2); const x=16+Math.cos(a)*3.1, z=10+Math.sin(a)*3.1; sanada.box(0.05,1.3,0.05,'#3a2c20',x,y+0.9,z,{lines:false}); sanada.box(0.03,0.55,0.32,'#b3261e',x,y+1.6,z+0.17,{lines:false}); }
+  const y=heightAt(16,26,1614); sanada.at(y);
+  sanada.geo(new THREE.CylinderGeometry(4.4,4.4,0.06,28,1,false,0,Math.PI).rotateY(-Math.PI/2).translate(0,0.03,0),'#5c4b39',16,y,26,{lines:false});
+  sanada.geo(new THREE.CylinderGeometry(3.2,3.6,0.9,28,1,false,0,Math.PI).rotateY(-Math.PI/2).translate(0,0.45,0),'#8c7555',16,y,26);
+  for(let k=0;k<5;k++){ const a=Math.PI*(0.1+k*0.2); const x=16+Math.cos(a)*3.1, z=26+Math.sin(a)*3.1; sanada.box(0.05,1.3,0.05,'#3a2c20',x,y+0.9,z,{lines:false}); sanada.box(0.03,0.55,0.32,'#b3261e',x,y+1.6,z+0.17,{lines:false}); }
 }
 /* ---------- 盛土: the burial (custom, driven by year) ---------- */
 const fill=(()=>{
@@ -986,9 +986,9 @@ track.addEventListener('pointerup',()=>{ if(!scrub) return; scrub=false; const r
 addEventListener('keydown',e=>{ if(rec){ if(e.key==='Escape') exitRec(); return; }
   if(e.key==='ArrowRight'){ stopPlay(); jump(Math.min(NS-1,Math.floor(T+1e-3)+1),1.8); } else if(e.key==='ArrowLeft'){ stopPlay(); jump(Math.max(0,Math.ceil(T-1e-3)-1),1.8); } else if(e.key===' '&&e.target===document.body){ e.preventDefault(); playing?stopPlay():startPlay(); } });
 
-function yearParts(t){ const i=clamp(Math.round(t),0,NS-1), s=STOPS[i];
+function yearParts(t){ const i=clamp(Math.round(t),0,NS-1), s=STOPS[i], y=yearOf(t);
   if(Math.abs(t-i)<0.02) return {i,s,pre:s.pre,num:s.num,suf:s.suf,wa:s.wa,at:true};
-  const y=yearOf(t); if(y<400) return {i,s,pre:'約',num:String(Math.round((2026-y)/100)*100),suf:'年前',wa:'',at:false};
+  if(s.suf.includes('〜') && y>=+s.num && y<=STOP_YEARS[i]) return {i,s,pre:s.pre,num:s.num,suf:s.suf,wa:s.wa,at:false}; if(y<400) return {i,s,pre:'約',num:String(Math.round((2026-y)/100)*100),suf:'年前',wa:'',at:false};
   return {i,s,pre:'',num:String(Math.round(y)),suf:'年',wa:'',at:false}; }
 function currentEvent(t,atStop){ let ev=null; if(atStop) return null; for(const e of EVENTS){ if(e.t<=t+1e-4 && t-e.t<0.3) ev=e; } return ev; }
 function setNote(id,html){ const n=$(id); if(html){ n.hidden=false; n.querySelector('span').innerHTML=html; } else n.hidden=true; }
