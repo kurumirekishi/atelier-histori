@@ -255,11 +255,11 @@ const STOPS=[
   desc:'海が今より内陸まで入りこんでいた（縄文海進）。武蔵野台地の東の端は崖になり、その先は海。のちに江戸城が建つ台地の先も、目の前は海だった。',
   under:'本丸の西には、縄文の貝塚があった（旧本丸西貝塚・千代田区の遺跡一覧）。',
   end:'当時の細かい海岸線はわかっていない。模型の海岸線は模式図。'},
- {era:'弥生時代', short:'弥生', ny:'約2000年前', pre:'約', num:'2000', suf:'年前', wa:'', title:'皇居の中にも、弥生の跡',
+ {era:'弥生時代', short:'弥生', ny:'約2000年前', pre:'約', num:'2000', suf:'年前', wa:'', title:'皇居の中にも、弥生の跡', recNote:'「弥生」の名のふるさとは、北へ約3km',
   desc:'皇居の中からも、弥生時代の人の跡が見つかっている（千代田区の遺跡一覧）。「弥生時代」の名前のもとになった土器は、ここから北北東へ約3kmの、いまの文京区弥生で見つかった。',
   under:'1884年に見つかった壺が、地名から「弥生式土器」と名付けられた。発見地は、まだ確定していない（文京区）。',
   end:'模型の家は模式。一覧には、何が出たかまでは書かれていない。'},
- {era:'古墳時代', short:'古墳', ny:'5世紀ごろ', pre:'', num:'5', suf:'世紀ごろ', wa:'', title:'丸の内にも、古墳時代の跡',
+ {era:'古墳時代', short:'古墳', ny:'5世紀ごろ', pre:'', num:'5', suf:'世紀ごろ', wa:'', title:'丸の内にも、古墳時代の跡', recNote:'南へ約3.5kmの芝に、100mを超える前方後円墳',
   desc:'いまの東京駅八重洲北口のあたりや、北の丸のすぐ北の牛ヶ淵貝塚から、古墳時代の人の跡が見つかっている（千代田区の遺跡一覧）。南へ約3.5kmの芝には、長さ100mを超える前方後円墳（芝丸山古墳）が築かれた。',
   under:'芝丸山古墳は、都内最大級の前方後円墳（港区）。海の道を差配した人びとの墓とも考えられている。'},
  {era:'奈良時代', short:'神田', ny:'730', pre:'', num:'730', suf:'年', wa:'天平二年', title:'大手町の社と、将門塚',
@@ -626,23 +626,23 @@ function pit(E,x,z,yr){ const y=heightAt(x,z,yr); E.at(y); E.geo(new THREE.Cylin
 const yayoiSite=new Era({born:-400,died:300,death:'fade',label:'皇居の中にも、弥生の跡（模式）',center:new THREE.Vector3(-11,6.6,-2)});
 { [[-12,-4],[-9.5,-1.5],[-13.5,0.5]].forEach(([x,z])=>pit(yayoiSite,x,z,0)); yayoiSite.emit.push({p:[-12,heightAt(-12,-4,0)+1.4,-4],rate:1.2,s:0.6}); }
 function edgeArrow(E,x,z,ry,text){ E.at(BASE); const g=new THREE.ConeGeometry(1.6,4,3).rotateX(Math.PI/2).rotateY(ry).translate(0,0.3,0); E.geo(g,'#caa24a',x,BASE,z,{metal:0.7,rough:0.35,lines:false}); }
-const yayoiEdge=new Era({born:-400,died:300,death:'fade',label:'この先 約3km：弥生町（「弥生」の名のふるさと）',center:new THREE.Vector3(26,BASE+2,-94)});
+const yayoiEdge=new Era({born:-400,died:300,death:'fade',label:'この先 約3km：弥生町',noRec:true,center:new THREE.Vector3(26,BASE+2,-94)});
 { edgeArrow(yayoiEdge,26,-94,Math.PI); }
 const kofunSite=new Era({born:330,died:640,death:'fade',label:'丸の内にも、古墳時代の跡（模式）',center:new THREE.Vector3(36,4.4,-8)});
 { [[35,-9],[37.5,-6.5]].forEach(([x,z])=>pit(kofunSite,x,z,450)); pit(kofunSite,-7,-37.5,450); kofunSite.emit.push({p:[35,heightAt(35,-9,450)+1.4,-9],rate:1.2,s:0.6}); }
-const kofunEdge=new Era({born:330,died:640,death:'fade',label:'この先 約3.5km：芝丸山古墳（100mを超える前方後円墳）',center:new THREE.Vector3(-30,BASE+2.4,94)});
+const kofunEdge=new Era({born:330,died:640,death:'fade',label:'この先 約3.5km：芝丸山古墳',noRec:true,center:new THREE.Vector3(-30,BASE+2.4,94)});
 { edgeArrow(kofunEdge,-30,94,0); kofunEdge.at(BASE);
   kofunEdge.geo(new THREE.CylinderGeometry(1.2,1.5,0.7,20).translate(0,0.35,0),'#6f8f55',-36,BASE,94.5); kofunEdge.geo(frustumGeo(2.2,1.6,0.5,0.3,0.2),'#6f8f55',-37.8,BASE,94.5); }
 const naraSite=new Era({born:680,died:1100,death:'fade',label:'奈良・平安の人の跡（模式）',center:new THREE.Vector3(-7,6.4,2)});
 { [[-6,1],[-8.5,3]].forEach(([x,z])=>pit(naraSite,x,z,730)); }
-const kandaShrine=new Era({born:730,died:1616,death:'fade',label:'神田明神（社伝）',center:new THREE.Vector3(MASA.x+1.8,4.2,MASA.z-1.2)});
+const kandaShrine=new Era({born:730,died:1616,death:'fade'});
 { const x=MASA.x+1.8, z=MASA.z-1.4, y=Math.max(0.3,heightAt(x,z,800)); kandaShrine.at(y);
   hall(kandaShrine,x,y,z,1.8,1.2,0.6,0.6,'#b0473a','#5a4a3a',{base:0.15,baseCol:'#b8b2a4'});
   kandaShrine.box(0.1,1.0,0.1,'#b3261e',x-0.6,y,z+1.6); kandaShrine.box(0.1,1.0,0.1,'#b3261e',x+0.6,y,z+1.6); kandaShrine.box(1.6,0.1,0.14,'#b3261e',x,y+0.95,z+1.6); }
-const masakado=new Era({born:950,label:'将門塚（伝承）',center:new THREE.Vector3(MASA.x,2.6,MASA.z)});
+const masakado=new Era({born:950});
 { const y=Math.max(0.3,heightAt(MASA.x,MASA.z,1000)); masakado.at(y); const m=masakado.geo(new THREE.SphereGeometry(0.9,14,8),'#6f8f55',MASA.x,y-0.2,MASA.z); m.scale.y=0.55; masakado.box(0.35,0.8,0.2,'#9a958a',MASA.x,y+0.15,MASA.z+0.4); }
 /* ---------- 江戸氏の館（説・模式） ---------- */
-const edoshi=new Era({born:1130,died:1450,death:'fade',label:'江戸氏の館（本丸あたりとする説）',center:new THREE.Vector3(C0.x,G+4,C0.z)});
+const edoshi=new Era({born:1130,died:1450,death:'fade',label:'江戸氏の館（説）',center:new THREE.Vector3(C0.x,G+4,C0.z)});
 { const E=edoshi; E.at(G); E.geoM(ringSolid(10,8,9,7,0.5),[E.mat('#7a6246'),E.mat('#6d563d')],C0.x,G-0.02,C0.z);
   hall(E,C0.x-1,G,C0.z,3.4,1.9,0.7,0.8,'#7a5c40','#6f5a44'); hall(E,C0.x+2.4,G,C0.z+1.8,1.6,1.2,0.5,0.5,'#7a5c40','#6f5a44'); }
 /* ---------- 太田道灌の江戸城 ---------- */
@@ -840,6 +840,9 @@ function updateEra(E,t,time){
 /* ============ labels ============ */
 const labels=ERAS.filter(E=>E.label).map(E=>{ const el=document.createElement('div'); el.className='lbl off'+(E.xray==='buried'?' buried':''); el.innerHTML='<s></s>'+E.label; document.body.appendChild(el); return {E,el,text:E.label}; });
 const MOMENTS=[
+ {text:'神田明神（社伝）',p:new THREE.Vector3(MASA.x+1.8,10,MASA.z-1.4),g:new THREE.Vector3(MASA.x+1.8,1.6,MASA.z-1.4),show:y=>y>=730&&y<950},
+ {text:'神田明神（社伝）・将門塚（伝承）',p:new THREE.Vector3(MASA.x+1,12,MASA.z-0.7),g:new THREE.Vector3(MASA.x+1,1.4,MASA.z-0.7),show:y=>y>=950&&y<1616},
+ {text:'将門塚（伝承）',p:new THREE.Vector3(MASA.x,7,MASA.z),g:new THREE.Vector3(MASA.x,1,MASA.z),show:y=>y>=1616},
  {text:'神田山を崩す',p:new THREE.Vector3(HILL.x,7.8,HILL.z),show:y=>y>=Y_KANDA&&y<Y_KANDA+11},
  {text:'日比谷入江を埋める',p:new THREE.Vector3(8,1.6,-6),show:y=>y>=Y_FILL0+0.5&&y<Y_KANDA+12},
  {text:'かつての日比谷入江',p:new THREE.Vector3(9,0.8,32),show:y=>state.xray&&y>=1606},
@@ -990,12 +993,12 @@ function drawOverlay(ctx,W,Hh,t,y,now){
   if(vig>0.01){ const g=ctx.createRadialGradient(W/2,Hh*0.45,Math.min(W,Hh)*0.3,W/2,Hh*0.45,Math.max(W,Hh)*0.7); g.addColorStop(0,'rgba(52,30,10,0)'); g.addColorStop(1,`rgba(52,30,10,${0.55*vig})`); ctx.fillStyle=g; ctx.fillRect(0,0,W,Hh); }
   // model labels
   ctx.textBaseline='middle'; ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`;
-  const pill=(txt,p,buried)=>{ const q=projectTo(p,W,Hh); if(!q) return; const tw2=ctx.measureText(txt).width, pw=tw2+46*u, ph=44*u, x=q[0]-pw/2, yy=q[1]-ph-12*u;
+  const pill=(txt,p,buried,g)=>{ const q=projectTo(p,W,Hh); if(!q) return; const gq=g?projectTo(g,W,Hh):null; const tw2=ctx.measureText(txt).width, pw=tw2+46*u, ph=44*u, x=q[0]-pw/2, yy=q[1]-ph-12*u;
     ctx.fillStyle='rgba(246,239,222,.95)'; ctx.fillRect(x,yy,pw,ph); ctx.strokeStyle='rgba(31,26,20,.6)'; ctx.lineWidth=1.5*u; ctx.strokeRect(x,yy,pw,ph);
-    ctx.beginPath(); ctx.moveTo(q[0],yy+ph); ctx.lineTo(q[0],q[1]); ctx.stroke(); ctx.fillStyle=buried?'#7d5a36':'#b33a26'; ctx.fillRect(x+14*u,yy+ph/2-6*u,12*u,12*u);
+    ctx.beginPath(); ctx.moveTo(q[0],yy+ph); ctx.lineTo(gq?gq[0]:q[0],gq?gq[1]:q[1]); ctx.stroke(); ctx.fillStyle=buried?'#7d5a36':'#b33a26'; ctx.fillRect(x+14*u,yy+ph/2-6*u,12*u,12*u);
     ctx.fillStyle='#1f1a14'; ctx.textAlign='left'; ctx.fillText(txt,x+34*u,yy+ph/2+1); };
-  labels.forEach(({E,text})=>{ if(labelOn(E,t)) pill(text,E.center,E.xray==='buried'); });
-  MOMENTS.forEach(m=>{ if(m.show(y)) pill(m.text,m.p,true); });
+  labels.forEach(({E,text})=>{ if(labelOn(E,t)&&!E.noRec) pill(text,E.center,E.xray==='buried'); });
+  MOMENTS.forEach(m=>{ if(m.show(y)) pill(m.text,m.p,true,m.g); });
   ctx.font=`700 ${30*u}px "Zen Old Mincho", serif`; ctx.textAlign='center';
   GEO.forEach(g=>{ if(!g.show(y)) return; const q=projectTo(g.p,W,Hh); if(!q) return; ctx.fillStyle=g.water?'#223f7a':'#1f1a14'; const chs=[...g.text]; chs.forEach((c,k)=>glow(ctx,c,q[0],q[1]+(k-(chs.length-1)/2)*36*u,10*u)); });
   // caption block (upper band)
@@ -1014,6 +1017,7 @@ function drawOverlay(ctx,W,Hh,t,y,now){
   let yy=by; if(P.wa){ yy+=64*u; ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,P.wa.split('').join(' '),x0,yy,12*u); ctx.fillStyle='#1f1a14'; }
   const tA=1-ss(0.02,0.25,Math.abs(t-P.i));
   if(tA>0.01){ ctx.save(); ctx.globalAlpha*=tA; yy+=86*u; ctx.font=`900 ${62*u}px "Zen Old Mincho", serif`; glow(ctx,s.title,x0,yy,16*u); ctx.restore(); }
+  if(tA>0.01&&s.recNote){ ctx.save(); ctx.globalAlpha*=tA; yy+=60*u; ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,s.recNote,x0,yy,12*u); ctx.restore(); }
   const ev=currentEvent(t,P.at);
   if(ev){ const ey=vert?yy+(tA>0.01?80:150)*u:Hh-96; ctx.font=`900 ${44*u}px "Zen Old Mincho", serif`; ctx.fillStyle=ev.kind==='fire'?'#b33a26':ev.kind==='bury'?'#7d5a36':'#1f1a14';
     glow(ctx,ev.disp,x0,ey,14*u); const w0=ctx.measureText(ev.disp).width; ctx.fillStyle='#1f1a14'; ctx.font=`700 ${42*u}px "Zen Old Mincho", serif`; glow(ctx,ev.text,x0+w0+24*u,ey,14*u); }
