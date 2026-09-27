@@ -243,8 +243,8 @@ const $=id=>document.getElementById(id);
 
 /* ============ time ============ */
 const Y_FILL0=1592, Y_KANDA=1603; // 素材メモ§6（遠藤2004 地学雑誌／大丸有INDEX／中央区）: 1592 堀の土で入江の北／1603〜 神田山の土で本格化。完了年は出さない
-const STOP_YEARS=[-5000,1457,1590,1606,1650,1660,1900,1968,2026];
-const NS=STOP_YEARS.length, BURY=3;
+const STOP_YEARS=[-5000,0,450,730,1180,1457,1590,1606,1650,1660,1900,1968,2026];
+const NS=STOP_YEARS.length, BURY=7, LEG=3.2, HOLD=2200;
 function tOf(y){ if(y===-Infinity) return -Infinity; const Y=STOP_YEARS; if(y<=Y[0]) return (y-Y[0])/(Y[1]-Y[0]);
   for(let i=1;i<NS;i++){ if(y<=Y[i]) return i-1+(y-Y[i-1])/(Y[i]-Y[i-1]); } return NS-1+(y-Y[NS-1])/100; }
 function yearOf(t){ const Y=STOP_YEARS; if(t<=0) return Y[0]+t*(Y[1]-Y[0]); if(t>=NS-1) return Y[NS-1]; const i=Math.floor(t); return Y[i]+(t-i)*(Y[i+1]-Y[i]); }
@@ -252,19 +252,35 @@ function yearOf(t){ const Y=STOP_YEARS; if(t<=0) return Y[0]+t*(Y[1]-Y[0]); if(t
 const STOPS=[
  {era:'縄文時代', short:'縄文', ny:'約7000年前', pre:'約', num:'7000', suf:'年前', wa:'', title:'台地の先は、海',
   desc:'海が今より内陸まで入りこんでいた（縄文海進）。武蔵野台地の東の端は崖になり、その先は海。のちに江戸城が建つ台地の先も、目の前は海だった。',
-  under:'当時の細かい海岸線はわかっていない。模型の海岸線は模式図。'},
+  under:'本丸の西には、縄文の貝塚があった（旧本丸西貝塚・千代田区の遺跡一覧）。',
+  end:'当時の細かい海岸線はわかっていない。模型の海岸線は模式図。'},
+ {era:'弥生時代', short:'弥生', ny:'約2000年前', pre:'約', num:'2000', suf:'年前', wa:'', title:'皇居の中にも、弥生の跡',
+  desc:'皇居の中からも、弥生時代の人の跡が見つかっている（千代田区の遺跡一覧）。「弥生時代」の名前のもとになった土器は、ここから北北東へ約3kmの、いまの文京区弥生で見つかった。',
+  under:'1884年に見つかった壺が、地名から「弥生式土器」と名付けられた。発見地は、まだ確定していない（文京区）。',
+  end:'模型の家は模式。一覧には、何が出たかまでは書かれていない。'},
+ {era:'古墳時代', short:'古墳', ny:'5世紀ごろ', pre:'', num:'5', suf:'世紀ごろ', wa:'', title:'丸の内にも、古墳時代の跡',
+  desc:'いまの東京駅八重洲北口のあたりや、北の丸のすぐ北の牛ヶ淵貝塚から、古墳時代の人の跡が見つかっている（千代田区の遺跡一覧）。南へ約3.5kmの芝には、長さ100mを超える前方後円墳（芝丸山古墳）が築かれた。',
+  under:'芝丸山古墳は、都内最大級の前方後円墳（港区）。海の道を差配した人びとの墓とも考えられている。'},
+ {era:'奈良時代', short:'神田', ny:'730', pre:'', num:'730', suf:'年', wa:'天平二年', title:'大手町の社と、将門塚',
+  desc:'皇居の中からは、奈良・平安時代の人の跡も見つかっている。神田明神は、社伝では730年に、いまの大手町（将門塚のあたり）で創建された。のちに平将門を祀り、将門の首を葬ったという塚が伝わる。',
+  under:'将門塚は、いまも大手町のビルのあいだにある。',
+  end:'創建の年と将門の首塚は、社伝・伝承として書いている。'},
+ {era:'平安時代の終わり', short:'江戸氏', ny:'1180', pre:'', num:'1180', suf:'年', wa:'治承四年', title:'「江戸」の名が、記録に出る',
+  desc:'12世紀前半、秩父氏の一族がこの地に入り、地名の「江戸」を名字にした。1180年、『吾妻鏡』に「江戸太郎重長」の名が出る。館は、のちの江戸城の本丸・二の丸のあたりにあったとする説がある。',
+  under:'鎌倉時代、江戸前島は鎌倉の円覚寺の領地だった（円覚寺文書）。',
+  end:'館の場所は説のひとつ。模型の館は模式。'},
  {era:'室町時代', short:'室町', ny:'1457', pre:'', num:'1457', suf:'年', wa:'長禄元年', title:'太田道灌の江戸城',
   desc:'太田道灌が、台地の先に江戸城を築いた（千代田区は「1456〜1457年にかけて築城」とする）。城のすぐ東には、日比谷入江という海が入りこんでいた。'},
  {era:'安土桃山時代', short:'家康', ny:'1590', pre:'', num:'1590', suf:'年', wa:'天正十八年', title:'家康、江戸へ',
   desc:'徳川家康が江戸に入った。城はまだ、台地の先の小さな城。東には日比谷入江が広がり、その向こうに江戸前島という細長い陸地があった。'},
- {era:'江戸時代のはじめ', short:'埋める', ny:'1603〜', pre:'', num:'1603', suf:'年〜', wa:'慶長八年〜', title:'山を崩して、海を埋める', hold:5200, bury:true,
+ {era:'江戸時代のはじめ', short:'埋める', ny:'1603〜', pre:'', num:'1603', suf:'年〜', wa:'慶長八年〜', title:'山を崩して、海を埋める', hold:4200, bury:true,
   desc:'1603年、家康が将軍になると、天下普請で江戸の町づくりが本格化した。神田山（いまの駿河台）を崩し、その土で入江の南の方や、その先の洲崎を埋め立てていった。海だった場所が、町になっていく。',
   end:'入江の北の方（いまの丸の内・大手町のあたり）は、1592年から、城の堀を掘った土で埋め立てが始まっていた。',
   under:'「海を透かす」を押すと、丸の内の地面の下に、かつての入江が見える。'},
  {era:'江戸時代', short:'天守', ny:'1650', pre:'', num:'1650', suf:'年', wa:'慶安三年', title:'三度建った天守',
   desc:'家康が将軍になった1603年から、江戸城も本格的に造り替えられた。二の丸・三の丸、五層の天守。天守は将軍の代替わりごとに三度建て直された（慶長・元和・寛永）。',
   fire:'<b>1657年</b>、明暦の大火。天守も城下も焼けた。'},
- {era:'江戸時代', short:'建たず', ny:'1660', pre:'', num:'1660', suf:'年', wa:'万治三年', title:'建たなかった天守', hold:4600,
+ {era:'江戸時代', short:'建たず', ny:'1660', pre:'', num:'1660', suf:'年', wa:'万治三年', title:'建たなかった天守', hold:3800,
   desc:'翌1658年、加賀藩前田家が花崗岩で天守台を築いた。しかし保科正之の提言で、天守の再建は取りやめになる。城下の復興が先だった。',
   under:'天守は、建たないまま今に至る。模型に線だけで描いたのは、建たなかった天守。'},
  {era:'明治時代', short:'皇居', ny:'1900', pre:'', num:'1900', suf:'年', wa:'明治三十三年', title:'城から、皇居へ',
@@ -277,8 +293,9 @@ const STOPS=[
   under:'足もとには、埋められた日比谷入江と、崩された神田山の土。'},
 ];
 const EVENTS=[
+ [730,'社伝では、神田明神がこの地に創建',''],[1180,'『吾妻鏡』に「江戸太郎重長」',''],[1262,'「江戸郷」の名が文書に出る',''],[1309,'神田明神、平将門を祀る',''],
  [1457,'太田道灌、江戸城を築く',''],[1590,'徳川家康、江戸に入る',''],[1592,'城の堀を掘った土で、入江の北を埋めはじめる',''],
- [1603,'天下普請。神田山を崩した土で、町づくりが本格化','bury'],[1607,'最初の天守',  '','慶長'],[1622,'天守を建て直す','','元和'],[1638,'天守を建て直す','','寛永'],
+ [1603,'天下普請。神田山を崩した土で、町づくりが本格化','bury'],[1616,'神田明神、江戸城の鬼門を守る今の場所へ',''],[1607,'最初の天守',  '','慶長'],[1622,'天守を建て直す','','元和'],[1638,'天守を建て直す','','寛永'],
  [1657,'明暦の大火。天守も城下も焼ける','fire'],[1658,'天守台だけ築き直す。天守は建てない',''],
  [1868,'江戸城が皇居に',''],[1945,'空襲で宮殿が焼ける','fire'],[1968,'新宮殿完成・東御苑公開',''],
 ].map(e=>({y:e[0],text:e[1],kind:e[2],disp:e[3]||String(e[0]),t:tOf(e[0])}));
@@ -346,11 +363,12 @@ function heightFrom(f,y){
 const heightAt=(x,z,y)=>heightFrom(factors(x,z),y);
 const onChannel=(x,z)=>{ const f=factors(x,z); return f.ch.some(v=>v>0.05)||f.mw>0.05; };
 
-const C0={x:-4,z:-10};
+const C0={x:-4,z:-10}, MASA={x:23,z:-13};
 const G=factors(C0.x,C0.z).top;
 const CASTLE=[-26,29,-34,28], GAIEN=[0,26,6,23], HIGASHI=[-12,25,-18,6];
 function townBorn(x,z,f){
   if(inRect(x,z,CASTLE)) return Infinity;
+  if(Math.hypot(x-MASA.x,z-MASA.z)<3.2) return Infinity;
   if(f.m>0.5) return 1620+clamp(Math.abs(x)+Math.abs(z),0,120)*0.3;
   if(f.wI>0.5) return 1606+clamp(z+34,0,100)*0.25;
   if(f.wP>0.5) return 1600;
@@ -597,11 +615,35 @@ function boat(E,x,y,z,o={}){
 const WATER='#2c5294', WOPT={lines:false,shadow:false,rough:0.4,metal:0};
 
 /* ---------- 縄文 ---------- */
-const jomonShell=new Era({born:-Infinity,died:-1500,death:'fade'});
-{ [[-14,-44],[-20,-12],[-18,34],[8,-60]].forEach(([x,z])=>{ const y=heightAt(x,z,-5000); jomonShell.at(y);
-    const m=jomonShell.geo(new THREE.SphereGeometry(1,14,8),'#ece5d2',x,y-0.1,z,{lines:false}); m.scale.set(1.6,0.3,1.1); });
-  jomonShell.at(0.02); const c1=boat(jomonShell,10,0.02,-5,{len:1.6,wid:0.32,hull:'#3d2a1c'});
-  jomonShell.tick=(time)=>{ c1.position.x=10+Math.sin(time*0.2)*3; c1.rotation.y=Math.sin(time*0.2)*0.3; }; }
+const shellA=new Era({born:-Infinity,died:-1000,death:'fade',label:'旧本丸西貝塚',center:new THREE.Vector3(-15,5.4,-9)});
+{ const y=heightAt(-15,-9,-5000); shellA.at(y); const m=shellA.geo(new THREE.SphereGeometry(1,14,8),'#ece5d2',-15,y-0.1,-9,{lines:false}); m.scale.set(1.8,0.32,1.2);
+  shellA.at(0.02); const c1=boat(shellA,10,0.02,-5,{len:1.6,wid:0.32,hull:'#3d2a1c'}); shellA.tick=(time)=>{ c1.position.x=10+Math.sin(time*0.2)*3; c1.rotation.y=Math.sin(time*0.2)*0.3; }; }
+const shellB=new Era({born:-Infinity,died:1100,death:'fade',label:'牛ヶ淵貝塚（縄文〜平安）',center:new THREE.Vector3(-8,5.4,-36)});
+{ const y=heightAt(-8,-36,-5000); shellB.at(y); const m=shellB.geo(new THREE.SphereGeometry(1,14,8),'#ece5d2',-8,y-0.1,-36,{lines:false}); m.scale.set(1.6,0.3,1.1); }
+/* ---------- 弥生・古墳・奈良平安の人の跡（模式）／枠の外の札 ---------- */
+function pit(E,x,z,yr){ const y=heightAt(x,z,yr); E.at(y); E.geo(new THREE.CylinderGeometry(0.95,1.05,0.16,12).translate(0,0.08,0),'#6d5a3f',x,y-0.02,z); E.geo(new THREE.ConeGeometry(0.85,1.05,10).translate(0,0.52,0),'#9c875a',x,y+0.08,z,{rough:1}); }
+const yayoiSite=new Era({born:-400,died:300,death:'fade',label:'皇居の中にも、弥生の跡（模式）',center:new THREE.Vector3(-11,6.6,-2)});
+{ [[-12,-4],[-9.5,-1.5],[-13.5,0.5]].forEach(([x,z])=>pit(yayoiSite,x,z,0)); yayoiSite.emit.push({p:[-12,heightAt(-12,-4,0)+1.4,-4],rate:1.2,s:0.6}); }
+function edgeArrow(E,x,z,ry,text){ E.at(BASE); const g=new THREE.ConeGeometry(1.6,4,3).rotateX(Math.PI/2).rotateY(ry).translate(0,0.3,0); E.geo(g,'#caa24a',x,BASE,z,{metal:0.7,rough:0.35,lines:false}); }
+const yayoiEdge=new Era({born:-400,died:300,death:'fade',label:'この先 約3km：弥生町（「弥生」の名のふるさと）',center:new THREE.Vector3(26,BASE+2,-94)});
+{ edgeArrow(yayoiEdge,26,-94,Math.PI); }
+const kofunSite=new Era({born:330,died:640,death:'fade',label:'丸の内にも、古墳時代の跡（模式）',center:new THREE.Vector3(36,4.4,-8)});
+{ [[35,-9],[37.5,-6.5]].forEach(([x,z])=>pit(kofunSite,x,z,450)); pit(kofunSite,-7,-37.5,450); kofunSite.emit.push({p:[35,heightAt(35,-9,450)+1.4,-9],rate:1.2,s:0.6}); }
+const kofunEdge=new Era({born:330,died:640,death:'fade',label:'この先 約3.5km：芝丸山古墳（100mを超える前方後円墳）',center:new THREE.Vector3(-30,BASE+2.4,94)});
+{ edgeArrow(kofunEdge,-30,94,0); kofunEdge.at(BASE);
+  kofunEdge.geo(new THREE.CylinderGeometry(1.2,1.5,0.7,20).translate(0,0.35,0),'#6f8f55',-36,BASE,94.5); kofunEdge.geo(frustumGeo(2.2,1.6,0.5,0.3,0.2),'#6f8f55',-37.8,BASE,94.5); }
+const naraSite=new Era({born:680,died:1100,death:'fade',label:'奈良・平安の人の跡（模式）',center:new THREE.Vector3(-7,6.4,2)});
+{ [[-6,1],[-8.5,3]].forEach(([x,z])=>pit(naraSite,x,z,730)); }
+const kandaShrine=new Era({born:730,died:1616,death:'fade',label:'神田明神（社伝）',center:new THREE.Vector3(MASA.x+1.8,4.2,MASA.z-1.2)});
+{ const x=MASA.x+1.8, z=MASA.z-1.4, y=Math.max(0.3,heightAt(x,z,800)); kandaShrine.at(y);
+  hall(kandaShrine,x,y,z,1.8,1.2,0.6,0.6,'#b0473a','#5a4a3a',{base:0.15,baseCol:'#b8b2a4'});
+  kandaShrine.box(0.1,1.0,0.1,'#b3261e',x-0.6,y,z+1.6); kandaShrine.box(0.1,1.0,0.1,'#b3261e',x+0.6,y,z+1.6); kandaShrine.box(1.6,0.1,0.14,'#b3261e',x,y+0.95,z+1.6); }
+const masakado=new Era({born:950,label:'将門塚（伝承）',center:new THREE.Vector3(MASA.x,2.6,MASA.z)});
+{ const y=Math.max(0.3,heightAt(MASA.x,MASA.z,1000)); masakado.at(y); const m=masakado.geo(new THREE.SphereGeometry(0.9,14,8),'#6f8f55',MASA.x,y-0.2,MASA.z); m.scale.y=0.55; masakado.box(0.35,0.8,0.2,'#9a958a',MASA.x,y+0.15,MASA.z+0.4); }
+/* ---------- 江戸氏の館（説・模式） ---------- */
+const edoshi=new Era({born:1130,died:1450,death:'fade',label:'江戸氏の館（本丸あたりとする説）',center:new THREE.Vector3(C0.x,G+4,C0.z)});
+{ const E=edoshi; E.at(G); E.geoM(ringSolid(10,8,9,7,0.5),[E.mat('#7a6246'),E.mat('#6d563d')],C0.x,G-0.02,C0.z);
+  hall(E,C0.x-1,G,C0.z,3.4,1.9,0.7,0.8,'#7a5c40','#6f5a44'); hall(E,C0.x+2.4,G,C0.z+1.8,1.6,1.2,0.5,0.5,'#7a5c40','#6f5a44'); }
 /* ---------- 太田道灌の江戸城 ---------- */
 const dokan=new Era({born:1457,died:1604,death:'fade',label:'太田道灌の江戸城',center:new THREE.Vector3(C0.x-2,G+5,C0.z-4),radius:8});
 {
@@ -861,7 +903,7 @@ function goTo(target,dur){ tw={from:T,to:target,t0:performance.now(),dur:Math.ma
 function jump(i,dur){ if(rec) applyStopCam(i); goTo(i,dur); }
 const playIcon=$('playIcon');
 function updPlay(){ playIcon.innerHTML=playing?'<path d="M3 1.5h3v11H3zM8 1.5h3v11H8z"/>':'<path d="M3 1.5v11l9-5.5z"/>'; $('play').setAttribute('aria-label',playing?'一時停止':'再生'); }
-function nextLeg(){ const next=Math.min(NS-1,Math.floor(T+1e-3)+1); jump(next,3.8*(next-T)); tw.done=()=>{ if(!playing) return; if(next>=NS-1){ playing=false; updPlay(); return; } holdUntil=performance.now()+(STOPS[next].hold||2800); }; }
+function nextLeg(){ const next=Math.min(NS-1,Math.floor(T+1e-3)+1); jump(next,LEG*(next-T)); tw.done=()=>{ if(!playing) return; if(next>=NS-1){ playing=false; updPlay(); return; } holdUntil=performance.now()+(STOPS[next].hold||HOLD); }; }
 function startPlay(){ playing=true; if(T>=NS-1-1e-3) T=0; holdUntil=0; nextLeg(); updPlay(); }
 function stopPlay(){ playing=false; holdUntil=0; if(tw&&tw.done) tw.done=null; updPlay(); }
 $('play').onclick=()=>{ playing?stopPlay():startPlay(); };
