@@ -1,0 +1,1087 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}[hidden]{display:none!important}</style>
+<title>江戸城の地層｜動く歴史地図｜Atelier ひす鳥</title>
+<meta name="description" content="縄文の海から、令和の東御苑まで。台地の先の城のまわりで、何が建ち、燃え、埋められてきたか。（地形と配置は模式図）">
+<meta property="og:title" content="江戸城の地層｜動く歴史地図">
+<meta property="og:description" content="縄文の海から、令和の東御苑まで。台地の先の城のまわりで、何が建ち、燃え、埋められてきたか。">
+<meta property="og:image" content="https://his-tori.com/assets/map/edo.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../assets/icon.png">
+</head><body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --ink:#1f1a14; --ink-2:#5a4e3e; --ink-3:#8a7c66;
+    --washi:#f5eddb; --washi-a:rgba(246,239,222,.95); --hair:rgba(31,26,20,.22);
+    --kin:#a8842c; --shu:#b33a26; --tsuchi:#7d5a36; --gunjo:#223f7a;
+    --mincho:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+    --gothic:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  }
+  html,body{height:100%;margin:0}
+  body{color:var(--ink);font-family:var(--gothic);font-size:14px;line-height:1.75;overflow:hidden;-webkit-font-smoothing:antialiased;
+    background-color:#dcc58c;
+    background-image:
+      linear-gradient(rgba(120,88,28,.09) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(120,88,28,.09) 1px,transparent 1px),
+      radial-gradient(ellipse at 50% 38%,#efe0ad 0%,#e0c98f 55%,#cdb173 100%);
+    background-size:72px 72px,72px 72px,100% 100%}
+  #stage{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+  #stage.dragging{cursor:grabbing}
+  button{font:inherit;color:inherit}
+  button:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+  #vig{position:fixed;inset:0;pointer-events:none;z-index:2;opacity:0;background:radial-gradient(ellipse at 50% 45%,transparent 40%,rgba(52,30,10,.55) 100%)}
+
+  /* title: a vertical 題箋 */
+  .plaque{position:fixed;left:22px;top:20px;z-index:10;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+  .head-row{display:flex;gap:14px;align-items:flex-start}
+  .daisen{writing-mode:vertical-rl;display:flex;align-items:center;background:var(--washi);border:1px solid var(--ink);
+    box-shadow:inset 0 0 0 4px var(--washi),inset 0 0 0 5px rgba(31,26,20,.45),0 10px 24px -16px rgba(60,40,10,.6);padding:18px 12px 14px}
+  .daisen h1{font-family:var(--mincho);font-weight:900;font-size:31px;letter-spacing:.32em;line-height:1;margin:0}
+  .seal{font-family:var(--mincho);font-weight:700;font-size:10px;letter-spacing:.12em;background:var(--shu);color:#f7eee0;padding:6px 3px;margin-block-start:14px;border-radius:2px}
+  .sub{writing-mode:vertical-rl;margin:4px 0 0;font-family:var(--mincho);font-size:13.5px;line-height:1.95;letter-spacing:.08em;color:var(--ink-2);max-height:230px;
+    text-shadow:0 0 10px rgba(242,230,196,1),0 0 3px rgba(242,230,196,1)}
+  .meta{font-size:11px;color:var(--ink-2);letter-spacing:.04em;text-shadow:0 0 6px rgba(242,230,196,1)}
+  .tools{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+  .tools .grp{display:flex;gap:4px;flex-wrap:wrap}
+  .tools button{appearance:none;background:var(--washi-a);border:1px solid rgba(31,26,20,.35);padding:6px 11px;font-size:12px;letter-spacing:.05em;cursor:pointer;display:flex;align-items:center;gap:7px;color:var(--ink-2)}
+  .tools button:hover{color:var(--ink);border-color:var(--ink)}
+  .tools button .sw{width:9px;height:9px;border:1px solid var(--ink-3)}
+  .tools button.on{color:var(--ink)}
+  .tools button.on .sw{background:var(--shu);border-color:var(--shu)}
+  .tools .rec-open{border-color:var(--shu);color:var(--shu)}
+  .tools a.back{background:var(--washi-a);border:1px solid rgba(31,26,20,.35);padding:6px 11px;font-size:12px;letter-spacing:.05em;color:var(--ink-2);text-decoration:none}
+  .tools a.back:hover{color:var(--ink);border-color:var(--ink)}
+  .tools .vl{font-size:10.5px;letter-spacing:.2em;color:var(--ink-2);margin:4px 0 0 2px}
+
+  /* era card */
+  .card{position:fixed;right:22px;top:20px;z-index:10;width:340px;max-height:calc(100vh - 170px);overflow-y:auto;
+    background:var(--washi-a);border:1px solid rgba(31,26,20,.6);
+    box-shadow:inset 0 0 0 4px var(--washi),inset 0 0 0 5px rgba(31,26,20,.2),0 14px 30px -18px rgba(60,40,10,.55);padding:20px 24px 16px}
+  .card .kicker{font-family:var(--mincho);font-weight:700;font-size:12.5px;letter-spacing:.3em;display:flex;align-items:center;gap:8px}
+  .card .kicker::before{content:"";width:7px;height:7px;background:var(--shu)}
+  .card .year{font-family:var(--mincho);display:flex;align-items:baseline;gap:4px;margin:6px 0 0;font-variant-numeric:tabular-nums;line-height:1}
+  .card .year .num{font-weight:900;font-size:58px}
+  .card .year .pre,.card .year .suf{font-weight:700;font-size:18px;color:var(--ink-2)}
+  .card .wa{font-family:var(--mincho);font-size:14px;letter-spacing:.3em;color:var(--ink-2);min-height:1.5em;margin-top:6px}
+  .card h2{font-family:var(--mincho);font-weight:900;font-size:21px;letter-spacing:.08em;margin:8px 0 8px;line-height:1.4;text-wrap:balance}
+  .card p{margin:0;font-size:13.5px;text-wrap:pretty}
+  .note{display:grid;grid-template-columns:12px 1fr;gap:8px;margin-top:10px;font-size:12.5px;line-height:1.7;color:var(--ink-2)}
+  .note[hidden]{display:none}
+  .note i{width:8px;height:8px;margin-top:7px;display:block}
+  .note.fire i{background:var(--shu);transform:rotate(45deg)}
+  .note.end i{border:1.5px solid var(--ink-3);border-radius:50%;width:6px;height:6px}
+  .note.under i{background:var(--tsuchi)}
+  .note.fire span b{color:var(--shu);font-weight:700}
+  .legend{margin-top:14px;padding-top:10px;border-top:1px solid var(--hair)}
+  .legend .lt{font-size:10.5px;letter-spacing:.2em;color:var(--ink-3);margin-bottom:6px}
+  .legend ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:3px 12px}
+  .legend li{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-2)}
+  .legend li s{width:18px;height:9px;display:block;text-decoration:none;flex:none}
+
+  /* timeline */
+  .tl{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:10;width:min(1160px,calc(100vw - 32px));
+    background:var(--washi-a);border:1px solid rgba(31,26,20,.55);box-shadow:inset 0 0 0 3px var(--washi),inset 0 0 0 4px rgba(31,26,20,.15);
+    padding:10px 18px 12px 12px;box-sizing:border-box}
+  .ticker{position:absolute;left:0;right:0;top:-36px;text-align:center;font-family:var(--mincho);font-weight:700;font-size:16px;letter-spacing:.08em;
+    transition:opacity .35s;pointer-events:none;text-shadow:0 0 10px rgba(242,230,196,1),0 0 3px rgba(242,230,196,1)}
+  .ticker b{font-weight:900;margin-right:.6em;font-variant-numeric:tabular-nums}
+  .ticker.fire b{color:var(--shu)}
+  .ticker.bury b{color:var(--tsuchi)}
+  .tl-row{display:flex;align-items:center;gap:14px}
+  .play{appearance:none;flex:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--ink);background:var(--ink);color:var(--washi);cursor:pointer;display:grid;place-items:center}
+  .play svg{width:14px;height:14px;fill:currentColor}
+  .play:hover{background:#3a3027}
+  .track{position:relative;flex:1;height:56px;cursor:pointer;touch-action:none;margin:0 16px}
+  .rail{position:absolute;left:0;right:0;top:24px;height:2px;background:rgba(31,26,20,.3)}
+  .fillbar{position:absolute;left:0;top:24px;height:2px;background:var(--kin)}
+  .tick{position:absolute;top:15px;width:2px;height:7px;background:rgba(31,26,20,.3);transform:translateX(-1px)}
+  .tick.fire{background:var(--shu);height:9px;top:13px}
+  .tick.bury{background:var(--tsuchi);height:9px;top:13px}
+  .node{position:absolute;top:0;transform:translateX(-50%);appearance:none;background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;width:64px}
+  .node .ny{font-size:10.5px;color:var(--ink-3);height:15px;line-height:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .node .dot{width:10px;height:10px;border-radius:50%;background:var(--washi);border:1.5px solid rgba(31,26,20,.55);margin-top:4px;box-sizing:border-box}
+  .node .ne{font-family:var(--mincho);font-size:13px;margin-top:5px;color:var(--ink-2);line-height:1.2;white-space:nowrap}
+  .node.bury .ne{color:var(--tsuchi)}
+  .node.on .dot{background:var(--shu);border-color:var(--shu);transform:scale(1.3)}
+  .node.on .ne{color:var(--ink);font-weight:900}
+  .node.on .ny{color:var(--ink)}
+  .head{position:absolute;top:18px;width:14px;height:14px;margin-left:-7px;pointer-events:none}
+  .head::before{content:"";position:absolute;inset:0;border:2px solid var(--kin);border-radius:50%;background:rgba(245,237,219,.6)}
+  .keys{display:flex;flex-direction:column;gap:3px;font-size:10.5px;color:var(--ink-3);flex:none;letter-spacing:.04em}
+  .keys span{display:flex;align-items:center;gap:6px}
+  .keys i{width:2px;height:9px;display:block}
+
+  /* labels on the model */
+  .lbl{position:fixed;z-index:4;transform:translate(-50%,-100%);pointer-events:none;white-space:nowrap;transition:opacity .3s;
+    font-family:var(--mincho);font-size:12.5px;font-weight:700;letter-spacing:.06em;background:rgba(246,239,222,.94);border:1px solid rgba(31,26,20,.55);padding:2px 9px 2px 8px;
+    display:flex;align-items:center;gap:6px;will-change:left,top}
+  .lbl::after{content:"";position:absolute;left:50%;bottom:-7px;width:1px;height:6px;background:rgba(31,26,20,.55)}
+  .lbl s{width:6px;height:6px;background:var(--shu);text-decoration:none;display:block}
+  .lbl.buried s{background:var(--tsuchi)}
+  .geo{position:fixed;z-index:3;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;transition:opacity .5s;writing-mode:vertical-rl;
+    font-family:var(--mincho);font-weight:700;font-size:16px;letter-spacing:.3em;color:rgba(31,26,20,.82);
+    text-shadow:0 0 8px rgba(242,230,196,1),0 0 2px rgba(242,230,196,1)}
+  .geo.water{color:var(--gunjo)}
+  .off{opacity:0 !important}
+
+  /* recording mode */
+  #comp{position:fixed;display:none;z-index:20;box-shadow:0 20px 50px -20px rgba(40,25,5,.7)}
+  .recbar{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:30;display:none;gap:6px;align-items:center;background:var(--washi-a);border:1px solid rgba(31,26,20,.55);padding:6px 8px;max-width:calc(100vw - 24px);flex-wrap:wrap;justify-content:center}
+  .recbar button{appearance:none;background:transparent;border:1px solid rgba(31,26,20,.3);padding:6px 11px;font-size:12px;cursor:pointer}
+  .recbar button.on{background:var(--ink);color:var(--washi);border-color:var(--ink)}
+  .recbar button.save{border-color:var(--shu);color:var(--shu)}
+  .recbar .msg{font-size:11.5px;color:var(--ink-2);padding:0 6px;max-width:420px;line-height:1.5}
+  body.rec #comp{display:block}
+  body.rec .recbar{display:flex}
+  body.rec #stage{visibility:hidden}
+  body.rec .plaque,body.rec .card,body.rec .tl,body.rec .lbl,body.rec .geo,body.rec #vig{display:none}
+
+  @media (max-width:820px){
+    .plaque{left:12px;top:12px}
+    .daisen{padding:12px 8px 10px}
+    .daisen h1{font-size:20px}
+    .sub,.meta{display:none}
+    .tools .vl{display:none}
+    .tools{flex-direction:row;flex-wrap:wrap;max-width:calc(100vw - 90px)}
+    .head-row{gap:8px}
+    .card{left:12px;right:12px;top:auto;bottom:128px;width:auto;max-height:28vh;padding:12px 16px}
+    .card .year .num{font-size:36px}
+    .card h2{font-size:17px;margin:4px 0}
+    .legend{display:none}
+    .node .ny{visibility:hidden}
+    .node.on .ny{visibility:visible}
+    .node .ne{font-size:11px;visibility:hidden}
+    .node.on .ne{visibility:visible}
+    .keys{display:none}
+    .tl{bottom:10px;padding:8px 10px}
+    .track{margin:0 8px}
+  }
+  @media (prefers-reduced-motion:reduce){ .ticker,.lbl,.geo{transition:none} }
+</style>
+
+<canvas id="stage" aria-label="江戸城の地層 3D模型"></canvas>
+<div id="vig"></div>
+<canvas id="comp" aria-label="収録用の画面"></canvas>
+
+<header class="plaque">
+  <div class="head-row">
+    <div class="daisen"><h1>江戸城の地層</h1><span class="seal">ひす鳥</span></div>
+    <p class="sub">縄文の海から、令和の東御苑まで。<br>台地の先の城のまわりで、<br>何が建ち、燃え、埋められてきたか。</p>
+  </div>
+  <div class="meta">範囲 約5km四方 ・ 高さは強調 ・ 地形と配置は模式図</div>
+  <nav class="tools" aria-label="表示">
+    <div class="grp">
+      <button id="bXray"><span class="sw"></span>海を透かす</button>
+      <button id="bCloud" class="on"><span class="sw"></span>金雲</button>
+      <button id="bSpin" class="on"><span class="sw"></span>ゆっくり回す</button>
+    </div>
+    <div class="vl">視点</div>
+    <div class="grp">
+      <button data-view="bird">鳥瞰</button>
+      <button data-view="castle">城へ寄る</button>
+      <button data-view="top">真上</button>
+      <button data-view="section">断面</button>
+    </div>
+    <div class="grp"><button class="rec-open" id="bRec" hidden>SNS用に収録する</button><a class="back" href="../">← 動く歴史地図</a></div>
+  </nav>
+</header>
+
+<aside class="card" aria-live="polite">
+  <div class="kicker" id="cEra"></div>
+  <div class="year"><span class="pre" id="cPre"></span><span class="num" id="cYear"></span><span class="suf" id="cSuf"></span></div>
+  <div class="wa" id="cWa"></div>
+  <h2 id="cTitle"></h2>
+  <p id="cDesc"></p>
+  <div class="note fire" id="cFire" hidden><i></i><span></span></div>
+  <div class="note end" id="cEnd" hidden><i></i><span></span></div>
+  <div class="note under" id="cUnder" hidden><i></i><span></span></div>
+  <div class="legend">
+    <div class="lt">模型の側面は地層</div>
+    <ul id="legend"></ul>
+  </div>
+</aside>
+
+<div class="tl">
+  <div class="ticker off" id="ticker"></div>
+  <div class="tl-row">
+    <button class="play" id="play" aria-label="再生"><svg viewBox="0 0 14 14" id="playIcon"><path d="M3 1.5v11l9-5.5z"/></svg></button>
+    <div class="track" id="track" role="slider" aria-label="時代" tabindex="0">
+      <div class="rail"></div><div class="fillbar" id="fillbar"></div>
+      <div class="head" id="head"></div>
+    </div>
+    <div class="keys"><span><i style="background:var(--shu)"></i>焼失</span><span><i style="background:var(--tsuchi)"></i>埋める</span></div>
+  </div>
+</div>
+
+<div class="recbar" id="recbar">
+  <button id="rV" class="on">縦 9:16（インスタ）</button>
+  <button id="rH">横 16:9（X）</button>
+  <button id="rPlay">▶ 再生して見る</button>
+  <button id="rPause">⏸ 一時停止</button>
+  <button id="rSave" class="save">● 録画して保存</button>
+  <button id="rClose">× 閉じる</button>
+  <span class="msg" id="rMsg">枠の中だけが動画になります。約60秒。</span>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============ utilities ============ */
+const C=h=>new THREE.Color(h).convertSRGBToLinear();
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const ss=(e0,e1,x)=>{ const t=clamp((x-e0)/(e1-e0),0,1); return t*t*(3-2*t); };
+const lerp=(a,b,t)=>a+(b-a)*t;
+function K(keys,y){ if(y<=keys[0][0]) return keys[0][1]; for(let i=1;i<keys.length;i++){ if(y<=keys[i][0]){ const [y0,v0]=keys[i-1],[y1,v1]=keys[i]; return v0+(v1-v0)*(y-y0)/(y1-y0);} } return keys[keys.length-1][1]; }
+function hash2(i,j){ let h=(Math.imul(i,374761393)+Math.imul(j,668265263))|0; h=Math.imul(h^(h>>>13),1274126177); h^=h>>>16; return (h>>>0)/4294967296; }
+function vn(x,y){ const xi=Math.floor(x), yi=Math.floor(y), xf=x-xi, yf=y-yi; const u=xf*xf*(3-2*xf), v=yf*yf*(3-2*yf);
+  const a=hash2(xi,yi), b=hash2(xi+1,yi), c=hash2(xi,yi+1), d=hash2(xi+1,yi+1); return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v; }
+function fbm(x,y){ return vn(x,y)*0.55+vn(x*2.1+5.3,y*2.1+1.7)*0.3+vn(x*4.3+9.1,y*4.3+3.3)*0.15-0.5; }
+function rng(seed){ let s=seed>>>0; return ()=>{ s=(s+0x6D2B79F5)>>>0; let t=s; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+const inRect=(x,z,r)=>x>=r[0]&&x<=r[1]&&z>=r[2]&&z<=r[3];
+const $=id=>document.getElementById(id);
+
+/* ============ time ============ */
+const Y_FILL0=1592, Y_KANDA=1603; // 素材メモ§6（遠藤2004 地学雑誌／大丸有INDEX／中央区）: 1592 堀の土で入江の北／1603〜 神田山の土で本格化。完了年は出さない
+const STOP_YEARS=[-5000,0,450,730,1180,1457,1590,1606,1620,1650,1660,1900,1968,2026];
+const NS=STOP_YEARS.length, BURY=7, LEG=3.2, HOLD=2200;
+function tOf(y){ if(y===-Infinity) return -Infinity; const Y=STOP_YEARS; if(y<=Y[0]) return (y-Y[0])/(Y[1]-Y[0]);
+  for(let i=1;i<NS;i++){ if(y<=Y[i]) return i-1+(y-Y[i-1])/(Y[i]-Y[i-1]); } return NS-1+(y-Y[NS-1])/100; }
+function yearOf(t){ const Y=STOP_YEARS; if(t<=0) return Y[0]+t*(Y[1]-Y[0]); if(t>=NS-1) return Y[NS-1]; const i=Math.floor(t); return Y[i]+(t-i)*(Y[i+1]-Y[i]); }
+
+const STOPS=[
+ {era:'縄文時代', short:'縄文', ny:'約7000年前', pre:'約', num:'7000', suf:'年前', wa:'', title:'台地の先は、海',
+  desc:'海が今より内陸まで入りこんでいた（縄文海進）。武蔵野台地の東の端は崖になり、その先は海。のちに江戸城が建つ台地の先も、目の前は海だった。',
+  under:'本丸の西には、縄文の貝塚があった（旧本丸西貝塚・千代田区の遺跡一覧）。',
+  end:'当時の細かい海岸線はわかっていない。模型の海岸線は模式図。'},
+ {era:'弥生時代', short:'弥生', ny:'約2000年前', pre:'約', num:'2000', suf:'年前', wa:'', title:'皇居の中にも、弥生の跡', recNote:'「弥生」の名のふるさとは、北へ約3km',
+  desc:'皇居の中からも、弥生時代の人の跡が見つかっている（千代田区の遺跡一覧）。「弥生時代」の名前のもとになった土器は、ここから北北東へ約3kmの、いまの文京区弥生で見つかった。',
+  under:'1884年に見つかった壺が、地名から「弥生式土器」と名付けられた。発見地は、まだ確定していない（文京区）。',
+  end:'模型の家は模式。一覧には、何が出たかまでは書かれていない。'},
+ {era:'古墳時代', short:'古墳', ny:'5世紀ごろ', pre:'', num:'5', suf:'世紀ごろ', wa:'', title:'丸の内にも、古墳時代の跡', recNote:'南へ約3.5kmの芝に、100mを超える前方後円墳',
+  desc:'いまの東京駅八重洲北口のあたりや、北の丸のすぐ北の牛ヶ淵貝塚から、古墳時代の人の跡が見つかっている（千代田区の遺跡一覧）。南へ約3.5kmの芝には、長さ100mを超える前方後円墳（芝丸山古墳）が築かれた。',
+  under:'芝丸山古墳は、都内最大級の前方後円墳（港区）。海の道を差配した人びとの墓とも考えられている。'},
+ {era:'奈良時代', short:'神田', ny:'730', pre:'', num:'730', suf:'年', wa:'天平二年', title:'大手町の社と、将門塚',
+  desc:'皇居の中からは、奈良・平安時代の人の跡も見つかっている。神田明神は、社伝では730年に、いまの大手町（将門塚のあたり）で創建された。のちに平将門を祀り、将門の首を葬ったという塚が伝わる。',
+  under:'将門塚は、いまも大手町のビルのあいだにある。',
+  end:'創建の年と将門の首塚は、社伝・伝承として書いている。'},
+ {era:'平安時代の終わり', short:'江戸氏', ny:'1180', pre:'', num:'1180', suf:'年', wa:'治承四年', title:'「江戸」の名が、記録に出る',
+  desc:'12世紀前半、秩父氏の一族がこの地に入り、地名の「江戸」を名字にした。1180年、『吾妻鏡』に「江戸太郎重長」の名が出る。館は、のちの江戸城の本丸・二の丸のあたりにあったとする説がある。',
+  under:'鎌倉時代、江戸前島は鎌倉の円覚寺の領地だった（円覚寺文書）。',
+  end:'館の場所は説のひとつ。模型の館は模式。'},
+ {era:'室町時代', short:'室町', ny:'1457', pre:'', num:'1457', suf:'年', wa:'長禄元年', title:'太田道灌の江戸城',
+  desc:'太田道灌が、台地の先に江戸城を築いた（千代田区は「1456〜1457年にかけて築城」とする）。城のすぐ東には、日比谷入江という海が入りこんでいた。'},
+ {era:'安土桃山時代', short:'家康', ny:'1590', pre:'', num:'1590', suf:'年', wa:'天正十八年', title:'家康、江戸へ',
+  desc:'徳川家康が江戸に入った。城はまだ、台地の先の小さな城。東には日比谷入江が広がり、その向こうに江戸前島という細長い陸地があった。'},
+ {era:'江戸時代のはじめ', short:'埋める', ny:'1603〜', pre:'', num:'1603', suf:'年〜', wa:'慶長八年〜', title:'山を崩して、海を埋める', hold:4200, bury:true,
+  desc:'1603年、家康が将軍になると、天下普請で江戸の町づくりが本格化した。神田山（いまの駿河台）を崩し、その土で入江の南の方や、その先の洲崎を埋め立てていった。海だった場所が、町になっていく。',
+  end:'入江の北の方（いまの丸の内・大手町のあたり）は、1592年から、城の堀を掘った土で埋め立てが始まっていた。',
+  under:'「海を透かす」を押すと、丸の内の地面の下に、かつての入江が見える。'},
+ {era:'江戸時代のはじめ', short:'神田川', ny:'1620', pre:'', num:'1620', suf:'年', wa:'元和六年', title:'山を切り通して、川を通す', recNote:'神田川。神田山を切り通して掘った',
+  desc:'1620年、伊達政宗が神田山（いまの駿河台）を切り通して、神田川を掘った（千代田区の町名由来板「駿河台」ほか）。本郷台地と駿河台は、この川で分かれた。それまで、ここに川はなかった。'},
+ {era:'江戸時代', short:'天守', ny:'1650', pre:'', num:'1650', suf:'年', wa:'慶安三年', title:'三度建った天守',
+  desc:'家康が将軍になった1603年から、江戸城も本格的に造り替えられた。二の丸・三の丸、五層の天守。天守は将軍の代替わりごとに三度建て直された（慶長・元和・寛永）。',
+  fire:'<b>1657年</b>、明暦の大火。天守も城下も焼けた。'},
+ {era:'江戸時代', short:'建たず', ny:'1660', pre:'', num:'1660', suf:'年', wa:'万治三年', title:'建たなかった天守', hold:3800,
+  desc:'翌1658年、加賀藩前田家が花崗岩で天守台を築いた。しかし保科正之の提言で、天守の再建は取りやめになる。城下の復興が先だった。',
+  under:'天守は、建たないまま今に至る。模型に線だけで描いたのは、建たなかった天守。'},
+ {era:'明治時代', short:'皇居', ny:'1900', pre:'', num:'1900', suf:'年', wa:'明治三十三年', title:'城から、皇居へ',
+  desc:'1868年、江戸城は皇居になった。西の丸には明治宮殿が建てられた。',
+  fire:'<b>1945年</b>、空襲で宮殿（明治宮殿）が焼けた。'},
+ {era:'昭和', short:'東御苑', ny:'1968', pre:'', num:'1968', suf:'年', wa:'昭和四十三年', title:'新宮殿と東御苑',
+  desc:'1968年10月、新宮殿が完成した。同じ年、本丸・二の丸・三の丸の一部が皇居東御苑として公開された。'},
+ {era:'令和', short:'現在', ny:'2026', pre:'', num:'2026', suf:'年', wa:'令和八年', title:'天守台だけが残る',
+  desc:'東御苑には、天守台だけが残っている。かつて海だった丸の内には、高層ビルが並ぶ。',
+  under:'足もとには、埋められた日比谷入江と、崩された神田山の土。'},
+];
+const EVENTS=[
+ [730,'社伝では、神田明神がこの地に創建',''],[1180,'『吾妻鏡』に「江戸太郎重長」',''],[1262,'「江戸郷」の名が文書に出る',''],[1309,'神田明神、平将門を祀る',''],
+ [1457,'太田道灌、江戸城を築く',''],[1590,'徳川家康、江戸に入る',''],[1592,'城の堀を掘った土で、入江の北を埋めはじめる',''],
+ [1603,'天下普請。神田山を崩した土で、町づくりが本格化','bury'],[1616,'神田明神、江戸城の鬼門を守る今の場所へ',''],[1620,'神田山を切り通して、神田川を掘る',''],[1607,'最初の天守',  '','慶長'],[1622,'天守を建て直す','','元和'],[1638,'天守を建て直す','','寛永'],
+ [1657,'明暦の大火。天守も城下も焼ける','fire'],[1658,'天守台だけ築き直す。天守は建てない',''],
+ [1868,'江戸城が皇居に',''],[1945,'空襲で宮殿が焼ける','fire'],[1968,'新宮殿完成・東御苑公開',''],
+].map(e=>({y:e[0],text:e[1],kind:e[2],disp:e[3]||String(e[0]),t:tOf(e[0])}));
+/* ============ renderer / scene ============ */
+const canvas=$('stage');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+const DPR=Math.min(devicePixelRatio,2); renderer.setPixelRatio(DPR);
+renderer.setClearColor(0x000000,0);
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.0;
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();
+scene.fog=new THREE.Fog(0xdcc792,320,720);
+const camera=new THREE.PerspectiveCamera(38,1,0.5,1600);
+
+const hemi=new THREE.HemisphereLight(0xf6ead0,0x5b4a35,0.62); scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff0d2,1.15); sun.position.set(-90,150,110); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-110,right:110,top:110,bottom:-110,near:10,far:420}); sun.shadow.bias=-0.0005; sun.shadow.normalBias=0.02;
+scene.add(sun);
+const fireLight=new THREE.PointLight(0xff8a3a,0,70,2); scene.add(fireLight);
+
+/* ============ geography ============ */
+const WEST_EDGE=z=>-8+9*Math.exp(-Math.pow((z+10)/14,2))-0.12*Math.max(0,z-10)+3*fbm(0.3,z*0.05);
+const CHANNELS=[
+ {pts:[[78,-95],[72,-40],[76,20],[70,95]], w:3.5, from:-99999, to:null},
+ {pts:[[-2,-95],[-2,-34]], w:1.2, from:-99999, to:null},
+ {pts:[[2,-33],[14,-30],[30,-22],[50,-24],[72,-26]], w:1.3, from:1600, to:null},
+ {pts:[[-2,-40],[8,-48],[20,-53.5],[32,-53],[46,-49],[60,-47],[76,-46]], w:1.6, from:1612, ramp:8, to:null, cut:true},
+];
+const MOATS=[[4,6.5,-16.5,3],[15,17.5,-20,8],[25,28,-24,26],[4,28,3,5.5],[-14,4,-20,-16.5],[-24,6,-33,-30],[-24,-21,-33,27],[-20,-4,-3,2],[-22,28,24,27],[2,4.5,-33,-16.5]];
+function distPoly(x,z,pts){ let best=1e9; for(let i=0;i<pts.length-1;i++){ const [ax,az]=pts[i],[bx,bz]=pts[i+1]; const dx=bx-ax,dz=bz-az; const t=clamp(((x-ax)*dx+(z-az)*dz)/(dx*dx+dz*dz),0,1); const d=Math.hypot(x-ax-t*dx,z-az-t*dz); if(d<best) best=d; } return best; }
+function chExist(c,y){ let e=ss(c.from,c.from+(c.ramp||25),y); if(c.to) e*=1-ss(c.to-5,c.to+5,y); return e; }
+const HILL={x:20,z:-45,r:8,h:3.4};
+function factors(x,z){
+  const mW=ss(3,-3,x-WEST_EDGE(z));
+  const mNE=ss(3,-3,distPoly(x,z,[[20,-42],[34,-95]])-12);
+  const m=Math.max(mW,mNE);
+  const top=4.0+0.35*fbm(x*0.06,z*0.06);
+  const hill=HILL.h*Math.exp(-(Math.pow(x-HILL.x,2)+Math.pow(z-HILL.z,2))/(HILL.r*HILL.r))*mNE;
+  const wI=ss(10,6,distPoly(x,z,[[6,-32],[7,10],[4,62]]))*(1-m);
+  const wP=ss(11,7,distPoly(x,z,[[32,-44],[34,52]]))*(1-m);
+  const nz=fbm(x*0.07+11,z*0.07-7);
+  const ch=CHANNELS.map(c=>ss(c.w,c.w*0.4,distPoly(x,z,c.pts))*(c.cut?1:(1-m)));
+  let mw=0; for(const r of MOATS){ const s=ss(r[0]-0.7,r[0]+0.3,x)*ss(r[1]+0.7,r[1]-0.3,x)*ss(r[2]-0.7,r[2]+0.3,z)*ss(r[3]+0.7,r[3]-0.3,z); if(s>mw) mw=s; }
+  return {m,mNE,top,hill,wI,wP,nz,ch,mw,x,z};
+}
+const L0K=[[-5000,-2.4],[-2000,-1.2],[0,-0.35],[1400,-0.25],[1620,-0.15],[1680,0.25],[1720,0.35]];
+const LNK=[[-5000,0.2],[1400,0.35],[1620,0.4],[1700,0.1],[2026,0.05]];
+const PK=[[-5000,-2.2],[-2000,-0.9],[0,0.25],[2026,0.4]];
+const IK=[[-5000,-2.6],[0,-1.3],[1592,-1.2]];
+const SZK=[[-5000,30],[0,48],[1600,56],[1700,70],[1960,82],[2026,84]];
+function fillP(z,y){ if(z<-5){ const a=clamp((z+34)/29,0,1); return ss(Y_FILL0+a*6,Y_FILL0+4+a*6,y); } const b=clamp((z+5)/67,0,1); return ss(Y_KANDA+b*9,Y_KANDA+2+b*9,y); }
+function heightFrom(f,y){
+  let floor=K(L0K,y)+K(LNK,y)*f.nz*2.6;
+  if(f.wP>0) floor=Math.max(floor,lerp(floor,K(PK,y)+f.nz*0.3,f.wP));
+  if(f.wI>0){ const pre=K(IK,y); const fi=y<Y_FILL0?pre:lerp(pre,0.4,fillP(f.z,y)); floor=lerp(floor,fi,f.wI); }
+  const sz=K(SZK,y); const sb=ss(sz-4,sz+4,f.z)*ss(-16,-8,f.x); if(sb>0) floor=lerp(floor,-1.4,sb);
+  const ne=ss(-36,-46,f.z)*ss(72,66,f.x)*ss(-3000,0,y); if(ne>0) floor=lerp(floor,0.25+0.15*f.nz,ne);   // 上野・下谷の低地（陸）
+  const topE=f.top+f.hill*(1-ss(Y_KANDA,Y_KANDA+11,y));
+  let h=lerp(floor,topE,f.m);
+  for(let k=0;k<CHANNELS.length;k++){ const s=f.ch[k]; if(s>0){ const ex=chExist(CHANNELS[k],y); if(ex>0){ const tg=Math.min(h,-1.0); h+=(tg-h)*s*ex; } } }
+  if(f.mw>0){ const s=f.mw*ss(1604,1608,y); if(s>0) h+=(Math.min(h,-0.3)-h)*s; }
+  return h;
+}
+const heightAt=(x,z,y)=>heightFrom(factors(x,z),y);
+const onChannel=(x,z)=>{ const f=factors(x,z); return f.ch.some(v=>v>0.05)||f.mw>0.05; };
+
+const C0={x:-4,z:-10}, MASA={x:23,z:-13};
+const G=factors(C0.x,C0.z).top;
+const CASTLE=[-26,29,-34,28], GAIEN=[0,26,6,23], HIGASHI=[-12,25,-18,6];
+function townBorn(x,z,f){
+  if(inRect(x,z,CASTLE)) return Infinity;
+  if(Math.hypot(x-MASA.x,z-MASA.z)<3.2) return Infinity;
+  if(f.m>0.5) return 1620+clamp(Math.abs(x)+Math.abs(z),0,120)*0.3;
+  if(f.wI>0.5) return 1606+clamp(z+34,0,100)*0.25;
+  if(f.wP>0.5) return 1600;
+  if(z<-34) return 1620;
+  return 1660+clamp(x-45,0,50)*0.8;
+}
+/* ============ terrain (岩絵具 palette) ============ */
+const GS=180, GN=180;
+const tgeo=new THREE.PlaneGeometry(GS,GS,GN,GN); tgeo.rotateX(-Math.PI/2);
+const NV=tgeo.attributes.position.count;
+tgeo.setAttribute('color',new THREE.BufferAttribute(new Float32Array(NV*3),3));
+const PX=new Float32Array(NV), PZ=new Float32Array(NV), H=new Float32Array(NV), TB=new Float32Array(NV), ZN=new Uint8Array(NV), PAT=new Uint8Array(NV), PADL=new Uint8Array(NV);
+const F=new Array(NV);
+for(let i=0;i<NV;i++){
+  const x=tgeo.attributes.position.getX(i), z=tgeo.attributes.position.getZ(i); PX[i]=x; PZ[i]=z; const f=factors(x,z); F[i]=f;
+  TB[i]=townBorn(x,z,f);
+  ZN[i]=inRect(x,z,HIGASHI)?1:inRect(x,z,GAIEN)?2:inRect(x,z,CASTLE)?3:0;
+  PAT[i]=vn(x*0.18+3,z*0.18+8)>0.5?1:0;
+  const mx=((x%4)+4)%4, mz=((z%4)+4)%4; PADL[i]=(mx<0.6||mz<0.6)?1:0;
+}
+const PC={}; Object.entries({forest:'#3d6a4a',fieldA:'#8faa6a',fieldB:'#b8ad74',town:'#d8c697',marsh:'#7f9d69',sand:'#e7d7a9',paddy:'#8db06a',paddyL:'#6d9154',urban:'#bcb29c',park:'#5d8b58',castle:'#cfbd90',fillsoil:'#b08a5c',under:'#223f70'}).forEach(([k,v])=>{ const c=C(v); PC[k]=[c.r,c.g,c.b]; });
+const VC=[0,0,0];
+const setc=c=>{VC[0]=c[0];VC[1]=c[1];VC[2]=c[2];};
+const mixc=(c,w)=>{ if(w<=0) return; VC[0]+=(c[0]-VC[0])*w; VC[1]+=(c[1]-VC[1])*w; VC[2]+=(c[2]-VC[2])*w; };
+function vcolor(i,y,h){
+  const f=F[i];
+  if(h<0.02){ setc(PC.under); return VC; }
+  if(f.m>0.5 && h>1.5){ setc(PC.forest); mixc(PAT[i]?PC.fieldA:PC.fieldB, ss(1300,1600,y)*clamp(0.5+f.nz*3,0,1)); if(f.hill>0.3) mixc(PC.fillsoil,ss(Y_KANDA,Y_KANDA+4,y)*(1-ss(1618,1640,y))*clamp(f.hill/2,0,1)); }
+  else { setc((h<0.14&&y<1590)?PC.sand:PC.marsh); mixc(PADL[i]?PC.paddyL:PC.paddy, ss(1200,1500,y)*ss(0.05,0.2,h)*0.8*(1-f.wI)); if(f.wI>0.3) mixc(PC.fillsoil,ss(Y_FILL0,Y_FILL0+8,y)*(1-ss(1616,1632,y))*f.wI); }
+  const tb=TB[i]; if(tb<3000){ mixc(PC.town,ss(tb,tb+30,y)); mixc(PC.urban,ss(1935,1990,y)*0.9); }
+  const zn=ZN[i];
+  if(zn===1){ mixc(PC.castle,ss(1600,1610,y)); mixc(PC.park,ss(1968,1985,y)); }
+  else if(zn===2){ mixc(PC.castle,ss(1606,1620,y)); mixc(PC.park,ss(1890,1930,y)); }
+  else if(zn===3){ mixc(PC.castle,ss(1606,1620,y)*0.6); }
+  return VC;
+}
+const terrainMat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.96,metalness:0});
+const terrain=new THREE.Mesh(tgeo,terrainMat); terrain.receiveShadow=true; terrain.castShadow=true; scene.add(terrain);
+function updateTerrain(y){
+  const pos=tgeo.attributes.position.array, col=tgeo.attributes.color.array;
+  for(let i=0;i<NV;i++){ const h=heightFrom(F[i],y); H[i]=h; pos[i*3+1]=h; const c=vcolor(i,y,h); col[i*3]=c[0]; col[i*3+1]=c[1]; col[i*3+2]=c[2]; }
+  tgeo.attributes.position.needsUpdate=true; tgeo.attributes.color.needsUpdate=true; tgeo.computeVertexNormals();
+}
+/* water: 群青 with 胡粉 wave lines, as on a folding screen */
+const waterTex=(()=>{ const c=document.createElement('canvas'); c.width=256; c.height=128; const x=c.getContext('2d');
+  x.fillStyle='#31568f'; x.fillRect(0,0,256,128); x.strokeStyle='rgba(238,232,212,.5)'; x.lineWidth=3;
+  for(let r=0;r<5;r++){ const yy=r*32+24, off=(r%2)*16; for(let xx=-32+off;xx<288;xx+=32){ x.beginPath(); x.arc(xx,yy,15,Math.PI,2*Math.PI); x.stroke(); x.beginPath(); x.arc(xx,yy,9,Math.PI,2*Math.PI); x.stroke(); } }
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(8,16); t.anisotropy=8; return t; })();
+const waterMat=new THREE.MeshStandardMaterial({map:waterTex,color:0xffffff,roughness:0.55,metalness:0,transparent:true,opacity:0.95});
+const water=new THREE.Mesh(new THREE.PlaneGeometry(GS,GS),waterMat); water.rotation.x=-Math.PI/2; water.position.y=0.0; water.receiveShadow=true; scene.add(water);
+
+/* ---- strata skirt ---- */
+const BASE=-7;
+const STRATA={bed:['#4b3f36','基盤'],tokyo:['#7c6b58','東京層（台地の土台）'],loam:['#a9573a','関東ローム（赤土）'],soil:['#5a4834','表土'],yuraku:['#6f7b80','有楽町層（海の泥）'],fill:['#b08a5c','埋め立ての土']};
+const SC={}; Object.entries(STRATA).forEach(([k,v])=>{ const c=C(v[0]); SC[k]=[c.r,c.g,c.b]; });
+const LOW_B=[['bed',-5.2],['tokyo',-3.0],['yuraku',0.3],['fill',99]];
+function bands(plateau,h){
+  if(plateau){ const a=Math.max(-5.2,h-1.4), b=Math.max(-5.2,h-0.25); return [[BASE,-5.2,'bed'],[-5.2,a,'tokyo'],[a,b,'loam'],[b,h,'soil']]; }
+  const out=[]; let lo=BASE;
+  for(const [k,hi] of LOW_B){ out.push([Math.min(lo,h),Math.min(hi,h),k]); lo=hi; }
+  return out;
+}
+const edges=[[],[],[],[]];
+for(let k=0;k<=GN;k++){ edges[0].push(k); edges[1].push(k*(GN+1)+GN); edges[2].push(GN*(GN+1)+(GN-k)); edges[3].push((GN-k)*(GN+1)); }
+const MAXQ=4*GN*7;
+const skPos=new Float32Array(MAXQ*18), skCol=new Float32Array(MAXQ*18);
+const skGeo=new THREE.BufferGeometry(); skGeo.setAttribute('position',new THREE.BufferAttribute(skPos,3)); skGeo.setAttribute('color',new THREE.BufferAttribute(skCol,3));
+const skMat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,side:THREE.DoubleSide});
+scene.add(new THREE.Mesh(skGeo,skMat));
+const swPos=new Float32Array(4*GN*18);
+const swGeo=new THREE.BufferGeometry(); swGeo.setAttribute('position',new THREE.BufferAttribute(swPos,3));
+const swMat=new THREE.MeshStandardMaterial({color:C('#2c5294'),transparent:true,opacity:0.6,side:THREE.DoubleSide,roughness:0.4});
+scene.add(new THREE.Mesh(swGeo,swMat));
+function quad(arr,o,ax,ay0,ay1,az,bx,by0,by1,bz){ arr.set([ax,ay0,az, bx,by0,bz, bx,by1,bz, ax,ay0,az, bx,by1,bz, ax,ay1,az],o); }
+function updateSkirt(){
+  let q=0, w=0;
+  for(const idx of edges){
+    for(let k=0;k<idx.length-1;k++){
+      const a=idx[k], b=idx[k+1], plateau=F[a].m>0.5 && H[a]>1.5;
+      const ba=bands(plateau,H[a]), bb=bands(plateau,H[b]);
+      for(let j=0;j<ba.length;j++){
+        if(ba[j][1]-ba[j][0]<1e-3 && bb[j][1]-bb[j][0]<1e-3) continue;
+        quad(skPos,q*18,PX[a],ba[j][0],ba[j][1],PZ[a],PX[b],bb[j][0],bb[j][1],PZ[b]);
+        const c=SC[ba[j][2]]; for(let v=0;v<6;v++){ skCol[q*18+v*3]=c[0]; skCol[q*18+v*3+1]=c[1]; skCol[q*18+v*3+2]=c[2]; } q++;
+      }
+      if(H[a]<0||H[b]<0){ quad(swPos,w*18,PX[a],Math.min(H[a],0),0,PZ[a],PX[b],Math.min(H[b],0),0,PZ[b]); w++; }
+    }
+  }
+  skGeo.setDrawRange(0,q*6); skGeo.attributes.position.needsUpdate=true; skGeo.attributes.color.needsUpdate=true; skGeo.computeVertexNormals();
+  swGeo.setDrawRange(0,w*6); swGeo.attributes.position.needsUpdate=true; swGeo.computeVertexNormals();
+}
+
+/* ---- gold-leaf texture (箔目) ---- */
+function goldLeaf(base,seed){ const c=document.createElement('canvas'); c.width=c.height=256; const x=c.getContext('2d'); const R=rng(seed);
+  const s=32; for(let i=0;i<8;i++) for(let j=0;j<8;j++){ const v=R()*18-9; x.fillStyle=`rgb(${base[0]+v|0},${base[1]+v|0},${base[2]+v*0.6|0})`; x.fillRect(i*s,j*s,s,s); }
+  x.strokeStyle='rgba(120,86,20,.25)'; x.lineWidth=1; for(let k=0;k<=8;k++){ x.beginPath(); x.moveTo(k*s,0); x.lineTo(k*s,256); x.stroke(); x.beginPath(); x.moveTo(0,k*s); x.lineTo(256,k*s); x.stroke(); }
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.wrapS=t.wrapT=THREE.RepeatWrapping; return t; }
+
+/* ---- lacquer plinth, gold label, compass ---- */
+{
+  const lac=new THREE.MeshStandardMaterial({color:C('#17110d'),roughness:0.28,metalness:0.2});
+  const plinth=new THREE.Mesh(new THREE.BoxGeometry(198,3.2,198),lac); plinth.position.y=BASE-1.6; plinth.receiveShadow=true; scene.add(plinth);
+  const gm=new THREE.MeshStandardMaterial({color:C('#caa24a'),roughness:0.35,metalness:0.8});
+  for(const [w,d,x,z] of [[198,0.7,0,98.6],[198,0.7,0,-98.6],[0.7,198,98.6,0],[0.7,198,-98.6,0]]){ const b=new THREE.Mesh(new THREE.BoxGeometry(w,0.2,d),gm); b.position.set(x,BASE+0.1,z); scene.add(b); }
+  const c=document.createElement('canvas'); c.width=2048; c.height=160; const x=c.getContext('2d');
+  const gl=goldLeaf([214,178,98],2).image; for(let i=0;i<8;i++) x.drawImage(gl,i*256,0,256,160);
+  x.strokeStyle='#1f1a14'; x.lineWidth=4; x.strokeRect(10,10,2028,140); x.lineWidth=1.5; x.strokeRect(20,20,2008,120);
+  x.fillStyle='#1f1a14'; x.textAlign='center'; x.font='900 66px "Zen Old Mincho", serif'; x.fillText('江 戸 城 の 地 層',1024,88);
+  x.font='700 30px "Zen Old Mincho", serif'; x.fillText('武蔵野台地の東の端 ・ 範囲 約5km四方 ・ 高さは強調 ・ 地形と配置は模式図',1024,134);
+  const tex=new THREE.CanvasTexture(c); tex.encoding=THREE.sRGBEncoding; tex.anisotropy=8;
+  const plate=new THREE.Mesh(new THREE.PlaneGeometry(96,7.5),new THREE.MeshStandardMaterial({map:tex,roughness:0.4,metalness:0.35}));
+  plate.rotation.x=-Math.PI/2; plate.position.set(0,BASE+0.02,94.3); scene.add(plate);
+  const cc=document.createElement('canvas'); cc.width=cc.height=128; const y=cc.getContext('2d');
+  y.fillStyle='#caa24a'; y.beginPath(); y.moveTo(64,10); y.lineTo(88,96); y.lineTo(64,80); y.lineTo(40,96); y.closePath(); y.fill();
+  y.font='900 30px "Zen Old Mincho", serif'; y.textAlign='center'; y.fillStyle='#caa24a'; y.fillText('北',64,124);
+  const ct=new THREE.CanvasTexture(cc); ct.encoding=THREE.sRGBEncoding;
+  const comp=new THREE.Mesh(new THREE.PlaneGeometry(7,7),new THREE.MeshBasicMaterial({map:ct,transparent:true}));
+  comp.rotation.x=-Math.PI/2; comp.position.set(-86,BASE+0.03,94); scene.add(comp);
+}
+
+/* ---- 金雲: golden clouds framing the scene ---- */
+const clouds=[];
+{
+  const tex=goldLeaf([222,186,100],9); tex.repeat.set(0.08,0.08);
+  const mat=new THREE.MeshStandardMaterial({map:tex,color:0xffffff,roughness:0.32,metalness:0.55,emissive:C('#4a3508'),emissiveIntensity:0.35});
+  const edge=new THREE.LineBasicMaterial({color:C('#8a6620'),transparent:true,opacity:0.7});
+  function cloudShape(len,seed){ const R=rng(seed), s=new THREE.Shape(); const n=Math.max(3,Math.round(len/7)); const step=len/n;
+    s.moveTo(-len/2,0);
+    for(let i=0;i<n;i++){ const x0=-len/2+i*step, hgt=2.2+R()*2.4; s.bezierCurveTo(x0,hgt*1.1,x0+step,hgt*1.1,x0+step,0.2*R()); }
+    s.bezierCurveTo(len/2+2.5,-0.6,len/2+2.5,-2.4,len/2-1,-2.6);
+    const m=Math.max(2,n-1), st2=(len-2)/m;
+    for(let i=0;i<m;i++){ const x0=len/2-1-i*st2; s.bezierCurveTo(x0,-3.6-R()*0.8,x0-st2,-3.6-R()*0.8,x0-st2,-2.6); }
+    s.bezierCurveTo(-len/2-2.2,-2.4,-len/2-2.2,-0.4,-len/2,0); return s; }
+  [[-66,15,-80,62,0.08],[54,19,-86,72,-0.05],[-90,12,8,52,Math.PI/2],[90,17,-18,62,-Math.PI/2+0.08],[-38,21,90,72,Math.PI+0.05],[62,13,82,56,Math.PI-0.1],[93,23,62,42,-Math.PI/2],[-88,24,-48,46,Math.PI/2]].forEach((p,i)=>{
+    const g=new THREE.ExtrudeGeometry(cloudShape(p[3],30+i),{depth:0.5,bevelEnabled:true,bevelThickness:0.2,bevelSize:0.25,bevelSegments:1,curveSegments:10}); g.rotateX(-Math.PI/2);
+    const m=new THREE.Mesh(g,mat); m.position.set(p[0],p[1],p[2]); m.rotation.y=p[4]; m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g,40),edge));
+    scene.add(m); clouds.push({m,x:p[0],z:p[2],i});
+  });
+}
+
+/* ============ era objects ============ */
+const LINE_C=C('#1f1a14'), CHAR=C('#1c1612'), FIRE=C('#ff6a1a'), GLOW=C('#e0a044');
+const ERAS=[]; const APP=0.1, DIE=0.1, DIEB=0.13;
+const state={xray:false,clouds:true};
+class Era{
+  constructor(o){
+    Object.assign(this,{born:-Infinity,died:null,death:null,label:null,xray:null,emit:[],center:null,radius:5,tick:null,seed:Math.random()*10,scorch:null,ghost:false},o);
+    this.roots=[]; this.mats=[]; this.cache={}; this.cur=null;
+    this.lineMat=new THREE.LineBasicMaterial({color:LINE_C,transparent:true,opacity:0,depthWrite:false});
+    this.tb=tOf(this.born); if(this.tb!==-Infinity){ const s=Math.ceil(this.tb-1e-9); if(s-this.tb<APP) this.tb=s-APP; }
+    this.td=this.died==null?null:tOf(this.died); if(this.td!=null){ const s=Math.ceil(this.td-1e-9); const w=this.death==='burn'?DIEB:DIE; if(s-this.td<w && s>this.td) this.td=s-w; }
+    this.ts=this.scorch==null?null:tOf(this.scorch);
+    ERAS.push(this);
+  }
+  at(y){ let r=this.roots.find(r=>Math.abs(r.userData.base-y)<1e-6); if(!r){ r=new THREE.Group(); r.position.y=y; r.userData.base=y; r.visible=false; scene.add(r); this.roots.push(r);} this.cur=r; return this; }
+  mat(hex,o={}){ const key=[hex,o.rough,o.metal,o.k,o.emissive].join('|'); if(this.cache[key]) return this.cache[key];
+    const m=new THREE.MeshStandardMaterial({color:C(hex),roughness:o.rough??0.85,metalness:o.metal??0,map:o.map||null});
+    if(o.emissive){ m.emissive=C(o.emissive); m.emissiveIntensity=o.ei??1; }
+    this.mats.push({m,base:m.color.clone(),baseEm:m.emissive.clone(),baseEi:m.emissiveIntensity}); this.cache[key]=m; return m; }
+  place(mesh,x,y,z,o={}){
+    if(o.parent) mesh.position.set(x,y,z); else mesh.position.set(x,y-this.cur.position.y,z);
+    if(o.ry) mesh.rotation.y=o.ry;
+    mesh.castShadow=o.shadow!==false; mesh.receiveShadow=true; (o.parent||this.cur).add(mesh);
+    if(o.lines!==false) mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,30),this.lineMat));
+    return mesh; }
+  geo(g,hex,x,y,z,o={}){ return this.place(new THREE.Mesh(g,this.mat(hex,o)),x,y,z,o); }
+  geoM(g,mats,x,y,z,o={}){ return this.place(new THREE.Mesh(g,mats),x,y,z,o); }
+  box(w,h,d,hex,x,y,z,o={}){ const g=new THREE.BoxGeometry(w,h,d); g.translate(0,h/2,0); return this.geo(g,hex,x,y,z,o); }
+  inst(geom,hex,list,o={}){
+    const m=new THREE.InstancedMesh(geom,this.mat(hex,o),list.length), d=new THREE.Object3D(), by=this.cur.position.y;
+    list.forEach((p,i)=>{ d.position.set(p[0],p[1]-by,p[2]); d.scale.set(p[3],p[4],p[5]); d.rotation.set(0,p[6]||0,0); d.updateMatrix(); m.setMatrixAt(i,d.matrix); if(p[7]) m.setColorAt(i,C(p[7])); });
+    if(m.instanceColor) m.instanceColor.needsUpdate=true;
+    m.castShadow=o.shadow!==false; m.receiveShadow=true; this.cur.add(m); return m; }
+  group(x,y,z){ const g=new THREE.Group(); g.position.set(x,y-this.cur.position.y,z); this.cur.add(g); return g; }
+}
+
+/* ---- geometry helpers ---- */
+function frustumGeo(w,d,h,ix,iz){ const g=new THREE.BoxGeometry(w,h,d); const p=g.attributes.position;
+  for(let i=0;i<p.count;i++){ if(p.getY(i)>0){ p.setX(i,Math.sign(p.getX(i))*Math.max(0.001,w/2-ix)); p.setZ(i,Math.sign(p.getZ(i))*Math.max(0.001,d/2-iz)); } }
+  g.translate(0,h/2,0); g.computeVertexNormals(); return g; }
+function rectPath(w,d,hole){ const s=hole?new THREE.Path():new THREE.Shape(); s.moveTo(-w/2,-d/2); s.lineTo(w/2,-d/2); s.lineTo(w/2,d/2); s.lineTo(-w/2,d/2); s.lineTo(-w/2,-d/2); return s; }
+function ringFlat(ow,od,iw,id){ const s=rectPath(ow,od); s.holes.push(rectPath(iw,id,true)); const g=new THREE.ShapeGeometry(s); g.rotateX(-Math.PI/2); return g; }
+function ringSolid(ow,od,iw,id,h){ const s=rectPath(ow,od); s.holes.push(rectPath(iw,id,true)); const g=new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:false}); g.rotateX(-Math.PI/2); return g; }
+function triShape(bw,gh,right){ const s=new THREE.Shape(); if(right){ s.moveTo(-bw/2,0); s.lineTo(bw/2,0); s.lineTo(bw/2,gh); } else { s.moveTo(-bw/2,0); s.lineTo(bw/2,0); s.lineTo(0,gh); } s.closePath(); return s; }
+function prism(bw,gh,len,right){ const g=new THREE.ExtrudeGeometry(triShape(bw,gh,right),{depth:len,bevelEnabled:false}); g.translate(0,0,-len/2); return g; }
+function stoneTex(kind){ const c=document.createElement('canvas'); c.width=256; c.height=128; const x=c.getContext('2d'); const R=rng(kind==='nozura'?7:3);
+  if(kind==='nozura'){ x.fillStyle='#5f5a52'; x.fillRect(0,0,256,128); for(let i=0;i<170;i++){ const g=130+R()*55|0; x.fillStyle=`rgb(${g},${g-5},${g-13})`; x.beginPath(); x.ellipse(R()*256,R()*128,6+R()*13,4+R()*8,R()*3,0,7); x.fill(); } }
+  else { x.fillStyle='#8a857b'; x.fillRect(0,0,256,128); let y=0; while(y<128){ const h=11+R()*7; let xx=-R()*20; while(xx<256){ const w=18+R()*22; const g=176+R()*38|0; x.fillStyle=`rgb(${g},${g-4},${g-12})`; x.fillRect(xx+1,y+1,w-2,h-2); xx+=w; } y+=h; } }
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=4; return t; }
+const TEX={nozura:stoneTex('nozura'),kiri:stoneTex('kiri')};
+function stoneMat(E,kind,rx,ry){ const key='st-'+kind+'-'+rx.toFixed(1)+'-'+ry.toFixed(1); if(E.cache[key]) return E.cache[key];
+  const t=TEX[kind].clone(); t.needsUpdate=true; t.repeat.set(rx,ry); const m=E.mat('#ffffff',{map:t,k:key,rough:0.95}); E.cache[key]=m; return m; }
+function platform(E,x,y,z,w,d,h,inset,kind,topHex){ const s=stoneMat(E,kind,Math.max(w,d)/3.2,Math.max(0.5,h/1.6)); const tp=E.mat(topHex); return E.geoM(frustumGeo(w,d,h,inset,inset),[s,s,tp,s,s,s],x,y,z); }
+function hall(E,x,y,z,w,d,wh,rh,wall,roof,o={}){
+  let yy=y;
+  if(o.base){ E.geo(frustumGeo(w+0.5,d+0.5,o.base,0.08,0.08),o.baseCol||'#b8b2a4',x,yy,z); yy+=o.base; }
+  E.box(w,wh,d,wall,x,yy,z);
+  const ov=o.ov??0.6, rw=w+ov, rd=d+ov;
+  const g=d>w? frustumGeo(rw,rd,rh,rw/2-0.05,o.hip?rd*0.3:rd*0.18) : frustumGeo(rw,rd,rh,o.hip?rw*0.3:rw*0.18,rd/2-0.05);
+  E.geo(g,roof,x,yy+wh-0.02,z,{rough:0.7});
+  if(o.trim) E.box(rw+0.04,0.06,rd+0.04,o.trim,x,yy+wh-0.03,z,{lines:false,metal:0.6,rough:0.35});
+  return yy+wh+rh;
+}
+function gable(E,x,y,z,bw,gh,sgn,roof,wall){
+  const g1=new THREE.ExtrudeGeometry(triShape(bw,gh),{depth:0.7,bevelEnabled:false}); g1.translate(0,0,-0.7);
+  E.geo(g1,roof,x,y,z,{ry:sgn>0?0:Math.PI,rough:0.7});
+  const g2=new THREE.ExtrudeGeometry(triShape(bw*0.76,gh*0.72),{depth:0.03,bevelEnabled:false});
+  E.geo(g2,wall,x,y+0.03,z+sgn*0.02,{ry:sgn>0?0:Math.PI,lines:false});
+}
+const UNIT_BOX=new THREE.BoxGeometry(1,1,1);
+function buildKeep(E,cx,y0,cz,S){
+  let y=y0; const T=S.tiers, wins=[];
+  for(let i=0;i<T.length;i++){
+    const [w,d,h]=T[i], top=i===T.length-1, wc=top&&S.topWall?S.topWall:S.wall;
+    E.box(w,h,d,wc,cx,y,cz);
+    const wy=y+h*0.55, nx=Math.max(2,Math.round(w/0.55)), nz=Math.max(2,Math.round(d/0.55));
+    for(let k=0;k<nx;k++){ const x=cx-w/2+(k+0.5)*w/nx; wins.push([x,wy,cz+d/2+0.012,0.2,0.26,0.03],[x,wy,cz-d/2-0.012,0.2,0.26,0.03]); }
+    for(let k=0;k<nz;k++){ const z=cz-d/2+(k+0.5)*d/nz; wins.push([cx+w/2+0.012,wy,z,0.03,0.26,0.2],[cx-w/2-0.012,wy,z,0.03,0.26,0.2]); }
+    const rw=w+0.8, rd=d+0.8; let rh,ix,iz;
+    if(!top){ const [nw,nd]=T[i+1]; rh=0.42; ix=Math.max(0.05,(rw-nw)/2*0.92); iz=Math.max(0.05,(rd-nd)/2*0.92); }
+    else { rh=0.85; ix=rw*0.2; iz=rd/2-0.06; }
+    const ry=y+h-0.04;
+    E.geo(frustumGeo(rw,rd,rh,ix,iz),S.roof,cx,ry,cz,{rough:0.6});
+    if(S.trim) E.box(rw+0.05,0.07,rd+0.05,S.trim,cx,ry,cz,{lines:false,metal:0.7,rough:0.3});
+    if(!top&&(i===0||i===2)) for(const sg of [1,-1]) gable(E,cx,ry+rh*0.12,cz+sg*(rd/2-0.32),rw*0.36,rh*1.55,sg,S.roof,wc);
+    if(top){
+      const rl=rw-2*ix; for(const sg of [1,-1]) E.box(0.14,0.32,0.14,S.shachi,cx+sg*rl/2,ry+rh,cz,{lines:false,metal:0.8,rough:0.25});
+      if(S.balcony){ E.box(w+0.5,0.07,0.06,S.balcony,cx,y+0.32,cz+d/2+0.25,{lines:false}); E.box(w+0.5,0.07,0.06,S.balcony,cx,y+0.32,cz-d/2-0.25,{lines:false}); E.box(0.06,0.07,d+0.5,S.balcony,cx+w/2+0.25,y+0.32,cz,{lines:false}); E.box(0.06,0.07,d+0.5,S.balcony,cx-w/2-0.25,y+0.32,cz,{lines:false}); }
+      if(S.goldPanels) for(const sg of [1,-1]) for(let k=0;k<3;k++) E.box(0.3,0.26,0.03,'#d9b24a',cx-w/3+k*w/3,y+h*0.12,cz+sg*(d/2+0.02),{lines:false,metal:0.8,rough:0.3});
+    } else y=y+h+rh*0.55;
+  }
+  E.inst(UNIT_BOX,S.win||'#1b1918',wins,{shadow:false});
+}
+const SPEC_TOYO={wall:'#221f1d',roof:'#2d2c2e',trim:'#d6a936',shachi:'#e0b43c',balcony:'#7a2a1f',goldPanels:true,win:'#8a6a2c',tiers:[[3.4,3.0,1.2],[2.9,2.5,1.0],[2.4,2.1,0.95],[1.95,1.7,0.9],[1.55,1.3,1.0]]};
+const SPEC_TOKU={wall:'#f0ede4',roof:'#3d4550',trim:null,shachi:'#d9b24a',tiers:[[3.8,3.4,1.3],[3.25,2.85,1.1],[2.7,2.35,1.0],[2.2,1.9,0.95],[1.7,1.45,1.0]]};
+const SPEC_1931={wall:'#f2f0e9',topWall:'#1e1d1d',roof:'#6ea596',trim:'#d6b04a',shachi:'#e2b83e',balcony:'#1e1d1d',goldPanels:true,tiers:[[3.6,3.2,1.3],[3.1,2.7,1.1],[2.6,2.25,1.0],[2.1,1.8,0.95],[1.7,1.4,1.05]]};
+const turret=(wall,roof)=>({wall,roof,shachi:'#8c8c8c',tiers:[[1.5,1.1,0.7],[1.05,0.8,0.6]]});
+function boat(E,x,y,z,o={}){
+  const g=E.group(x,y,z);
+  E.box(o.len||1.6,0.22,o.wid||0.45,o.hull||'#4a3524',0,0,0,{parent:g});
+  if(o.sail){ E.box(0.05,1.2,0.05,'#5c4633',0,0.2,0,{parent:g,lines:false}); E.box(0.04,0.8,o.sailW||0.9,'#ece6d6',0,0.6,0,{parent:g,lines:false,ry:Math.PI/2}); }
+  return g;
+}
+const WATER='#2c5294', WOPT={lines:false,shadow:false,rough:0.4,metal:0};
+
+/* ---------- 縄文 ---------- */
+const shellA=new Era({born:-Infinity,died:-1000,death:'fade',label:'旧本丸西貝塚',center:new THREE.Vector3(-15,5.4,-9)});
+{ const y=heightAt(-15,-9,-5000); shellA.at(y); const m=shellA.geo(new THREE.SphereGeometry(1,14,8),'#ece5d2',-15,y-0.1,-9,{lines:false}); m.scale.set(1.8,0.32,1.2);
+  shellA.at(0.02); const c1=boat(shellA,10,0.02,-5,{len:1.6,wid:0.32,hull:'#3d2a1c'}); shellA.tick=(time)=>{ c1.position.x=10+Math.sin(time*0.2)*3; c1.rotation.y=Math.sin(time*0.2)*0.3; }; }
+const shellB=new Era({born:-Infinity,died:1100,death:'fade',label:'牛ヶ淵貝塚（縄文〜平安）',center:new THREE.Vector3(-8,5.4,-36)});
+{ const y=heightAt(-8,-36,-5000); shellB.at(y); const m=shellB.geo(new THREE.SphereGeometry(1,14,8),'#ece5d2',-8,y-0.1,-36,{lines:false}); m.scale.set(1.6,0.3,1.1); }
+/* ---------- 弥生・古墳・奈良平安の人の跡（模式）／枠の外の札 ---------- */
+function pit(E,x,z,yr){ const y=heightAt(x,z,yr); E.at(y); E.geo(new THREE.CylinderGeometry(0.95,1.05,0.16,12).translate(0,0.08,0),'#6d5a3f',x,y-0.02,z); E.geo(new THREE.ConeGeometry(0.85,1.05,10).translate(0,0.52,0),'#9c875a',x,y+0.08,z,{rough:1}); }
+const yayoiSite=new Era({born:-400,died:300,death:'fade',label:'皇居の中にも、弥生の跡（模式）',center:new THREE.Vector3(-11,6.6,-2)});
+{ [[-12,-4],[-9.5,-1.5],[-13.5,0.5]].forEach(([x,z])=>pit(yayoiSite,x,z,0)); yayoiSite.emit.push({p:[-12,heightAt(-12,-4,0)+1.4,-4],rate:1.2,s:0.6}); }
+function edgeArrow(E,x,z,ry,text){ E.at(BASE); const g=new THREE.ConeGeometry(1.6,4,3).rotateX(Math.PI/2).rotateY(ry).translate(0,0.3,0); E.geo(g,'#caa24a',x,BASE,z,{metal:0.7,rough:0.35,lines:false}); }
+const yayoiEdge=new Era({born:-400,died:300,death:'fade',label:'この先 約3km：弥生町',noRec:true,center:new THREE.Vector3(26,BASE+2,-94)});
+{ edgeArrow(yayoiEdge,26,-94,Math.PI); }
+const kofunSite=new Era({born:330,died:640,death:'fade',label:'丸の内にも、古墳時代の跡（模式）',center:new THREE.Vector3(36,4.4,-8)});
+{ [[35,-9],[37.5,-6.5]].forEach(([x,z])=>pit(kofunSite,x,z,450)); pit(kofunSite,-7,-37.5,450); kofunSite.emit.push({p:[35,heightAt(35,-9,450)+1.4,-9],rate:1.2,s:0.6}); }
+const kofunEdge=new Era({born:330,died:640,death:'fade',label:'この先 約3.5km：芝丸山古墳',noRec:true,center:new THREE.Vector3(-30,BASE+2.4,94)});
+{ edgeArrow(kofunEdge,-30,94,0); kofunEdge.at(BASE);
+  kofunEdge.geo(new THREE.CylinderGeometry(1.2,1.5,0.7,20).translate(0,0.35,0),'#6f8f55',-36,BASE,94.5); kofunEdge.geo(frustumGeo(2.2,1.6,0.5,0.3,0.2),'#6f8f55',-37.8,BASE,94.5); }
+const naraSite=new Era({born:680,died:1100,death:'fade',label:'奈良・平安の人の跡（模式）',center:new THREE.Vector3(-7,6.4,2)});
+{ [[-6,1],[-8.5,3]].forEach(([x,z])=>pit(naraSite,x,z,730)); }
+const kandaShrine=new Era({born:730,died:1616,death:'fade'});
+{ const x=MASA.x+1.8, z=MASA.z-1.4, y=Math.max(0.3,heightAt(x,z,800)); kandaShrine.at(y);
+  hall(kandaShrine,x,y,z,1.8,1.2,0.6,0.6,'#b0473a','#5a4a3a',{base:0.15,baseCol:'#b8b2a4'});
+  kandaShrine.box(0.1,1.0,0.1,'#b3261e',x-0.6,y,z+1.6); kandaShrine.box(0.1,1.0,0.1,'#b3261e',x+0.6,y,z+1.6); kandaShrine.box(1.6,0.1,0.14,'#b3261e',x,y+0.95,z+1.6); }
+const masakado=new Era({born:950});
+{ const y=Math.max(0.3,heightAt(MASA.x,MASA.z,1000)); masakado.at(y); const m=masakado.geo(new THREE.SphereGeometry(0.9,14,8),'#6f8f55',MASA.x,y-0.2,MASA.z); m.scale.y=0.55; masakado.box(0.35,0.8,0.2,'#9a958a',MASA.x,y+0.15,MASA.z+0.4); }
+/* ---------- 江戸氏の館（説・模式） ---------- */
+const edoshi=new Era({born:1130,died:1450,death:'fade',label:'江戸氏の館（説）',center:new THREE.Vector3(C0.x,G+4,C0.z)});
+{ const E=edoshi; E.at(G); E.geoM(ringSolid(10,8,9,7,0.5),[E.mat('#7a6246'),E.mat('#6d563d')],C0.x,G-0.02,C0.z);
+  hall(E,C0.x-1,G,C0.z,3.4,1.9,0.7,0.8,'#7a5c40','#6f5a44'); hall(E,C0.x+2.4,G,C0.z+1.8,1.6,1.2,0.5,0.5,'#7a5c40','#6f5a44'); }
+/* ---------- 太田道灌の江戸城 ---------- */
+const dokan=new Era({born:1457,died:1604,death:'fade',label:'太田道灌の江戸城',center:new THREE.Vector3(C0.x-2,G+5,C0.z-4),radius:8});
+{
+  const E=dokan; E.at(G); const earth='#8a7458', wall='#7a5c40', roof='#6f5a44';
+  [[C0.x-2,C0.z-3,12,9],[C0.x-6,C0.z+9,9,7],[C0.x-3,C0.z-16,9,6]].forEach(([x,z,w,d])=>{
+    E.geo(frustumGeo(w,d,0.7,0.4,0.4),earth,x,G-0.05,z);
+    E.geoM(ringSolid(w-0.6,d-0.6,w-1.4,d-1.4,0.45),[E.mat('#7a6246'),E.mat('#6d563d')],x,G+0.65,z);
+  });
+  hall(E,C0.x-3,G+0.65,C0.z-4,3.4,2,0.7,0.8,wall,roof);
+  const t1=hall(E,C0.x+1,G+0.65,C0.z-2,1.6,1.6,0.8,0.5,wall,roof); hall(E,C0.x+1,t1-0.3,C0.z-2,1.2,1.2,0.6,0.6,wall,roof);
+  hall(E,C0.x-6,G+0.65,C0.z+9,2.6,1.6,0.6,0.6,wall,roof); hall(E,C0.x-3,G+0.65,C0.z-16,2.4,1.4,0.6,0.6,wall,roof);
+  E.at(0.02); const b=boat(E,8,0.02,6,{len:1.8,wid:0.45,hull:'#5a4330',sail:true,sailW:0.7});
+  E.tick=(time)=>{ b.position.z=6+Math.sin(time*0.18)*10; };
+}
+/* ---------- 神田山を崩して日比谷入江を埋める（terrain + soil arcs, driven by year） ---------- */
+/* ---------- 江戸城（石垣・堀） ---------- */
+const edoWalls=new Era({born:1605,xray:'ghost'});
+{
+  const E=edoWalls; E.at(G);
+  platform(E,-4,0,-10,16,13,G+1.2,0.5,'kiri','#bcb29a');
+  platform(E,10.75,0,-6,8.5,18,2.2,0.4,'kiri','#b6ae94');
+  platform(E,21.25,0,-6,7.5,24,1.1,0.3,'kiri','#b0a88e');
+  platform(E,-5,0,-25,14,10,G+0.3,0.4,'kiri','#aaa384');
+  platform(E,-13.5,0,8,13,12,G+0.6,0.4,'kiri','#aaa384');
+  for(const r of MOATS){ const w=r[1]-r[0], d=r[3]-r[2]; E.geo(new THREE.PlaneGeometry(w,d).rotateX(-Math.PI/2),WATER,(r[0]+r[1])/2,0.2,(r[2]+r[3])/2,WOPT); }
+}
+const baseOld=new Era({born:1606,died:1657.6,death:'fade'});
+{ baseOld.at(G+1.2); platform(baseOld,-5,G+1.2,-14,5.6,5.1,1.8,0.35,'kiri','#a9a18d'); }
+const baseNew=new Era({born:1658});
+{ baseNew.at(G+1.2); const s=stoneMat(baseNew,'kiri',2,0.6); const g=frustumGeo(5.8,5.3,1.8,0.35,0.35);
+  const m=baseNew.geoM(g,[s,s,baseNew.mat('#c9c3b5'),s,s,s],-5,G+1.2,-14); baseNew.mats.forEach(r=>{ if(r.m.map) { r.m.color.set(C('#fbf7ee')); r.base.copy(r.m.color); } }); }
+const KY=G+3.0;
+const SPEC_KEICHO={wall:'#efece4',roof:'#3a4048',shachi:'#d9b24a',tiers:[[4.2,3.8,1.3],[3.6,3.2,1.1],[3.0,2.6,1.0],[2.4,2.1,0.95],[1.9,1.6,1.0]]};
+const SPEC_GENNA={wall:'#efece4',roof:'#384048',shachi:'#d9b24a',tiers:[[4.4,4.0,1.35],[3.8,3.4,1.15],[3.15,2.75,1.05],[2.55,2.2,0.95],[2.0,1.7,1.05]]};
+const SPEC_KANEI={wall:'#f1eee6',roof:'#33383e',shachi:'#e0b43c',tiers:[[4.8,4.3,1.45],[4.1,3.7,1.25],[3.4,3.0,1.1],[2.8,2.4,1.0],[2.2,1.85,1.1]]};
+const keep1=new Era({born:1607,died:1622,death:'fade',label:'慶長の天守',center:new THREE.Vector3(-5,KY+8.5,-14),radius:3});
+{ keep1.at(KY); buildKeep(keep1,-5,KY,-14,SPEC_KEICHO); }
+const keep2=new Era({born:1622,died:1637,death:'fade',label:'元和の天守',center:new THREE.Vector3(-5,KY+8.8,-14),radius:3});
+{ keep2.at(KY); buildKeep(keep2,-5,KY,-14,SPEC_GENNA); }
+const keep3=new Era({born:1638,died:1657,death:'burn',label:'寛永の天守',center:new THREE.Vector3(-5,KY+9.6,-14),radius:4});
+{ keep3.at(KY); buildKeep(keep3,-5,KY,-14,SPEC_KANEI); }
+const ghostKeep=new Era({born:1658.6,ghost:true,label:'建たなかった天守',center:new THREE.Vector3(-5,KY+9.6,-14)});
+{ ghostKeep.at(KY); buildKeep(ghostKeep,-5,KY,-14,SPEC_KANEI); }
+const goten1=new Era({born:1607,died:1657,death:'burn',center:new THREE.Vector3(-3,G+2.5,-7),radius:6});
+{ const E=goten1; E.at(G+1.2); hall(E,-3,G+1.2,-6,7,3.2,0.7,0.8,'#d9d0bd','#3a3f46'); hall(E,1,G+1.2,-10.5,3.4,2.4,0.6,0.7,'#d9d0bd','#3a3f46'); }
+const goten2=new Era({born:1659,died:1863,death:'burn',center:new THREE.Vector3(-3,G+2.5,-7),radius:6});
+{ const E=goten2; E.at(G+1.2); hall(E,-3,G+1.2,-6,7,3.2,0.7,0.8,'#d9d0bd','#3a3f46'); hall(E,1,G+1.2,-10.5,3.4,2.4,0.6,0.7,'#d9d0bd','#3a3f46'); }
+const yagura=new Era({born:1607,died:1657,death:'burn',center:new THREE.Vector3(8,G+2,-6),radius:12});
+{ const E=yagura; E.at(G+1.2); for(const [x,z] of [[3.2,-15.5],[-11,-15.5],[-11,-4.5]]) buildKeep(E,x,G+1.2,z,turret('#f0ede4','#3d4550'));
+  E.at(2.2); for(const [x,z] of [[14,-14],[14,2]]) buildKeep(E,x,2.2,z,turret('#f0ede4','#3d4550')); }
+const fujimi=new Era({born:1659,label:'富士見櫓',center:new THREE.Vector3(1.5,G+4.4,-4.6)});
+{ fujimi.at(G+1.2); buildKeep(fujimi,1.5,G+1.2,-4.6,{wall:'#f0ede4',roof:'#3d4550',shachi:'#d9b24a',tiers:[[1.8,1.5,0.8],[1.4,1.15,0.7],[1.0,0.8,0.6]]}); }
+const edoBoats=new Era({born:1600,died:1900,death:'fade'});
+{
+  edoBoats.at(0.02); const bs=[0,1,2].map(i=>boat(edoBoats,20,0.02,-28,{len:1.6,wid:0.45,hull:'#5a4330',sail:i!==1,sailW:0.7}));
+  const b4=boat(edoBoats,74,0.02,0,{len:1.8,wid:0.5,hull:'#5a4330',sail:true,sailW:0.8});
+  edoBoats.tick=(time)=>{ bs.forEach((b,i)=>{ const u=((time*0.02+i/3)%1); const x=2+u*70; b.position.x=x; b.position.z=x<14?-33+u*20:x<30?-30+(x-14)*0.5:x<50?-22-(x-30)*0.1:-24-(x-50)*0.1; }); b4.position.z=-60+((time*1.4)%120); };
+}
+/* ---------- 皇居 ---------- */
+const meiji=new Era({born:1888,died:1945.4,death:'burn',label:'明治宮殿',center:new THREE.Vector3(-13.5,G+4,8),radius:6});
+{ const E=meiji, y=G+0.6; E.at(y);
+  hall(E,-13.5,y,6,6,2.6,0.8,0.9,'#d8cfbd','#3a3f46'); hall(E,-17,y,10.5,3.4,2.4,0.7,0.8,'#d8cfbd','#3a3f46'); hall(E,-10,y,10.5,3.4,2.4,0.7,0.8,'#d8cfbd','#3a3f46');
+  E.box(0.6,0.5,3,'#d8cfbd',-15.2,y,8.8); E.box(0.6,0.5,3,'#d8cfbd',-11.8,y,8.8); }
+const palace=new Era({born:1968,label:'宮殿（1968）',center:new THREE.Vector3(-13.5,G+3.6,8)});
+{ const E=palace, y=G+0.6; E.at(y);
+  hall(E,-13.5,y,5.5,8,2.6,0.9,0.7,'#e8e2d4','#5f7a6c',{hip:true,ov:1.0}); hall(E,-17.5,y,10.2,2.6,3.6,0.8,0.6,'#e8e2d4','#5f7a6c',{hip:true,ov:0.9}); hall(E,-9.5,y,10.2,2.6,3.6,0.8,0.6,'#e8e2d4','#5f7a6c',{hip:true,ov:0.9}); }
+/* ============ instanced forest / city ============ */
+const dummy=new THREE.Object3D();
+const forest=[]; {
+  const R=rng(5);
+  for(let i=0;i<6000 && forest.length<1500;i++){
+    const x=-89+R()*178, z=-89+R()*178, f=factors(x,z);
+    if(f.m<0.72) continue; if(onChannel(x,z)) continue;
+    let cut;
+    if(inRect(x,z,[-21,-13,-16,0])) cut=Infinity;
+    else if(inRect(x,z,CASTLE)) cut=1440+R()*160;
+    else if(f.hill>0.4) cut=Y_KANDA+R()*8;
+    else cut=1600+R()*120;
+    forest.push({x,z,s:0.7+R()*0.6,g:f.top+f.hill*0,born:-Infinity,cut,c:R(),hill:f.hill});
+  }
+}
+const forestMesh=new THREE.InstancedMesh(new THREE.ConeGeometry(0.85,2.3,7).translate(0,1.15,0),new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.95}),forest.length);
+forest.forEach((t,i)=>forestMesh.setColorAt(i,C(t.c<0.33?'#2f5a3e':t.c<0.66?'#3a6a48':'#4b7a52'))); forestMesh.castShadow=true; forestMesh.receiveShadow=true; scene.add(forestMesh);
+const park=[]; {
+  const R=rng(9);
+  for(let i=0;i<5000 && park.length<360;i++){
+    const zone=R(); let x,z,born,pine=false;
+    if(zone<0.4){ x=-12+R()*37; z=-18+R()*24; if(inRect(x,z,[-12,4,-16.5,-3.5])&&R()<0.6) continue; born=1968+R()*15; }
+    else if(zone<0.7){ x=0+R()*26; z=6+R()*17; born=1890+R()*40; pine=true; }
+    else if(zone<0.88){ x=-12+R()*14; z=-30+R()*10; born=1969+R()*15; }
+    else { x=-21+R()*8; z=-16+R()*16; born=1870+R()*40; }
+    if(onChannel(x,z)) continue; const g=heightAt(x,z,2026); if(g<0.25) continue;
+    park.push({x,z,g,born,s:0.5+R()*0.45,c:pine?0.9:R()*0.6});
+  }
+}
+const parkMesh=new THREE.InstancedMesh(new THREE.SphereGeometry(1,8,6).scale(1.2,1,1.2).translate(0,1.3,0),new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.95}),park.length);
+park.forEach((t,i)=>parkMesh.setColorAt(i,C(t.c>0.8?'#2f5a3e':t.c<0.3?'#4f8456':'#63935d'))); parkMesh.castShadow=true; parkMesh.receiveShadow=true; scene.add(parkMesh);
+const city=[]; {
+  const R=rng(17), step=3.0;
+  for(let gx=-88.5;gx<=88.5;gx+=step) for(let gz=-88.5;gz<=88.5;gz+=step){
+    const x=gx+(R()-0.5)*0.5, z=gz+(R()-0.5)*0.5, f=factors(x,z); let born=townBorn(x,z,f);
+    if(!isFinite(born)) continue; if(f.ch.some(v=>v>0.02)||f.mw>0.02) continue;
+    born+=R()*14; let g=heightFrom(f,born+10), guard=0; while(g<0.06 && born<2000 && guard++<60){ born+=20; g=heightFrom(f,born+10); } if(g<0.06) continue;
+    if(f.hill>0.2) { born=Math.max(born,1625); g=heightFrom(f,1700); }
+    const plateau=f.m>0.5, daimyo=f.wI>0.5, pen=f.wP>0.5;
+    const hE=daimyo?0.5+R()*0.15:plateau?0.42+R()*0.15:0.3+R()*0.2;
+    const hM=(pen?0.9:0.6)+R()*(pen?1.6:0.9);
+    const hMod=daimyo?(z<45?8+R()*9:4+R()*6):pen?3+R()*7:plateau?1.6+R()*4:1.2+R()*3.2;
+    const w=daimyo?2.6+R()*0.3:plateau?2.0+R()*0.7:1.5+R()*0.9, d=daimyo?2.6+R()*0.3:plateau?2.0+R()*0.7:1.5+R()*0.9;
+    city.push({x,z,g:Math.max(0.05,g),born,hE,hM,hMod,w,d,mc:R(),daimyo});
+  }
+}
+const cityMesh=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1).translate(0,0.5,0),new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.85}),city.length);
+cityMesh.castShadow=true; cityMesh.receiveShadow=true; scene.add(cityMesh);
+const CC={edo:C('#4e4843'),daimyo:C('#77706a'),mid:C('#c9b99a'),mA:C('#b9b3a6'),mB:C('#d9d2c1'),mC:C('#9c988f'),char:C('#2a2420')};
+const tmpC=new THREE.Color();
+function updateInstances(y){
+  forest.forEach((t,i)=>{ const k=1-ss(t.cut-25,t.cut,y); const s=k<0.02?0:t.s*k; const g=t.g+(t.hill>0? t.hill*(1-ss(Y_KANDA,Y_KANDA+11,y)):0); dummy.position.set(t.x,g,t.z); dummy.scale.set(s,s,s); dummy.updateMatrix(); forestMesh.setMatrixAt(i,dummy.matrix); });
+  forestMesh.instanceMatrix.needsUpdate=true;
+  park.forEach((t,i)=>{ const k=ss(t.born,t.born+22,y); const s=k<0.02?0:t.s*k; dummy.position.set(t.x,t.g,t.z); dummy.scale.set(s,s,s); dummy.updateMatrix(); parkMesh.setMatrixAt(i,dummy.matrix); });
+  parkMesh.instanceMatrix.needsUpdate=true;
+  const d1657=ss(1657.0,1657.4,y)*(1-ss(1658,1675,y)), d1945=ss(1944.9,1945.4,y)*(1-ss(1946,1960,y));
+  city.forEach((b,i)=>{
+    let h=0; tmpC.copy(b.daimyo?CC.daimyo:CC.edo);
+    if(y>=b.born){
+      const late=b.born>1880; h=(late?b.hM:b.hE)*ss(b.born,b.born+25,y);
+      if(late) tmpC.copy(CC.mid);
+      const m1=late?0:ss(1885,1935,y); h=lerp(h,b.hM,m1); tmpC.lerp(CC.mid,m1);
+      const m2=ss(1960,2015,y); h=lerp(h,b.hMod,m2); tmpC.lerp(b.mc<0.4?CC.mA:b.mc<0.75?CC.mB:CC.mC,m2);
+      const dip=Math.max(b.born<1656?d1657:0,b.born<1944?d1945:0); h*=1-0.72*dip; tmpC.lerp(CC.char,dip*0.7);
+    }
+    const s=h<0.01?0:1; dummy.position.set(b.x,b.g,b.z); dummy.scale.set(b.w*s,Math.max(h,0.001),b.d*s); dummy.updateMatrix(); cityMesh.setMatrixAt(i,dummy.matrix); cityMesh.setColorAt(i,tmpC);
+  });
+  cityMesh.instanceMatrix.needsUpdate=true; if(cityMesh.instanceColor) cityMesh.instanceColor.needsUpdate=true;
+}
+const R9=rng(99);
+const FIRE1657=city.filter(b=>b.born<1650).sort(()=>R9()-0.5).slice(0,14).map(b=>new THREE.Vector3(b.x,b.g+0.6,b.z));
+const FIRE1945=city.filter(b=>b.born<1940).sort(()=>R9()-0.5).slice(0,16).map(b=>new THREE.Vector3(b.x,b.g+1.2,b.z));
+/* ghost sea: the buried 日比谷入江 glows under 丸の内 in x-ray */
+const ghostSea=(()=>{ const g=new THREE.PlaneGeometry(GS,GS,120,120); g.rotateX(-Math.PI/2); const n=g.attributes.position.count, w=new Float32Array(n);
+  for(let i=0;i<n;i++){ const f=factors(g.attributes.position.getX(i),g.attributes.position.getZ(i)); w[i]=f.wI; }
+  g.setAttribute('aW',new THREE.BufferAttribute(w,1));
+  const mat=new THREE.ShaderMaterial({uniforms:{uA:{value:0},uT:{value:0},uC:{value:new THREE.Color(0x3f86e0)}},transparent:true,depthWrite:false,
+    vertexShader:'attribute float aW;varying float vW;varying vec2 vP;void main(){vW=aW;vP=position.xz;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+    fragmentShader:'uniform float uA;uniform float uT;uniform vec3 uC;varying float vW;varying vec2 vP;void main(){float wave=0.7+0.3*sin(vP.x*0.9+vP.y*0.6+uT*2.0);float a=smoothstep(0.2,0.8,vW)*uA*wave;if(a<0.01)discard;gl_FragColor=vec4(uC,a);}'});
+  const m=new THREE.Mesh(g,mat); m.position.y=-0.4; m.renderOrder=2; scene.add(m); return mat; })();
+/* ============ particles ============ */
+const VS='attribute float aSize;attribute float aAlpha;varying float vA;uniform float uScale;void main(){vA=aAlpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=aSize*uScale/max(1.0,-mv.z);gl_Position=projectionMatrix*mv;}';
+const FS='uniform vec3 uColor;varying float vA;void main(){float d=length(gl_PointCoord-0.5);float a=smoothstep(0.5,0.0,d)*vA;if(a<0.01)discard;gl_FragColor=vec4(uColor,a);}';
+class Parts{
+  constructor(n,hex,additive,am){ this.n=n; this.am=am; this.i=0;
+    this.pos=new Float32Array(n*3); this.vel=new Float32Array(n*3); this.life=new Float32Array(n); this.max=new Float32Array(n).fill(1); this.size=new Float32Array(n); this.alpha=new Float32Array(n); this.s0=new Float32Array(n); this.gr=new Float32Array(n); this.a0=new Float32Array(n).fill(1);
+    const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(this.pos,3)); g.setAttribute('aSize',new THREE.BufferAttribute(this.size,1)); g.setAttribute('aAlpha',new THREE.BufferAttribute(this.alpha,1)); this.g=g;
+    this.mat=new THREE.ShaderMaterial({uniforms:{uColor:{value:new THREE.Color(hex)},uScale:{value:500}},vertexShader:VS,fragmentShader:FS,transparent:true,depthWrite:false,blending:additive?THREE.AdditiveBlending:THREE.NormalBlending});
+    this.pts=new THREE.Points(g,this.mat); this.pts.frustumCulled=false; scene.add(this.pts); }
+  spawn(x,y,z,vx,vy,vz,life,s0,gr,a0=1){ const i=this.i; this.i=(i+1)%this.n; this.pos[i*3]=x; this.pos[i*3+1]=y; this.pos[i*3+2]=z; this.vel[i*3]=vx; this.vel[i*3+1]=vy; this.vel[i*3+2]=vz; this.life[i]=life; this.max[i]=life; this.s0[i]=s0; this.gr[i]=gr; this.a0[i]=a0; }
+  update(dt,buoy){ for(let i=0;i<this.n;i++){ if(this.life[i]<=0){ this.alpha[i]=0; continue; } this.life[i]-=dt; const k=i*3; this.vel[k+1]+=buoy*dt; this.pos[k]+=this.vel[k]*dt; this.pos[k+1]+=this.vel[k+1]*dt; this.pos[k+2]+=this.vel[k+2]*dt;
+      const u=1-this.life[i]/this.max[i]; this.alpha[i]=this.am*this.a0[i]*ss(0,0.12,u)*(1-u); this.size[i]=this.s0[i]+this.gr[i]*u; }
+    this.g.attributes.position.needsUpdate=true; this.g.attributes.aAlpha.needsUpdate=true; this.g.attributes.aSize.needsUpdate=true; }
+}
+const smoke=new Parts(900,0x5e5a55,false,0.42), embers=new Parts(700,0xffa640,true,1.0), soil=new Parts(700,0x6e5234,false,0.95);
+let fires=[], emitters=[];
+
+const bolt={visible:false};
+/* ============ era update ============ */
+function updateEra(E,t,time){
+  const a=E.tb===-Infinity?1:clamp((t-E.tb)/APP,0,1);
+  let d=E.td!=null?clamp((t-E.td)/(E.death==='burn'?DIEB:DIE),0,1):0;
+  if(E.death==='bury') d=0;
+  const vis=a>0&&d<1; for(const r of E.roots) r.visible=vis;
+  E.a=a; E.d=d; E.alive=a>0.6&&d<0.3&&!(E.death==='bury'&&t>E.td);
+  if(!vis){ if(E.tick) E.tick(time,a,d); return; }
+  if(E.ghost){ for(const rec of E.mats) rec.m.visible=false; for(const r of E.roots) r.scale.y=1; E.lineMat.opacity=0.6*ss(0,1,a); E.lineMat.visible=true; return; }
+  const rise=1-Math.pow(1-clamp(a/0.65,0,1),3); let sy=Math.max(0.002,rise);
+  let so=ss(0.35,0.95,a), lo=ss(0,0.2,a)*(1-0.9*ss(0.55,1,a)), ch=0, fire=0;
+  if(E.death==='burn'){ ch=ss(0,0.45,d); fire=Math.sin(Math.PI*ss(0,0.9,d)); sy*=lerp(1,0.08,ss(0.45,1,d)); so*=1-ss(0.75,1,d); lo*=1-ss(0.7,1,d); }
+  else if(E.death==='fade'){ so*=1-ss(0,0.5,d); lo=Math.max(lo,0.85*ss(0,0.3,d)*(1-ss(0.55,1,d))); }
+  else if(E.death==='fill'){ so*=1-d; }
+  if(E.ts!=null) ch=Math.max(ch,0.9*ss(E.ts,E.ts+0.04,t));
+  let ghost=1, glow=0;
+  if(state.xray){ if(E.xray==='ghost') ghost=0.13; if(E.xray==='buried'&&t>E.td) glow=0.55; }
+  for(const r of E.roots) r.scale.y=sy;
+  const fl=0.7+0.3*Math.sin(time*23+E.seed)*Math.sin(time*7.1+E.seed);
+  for(const rec of E.mats){ const m=rec.m, op=so*ghost, tr=op<0.999; if(m.transparent!==tr){ m.transparent=tr; m.needsUpdate=true; } m.opacity=op; m.depthWrite=op>0.4;
+    if(ch>0) m.color.copy(rec.base).lerp(CHAR,ch*0.85); else m.color.copy(rec.base);
+    if(fire>0.01){ m.emissive.copy(FIRE); m.emissiveIntensity=fire*fl*0.9; } else if(glow>0){ m.emissive.copy(GLOW); m.emissiveIntensity=glow; } else { m.emissive.copy(rec.baseEm); m.emissiveIntensity=rec.baseEi; } }
+  E.lineMat.opacity=state.xray&&E.xray==='ghost'?Math.max(lo,0.4):lo; E.lineMat.visible=E.lineMat.opacity>0.01;
+  if(fire>0.05&&E.center) fires.push({p:E.center,r:E.radius,i:fire});
+  if(a>=1&&d===0) for(const em of E.emit) emitters.push(em);
+  if(E.tick) E.tick(time,a,d);
+}
+
+/* ============ labels ============ */
+const labels=ERAS.filter(E=>E.label).map(E=>{ const el=document.createElement('div'); el.className='lbl off'+(E.xray==='buried'?' buried':''); el.innerHTML='<s></s>'+E.label; document.body.appendChild(el); return {E,el,text:E.label}; });
+const MOMENTS=[
+ {text:'神田明神（社伝）',p:new THREE.Vector3(MASA.x+1.8,10,MASA.z-1.4),g:new THREE.Vector3(MASA.x+1.8,1.6,MASA.z-1.4),show:y=>y>=730&&y<950},
+ {text:'神田明神（社伝）・将門塚（伝承）',p:new THREE.Vector3(MASA.x+1,12,MASA.z-0.7),g:new THREE.Vector3(MASA.x+1,1.4,MASA.z-0.7),show:y=>y>=950&&y<1616},
+ {text:'将門塚（伝承）',p:new THREE.Vector3(MASA.x,7,MASA.z),g:new THREE.Vector3(MASA.x,1,MASA.z),show:y=>y>=1616},
+ {text:'神田山を崩す',p:new THREE.Vector3(HILL.x,7.8,HILL.z),show:y=>y>=Y_KANDA&&y<Y_KANDA+11},
+ {text:'日比谷入江を埋める',p:new THREE.Vector3(8,1.6,-6),show:y=>y>=Y_FILL0+0.5&&y<Y_KANDA+12},
+ {text:'かつての日比谷入江',p:new THREE.Vector3(9,0.8,32),show:y=>state.xray&&y>=1606},
+].map(m=>{ const el=document.createElement('div'); el.className='lbl off buried'; el.innerHTML='<s></s>'+m.text; document.body.appendChild(el); return Object.assign(m,{el}); });
+const GEO=[
+ {text:'江戸湾',p:[40,1,78],show:()=>true,water:true},{text:'日比谷入江',p:[8,1,26],show:y=>y>=-3000&&y<Y_KANDA+3,water:true},
+ {text:'丸の内',p:[31,2.5,-4],show:y=>y>=Y_KANDA+11},{text:'江戸前島',p:[36,1.5,12],show:y=>y>=-1500&&y<1620},{text:'日本橋',p:[50,2.5,-19],show:y=>y>=1620},
+ {text:'武蔵野台地',p:[-52,6,24],show:()=>true},{text:'本郷台地',p:[36,6,-78],show:()=>true},
+ {text:'神田山',p:[27,8,-50],show:y=>y<Y_KANDA},{text:'駿河台',p:[22,7,-46],show:y=>y>=Y_KANDA+11},{text:'神田川',p:[40,1,-51],show:y=>y>=1620,water:true},{text:'上野・下谷の低地',p:[52,1.5,-72],show:y=>y>=0&&y<1650},{text:'隅田川',p:[80,1,-50],show:y=>y>=-1500,water:true},
+].map(g=>{ const el=document.createElement('div'); el.className='geo off'+(g.water?' water':''); el.textContent=g.text; document.body.appendChild(el); return Object.assign(g,{el,p:new THREE.Vector3(...g.p)}); });
+const V=new THREE.Vector3();
+function projectTo(p,W,Hh){ V.copy(p).project(camera); if(V.z>1||Math.abs(V.x)>1.1||Math.abs(V.y)>1.1) return null; return [(V.x+1)/2*W,(1-V.y)/2*Hh]; }
+function labelOn(E,t){ return E.xray==='buried'? (state.xray&&t>E.td) : E.alive; }
+function updateLabels(t,y){
+  const put=(el,on,p)=>{ let q=null; if(on) q=projectTo(p,innerWidth,innerHeight); if(q){ el.style.left=q[0]+'px'; el.style.top=q[1]+'px'; } el.classList.toggle('off',!q); };
+  labels.forEach(({E,el})=>put(el,labelOn(E,t),E.center));
+  MOMENTS.forEach(m=>put(m.el,m.show(y),m.p));
+  GEO.forEach(g=>put(g.el,g.show(y),g.p));
+}
+
+/* ============ camera ============ */
+const orbit={target:new THREE.Vector3(4,2,-12),theta:-0.55,phi:0.98,dist:265,tTarget:new THREE.Vector3(4,2,-12),tTheta:-0.55,tPhi:0.98,tDist:265,auto:!reduced,lastUser:0};
+function applyCamera(){ const s=0.07; orbit.theta+=(orbit.tTheta-orbit.theta)*s; orbit.phi+=(orbit.tPhi-orbit.phi)*s; orbit.dist+=(orbit.tDist-orbit.dist)*s; orbit.target.lerp(orbit.tTarget,s);
+  const p=orbit.phi,t=orbit.theta; camera.position.set(orbit.target.x+orbit.dist*Math.sin(p)*Math.sin(t),orbit.target.y+orbit.dist*Math.cos(p),orbit.target.z+orbit.dist*Math.sin(p)*Math.cos(t)); camera.lookAt(orbit.target); }
+let drag=null,pinch=null;
+canvas.addEventListener('pointerdown',e=>{ canvas.setPointerCapture(e.pointerId); orbit.lastUser=performance.now(); drag={x:e.clientX,y:e.clientY,btn:e.button,shift:e.shiftKey}; canvas.classList.add('dragging'); });
+canvas.addEventListener('pointermove',e=>{ if(!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y; drag.x=e.clientX; drag.y=e.clientY; orbit.lastUser=performance.now();
+  if(drag.btn===2||drag.shift){ const right=new THREE.Vector3().setFromMatrixColumn(camera.matrix,0); const fwd=new THREE.Vector3(-Math.sin(orbit.theta),0,-Math.cos(orbit.theta)); const k=orbit.dist*0.0014; orbit.tTarget.addScaledVector(right,-dx*k).addScaledVector(fwd,dy*k); }
+  else { orbit.tTheta-=dx*0.0062; orbit.tPhi=clamp(orbit.tPhi-dy*0.005,0.08,1.45); } });
+const endDrag=()=>{ drag=null; canvas.classList.remove('dragging'); };
+canvas.addEventListener('pointerup',endDrag); canvas.addEventListener('pointercancel',endDrag); canvas.addEventListener('contextmenu',e=>e.preventDefault());
+canvas.addEventListener('wheel',e=>{ e.preventDefault(); orbit.lastUser=performance.now(); orbit.tDist=clamp(orbit.tDist*(1+Math.sign(e.deltaY)*0.09),22,420); },{passive:false});
+canvas.addEventListener('touchstart',e=>{ if(e.touches.length===2){ drag=null; pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);} },{passive:true});
+canvas.addEventListener('touchmove',e=>{ if(e.touches.length===2&&pinch){ const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); orbit.tDist=clamp(orbit.tDist*(pinch/d),22,420); pinch=d; orbit.lastUser=performance.now(); } },{passive:true});
+canvas.addEventListener('touchend',()=>{pinch=null;});
+const VIEWS={bird:[-0.55,0.98,265,[4,2,-12]],castle:[-0.6,1.02,72,[C0.x,G+3,C0.z]],top:[0,0.1,290,[0,0,-4]],section:[0.05,1.36,250,[0,-3,0]]};
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{ const v=VIEWS[b.dataset.view]; orbit.tTheta=v[0]; orbit.tPhi=v[1]; orbit.tDist=v[2]; orbit.tTarget.set(...v[3]); orbit.lastUser=performance.now(); }));
+let rec=null;
+function stopCam(i){ const vert=rec&&rec.mode==='v';
+  if(STOPS[i].view==='castle') return {dist:vert?118:72,target:[C0.x,G+3,C0.z],phi:1.02};
+  return vert?{dist:300,target:[6,2,-8],phi:1.0}:{dist:rec?250:265,target:[4,2,-12],phi:0.98}; }
+function applyStopCam(i){ const c=stopCam(i); orbit.tDist=c.dist; orbit.tTarget.set(...c.target); orbit.tPhi=c.phi; }
+const bSpin=$('bSpin'); if(reduced) bSpin.classList.remove('on');
+bSpin.onclick=()=>{ orbit.auto=!orbit.auto; bSpin.classList.toggle('on',orbit.auto); orbit.lastUser=0; };
+const bX=$('bXray');
+bX.onclick=()=>{ state.xray=!state.xray; bX.classList.toggle('on',state.xray);
+  terrainMat.transparent=state.xray; terrainMat.opacity=state.xray?0.3:1; terrainMat.depthWrite=!state.xray; terrainMat.needsUpdate=true;
+  skMat.transparent=state.xray; skMat.opacity=state.xray?0.5:1; skMat.needsUpdate=true; waterMat.opacity=state.xray?0.35:0.95; };
+const bCloud=$('bCloud'); bCloud.onclick=()=>{ state.clouds=!state.clouds; bCloud.classList.toggle('on',state.clouds); clouds.forEach(c=>c.m.visible=state.clouds); };
+
+/* ============ timeline ============ */
+const track=$('track'), head=$('head'), fillbar=$('fillbar'), ticker=$('ticker');
+const pct=t=>(t/(NS-1)*100);
+EVENTS.forEach(ev=>{ if(ev.t<0||ev.t>NS-1) return; const d=document.createElement('div'); d.className='tick'+(ev.kind?' '+ev.kind:''); d.style.left=pct(ev.t)+'%'; d.title=ev.disp+' '+ev.text; track.appendChild(d); });
+const nodes=STOPS.map((s,i)=>{ const b=document.createElement('button'); b.className='node'+(s.bury?' bury':''); b.style.left=pct(i)+'%'; b.innerHTML=`<span class="ny">${s.ny}</span><span class="dot"></span><span class="ne">${s.short}</span>`; b.setAttribute('aria-label',s.era+' '+s.ny);
+  b.addEventListener('pointerdown',e=>e.stopPropagation()); b.addEventListener('click',()=>{ stopPlay(); jump(i,1.8); }); track.appendChild(b); return b; });
+$('legend').innerHTML=Object.values(STRATA).map(([c,n])=>`<li><s style="background:${c}"></s>${n}</li>`).join('');
+
+let T=0, lastT=null, lastStop=-1, tw=null, playing=false, holdUntil=0;
+const easeIO=u=>u<0.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
+function goTo(target,dur){ tw={from:T,to:target,t0:performance.now(),dur:Math.max(0.2,dur)*1000,done:null}; }
+function jump(i,dur){ if(rec) applyStopCam(i); goTo(i,dur); }
+const playIcon=$('playIcon');
+function updPlay(){ playIcon.innerHTML=playing?'<path d="M3 1.5h3v11H3zM8 1.5h3v11H8z"/>':'<path d="M3 1.5v11l9-5.5z"/>'; $('play').setAttribute('aria-label',playing?'一時停止':'再生'); }
+function nextLeg(){ const next=Math.min(NS-1,Math.floor(T+1e-3)+1); jump(next,LEG*(next-T)); tw.done=()=>{ if(!playing) return; if(next>=NS-1){ playing=false; updPlay(); return; } holdUntil=performance.now()+(STOPS[next].hold||HOLD); }; }
+function startPlay(){ playing=true; if(T>=NS-1-1e-3) T=0; holdUntil=0; nextLeg(); updPlay(); }
+function stopPlay(){ playing=false; holdUntil=0; if(tw&&tw.done) tw.done=null; updPlay(); }
+$('play').onclick=()=>{ playing?stopPlay():startPlay(); };
+let scrub=false;
+const tFromX=cx=>{ const r=track.getBoundingClientRect(); return clamp((cx-r.left)/r.width,0,1)*(NS-1); };
+track.addEventListener('pointerdown',e=>{ stopPlay(); tw=null; scrub=true; track.setPointerCapture(e.pointerId); T=tFromX(e.clientX); });
+track.addEventListener('pointermove',e=>{ if(scrub) T=tFromX(e.clientX); });
+track.addEventListener('pointerup',()=>{ if(!scrub) return; scrub=false; const r=Math.round(T); if(Math.abs(T-r)<0.06) goTo(r,0.3); });
+addEventListener('keydown',e=>{ if(rec){ if(e.key==='Escape') exitRec(); else if(e.key===' '){ e.preventDefault(); setPaused(_pausedAt==null); } return; }
+  if(e.key==='ArrowRight'){ stopPlay(); jump(Math.min(NS-1,Math.floor(T+1e-3)+1),1.8); } else if(e.key==='ArrowLeft'){ stopPlay(); jump(Math.max(0,Math.ceil(T-1e-3)-1),1.8); } else if(e.key===' '&&e.target===document.body){ e.preventDefault(); playing?stopPlay():startPlay(); } });
+
+function yearParts(t){ const i=clamp(Math.round(t),0,NS-1), s=STOPS[i], y=yearOf(t);
+  if(Math.abs(t-i)<0.02) return {i,s,pre:s.pre,num:s.num,suf:s.suf,wa:s.wa,at:true};
+  if(s.suf.includes('〜') && y>=+s.num && y<=STOP_YEARS[i]) return {i,s,pre:s.pre,num:s.num,suf:s.suf,wa:s.wa,at:false}; if(y<400) return {i,s,pre:'約',num:String(Math.round((2026-y)/100)*100),suf:'年前',wa:'',at:false};
+  return {i,s,pre:'',num:String(Math.round(y)),suf:'年',wa:'',at:false}; }
+function currentEvent(t,atStop){ let ev=null; if(atStop) return null; for(const e of EVENTS){ if(e.t<=t+1e-4 && t-e.t<0.3) ev=e; } return ev; }
+function setNote(id,html){ const n=$(id); if(html){ n.hidden=false; n.querySelector('span').innerHTML=html; } else n.hidden=true; }
+function updateCard(t){
+  const P=yearParts(t), s=P.s;
+  if(P.i!==lastStop){ lastStop=P.i; $('cEra').textContent=s.era; $('cTitle').textContent=s.title; $('cDesc').textContent=s.desc; setNote('cFire',s.fire); setNote('cEnd',s.end); setNote('cUnder',s.under); nodes.forEach((n,k)=>n.classList.toggle('on',k===P.i)); }
+  $('cPre').textContent=P.pre; $('cYear').textContent=P.num; $('cSuf').textContent=P.suf; $('cWa').textContent=P.wa;
+  head.style.left=pct(t)+'%'; fillbar.style.width=pct(t)+'%'; track.setAttribute('aria-valuetext',P.num+P.suf);
+  const ev=currentEvent(t,Math.abs(t-P.i)<0.015);
+  if(ev){ ticker.innerHTML=`<b>${ev.disp}</b>${ev.text}`; ticker.className='ticker '+ev.kind; } else ticker.classList.add('off');
+}
+
+/* ============ recording mode (SNS) ============ */
+const comp=$('comp'), cx2=comp.getContext('2d'), recbar=$('recbar'), rMsg=$('rMsg');
+let recS=null, recorder=null;
+function layoutComp(){ if(!rec) return; const top=recbar.offsetHeight+24, m=16; const sc=Math.min((innerWidth-2*m)/rec.W,(innerHeight-top-m)/rec.H);
+  comp.style.width=rec.W*sc+'px'; comp.style.height=rec.H*sc+'px'; comp.style.left=(innerWidth-rec.W*sc)/2+'px'; comp.style.top=top+'px'; }
+function setRecMode(mode){ rec.mode=mode; rec.W=mode==='v'?1080:1920; rec.H=mode==='v'?1920:1080; comp.width=rec.W; comp.height=rec.H;
+  renderer.setPixelRatio(1); renderer.setSize(rec.W,rec.H,false); camera.aspect=rec.W/rec.H; camera.updateProjectionMatrix();
+  const u=rec.H*0.55; smoke.mat.uniforms.uScale.value=embers.mat.uniforms.uScale.value=soil.mat.uniforms.uScale.value=u;
+  $('rV').classList.toggle('on',mode==='v'); $('rH').classList.toggle('on',mode==='h'); applyStopCam(clamp(Math.round(T),0,NS-1)); layoutComp(); }
+function enterRec(){ stopPlay(); rec={mode:'v'}; document.body.classList.add('rec'); setRecMode('v'); }
+function exitRec(){ if(recorder&&recorder.state==='recording') recorder.stop(); recS=null; rec=null; document.body.classList.remove('rec'); renderer.setPixelRatio(DPR); resize(); applyStopCam(clamp(Math.round(T),0,NS-1)); }
+function recRun(exporting){ stopPlay(); tw=null; T=0; lastT=null; orbit.auto=true; orbit.lastUser=0; orbit.theta=orbit.tTheta=-0.9; applyStopCam(0); const c=stopCam(0); orbit.dist=c.dist; orbit.target.set(...c.target); orbit.phi=c.phi;
+  recS={phase:'play',t0:performance.now(),start:performance.now(),exporting}; startPlay(); rMsg.textContent=exporting?'録画中…このタブを前に出したままにしてください':'再生中';
+  if(exporting) startRecorder(); }
+function startRecorder(){
+  const types=['video/mp4;codecs=avc1.640028','video/mp4;codecs=avc1.4D0028','video/mp4','video/webm;codecs=vp9','video/webm'];
+  const mime=window.MediaRecorder&&types.find(m=>MediaRecorder.isTypeSupported(m));
+  if(!mime){ rMsg.textContent='このブラウザは書き出しに対応していません。画面収録（⌘+Shift+5）で枠を録ってください'; recS.exporting=false; return; }
+  const chunks=[]; recorder=new MediaRecorder(comp.captureStream(30),{mimeType:mime,videoBitsPerSecond:14e6});
+  recorder.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+  recorder.onstop=async()=>{ const blob=new Blob(chunks,{type:mime}); const ext=mime.includes('mp4')?'mp4':'webm';
+    const filename='江戸城の地層_'+(rec&&rec.mode==='h'?'横':'縦')+'.'+ext;
+    const dl=window.claude&&window.claude.use?await window.claude.use('downloads').catch(()=>null):null;
+    if(dl){ rMsg.textContent='保存の確認が出ます'; try{ await dl.save({filename,data:blob}); rMsg.textContent=ext+'を保存しました'; }
+      catch(e){ rMsg.textContent=e&&e.code==='declined'?'保存をやめました。もう一度「録画して保存」でやり直せます':'この画面では保存できませんでした。画面収録（⌘+Shift+5）で枠を録ってください'; } return; }
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+    rMsg.textContent=ext+'を保存しました（ダウンロードフォルダ）'; };
+  recorder.start(1000);
+}
+$('bRec').onclick=enterRec; $('rClose').onclick=exitRec;
+$('rV').onclick=()=>{ if(!recS) setRecMode('v'); }; $('rH').onclick=()=>{ if(!recS) setRecMode('h'); };
+$('rPlay').onclick=()=>{ setPaused(false); recRun(false); }; $('rSave').onclick=()=>{ setPaused(false); recRun(true); };
+function recTick(now){
+  if(!recS) return;
+  const el=now-recS.t0;
+  if(recS.phase==='intro'&&el>2800){ recS.phase='play'; recS.t0=now; startPlay(); }
+  else if(recS.phase==='play'&&!playing&&!tw&&T>=NS-1-1e-3){ recS.phase='outro'; recS.t0=now; }
+  else if(recS.phase==='outro'&&el>4200){ recS.phase='end'; if(recorder&&recorder.state==='recording') recorder.stop(); else rMsg.textContent='おわり。もう一度「再生」か「録画して保存」'; }
+}
+/* draw captions into the recording frame. Vertical: all text in the upper band (13%〜), lower band left clear. */
+function glow(ctx,txt,x,y,blur){ ctx.save(); ctx.shadowColor='rgba(245,236,212,1)'; ctx.shadowBlur=blur; ctx.fillText(txt,x,y); ctx.fillText(txt,x,y); ctx.restore(); ctx.fillText(txt,x,y); }
+function drawPanel(ctx,cxp,cyp,w,h){ ctx.fillStyle='rgba(246,239,222,.97)'; ctx.fillRect(cxp-w/2,cyp-h/2,w,h); ctx.strokeStyle='#1f1a14'; ctx.lineWidth=2; ctx.strokeRect(cxp-w/2,cyp-h/2,w,h); ctx.lineWidth=1; ctx.strokeStyle='rgba(31,26,20,.45)'; ctx.strokeRect(cxp-w/2+8,cyp-h/2+8,w-16,h-16); }
+function drawTitleCard(ctx,W,Hh,a,outro){
+  ctx.save(); ctx.globalAlpha=a; ctx.fillStyle='rgba(218,196,140,.55)'; ctx.fillRect(0,0,W,Hh);
+  const u=Math.min(W,Hh)/1080, cxp=W/2, cyp=rec.mode==='v'?Hh*0.40:Hh*0.5, chars=[...'江戸城の地層'], sz=100*u, gap=118*u, ph=chars.length*gap+170*u;
+  drawPanel(ctx,cxp,cyp,190*u,ph); ctx.fillStyle='#1f1a14'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`900 ${sz}px "Zen Old Mincho", serif`;
+  chars.forEach((ch,k)=>ctx.fillText(ch,cxp,cyp-ph/2+70*u+gap*(k+0.5)));
+  ctx.fillStyle='#b33a26'; ctx.fillRect(cxp-19*u,cyp+ph/2-70*u,38*u,52*u); ctx.fillStyle='#f7eee0'; ctx.font=`700 ${15*u}px "Zen Old Mincho", serif`; ctx.fillText('ひす',cxp,cyp+ph/2-54*u); ctx.fillText('鳥',cxp,cyp+ph/2-36*u);
+  ctx.fillStyle='#1f1a14'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`;
+  const sub=outro?'アトリエひす鳥':'台地の先の城、約7000年';
+  const sy=rec.mode==='v'?cyp+ph/2+60*u:cyp+ph/2-40*u; if(rec.mode==='v') glow(ctx,sub,cxp,sy,14*u); else { ctx.textAlign='left'; glow(ctx,sub,cxp+140*u,cyp,14*u); }
+  ctx.restore();
+}
+function drawOverlay(ctx,W,Hh,t,y,now){
+  const u=Math.min(W,Hh)/1080, vert=rec.mode==='v';
+  const vig=1-ss(0,0.45,Math.abs(t-BURY));
+  if(vig>0.01){ const g=ctx.createRadialGradient(W/2,Hh*0.45,Math.min(W,Hh)*0.3,W/2,Hh*0.45,Math.max(W,Hh)*0.7); g.addColorStop(0,'rgba(52,30,10,0)'); g.addColorStop(1,`rgba(52,30,10,${0.55*vig})`); ctx.fillStyle=g; ctx.fillRect(0,0,W,Hh); }
+  // model labels
+  ctx.textBaseline='middle'; ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`;
+  const pill=(txt,p,buried,g)=>{ const q=projectTo(p,W,Hh); if(!q) return; const gq=g?projectTo(g,W,Hh):null; const tw2=ctx.measureText(txt).width, pw=tw2+46*u, ph=44*u, x=q[0]-pw/2, yy=q[1]-ph-12*u;
+    ctx.fillStyle='rgba(246,239,222,.95)'; ctx.fillRect(x,yy,pw,ph); ctx.strokeStyle='rgba(31,26,20,.6)'; ctx.lineWidth=1.5*u; ctx.strokeRect(x,yy,pw,ph);
+    ctx.beginPath(); ctx.moveTo(q[0],yy+ph); ctx.lineTo(gq?gq[0]:q[0],gq?gq[1]:q[1]); ctx.stroke(); ctx.fillStyle=buried?'#7d5a36':'#b33a26'; ctx.fillRect(x+14*u,yy+ph/2-6*u,12*u,12*u);
+    ctx.fillStyle='#1f1a14'; ctx.textAlign='left'; ctx.fillText(txt,x+34*u,yy+ph/2+1); };
+  labels.forEach(({E,text})=>{ if(labelOn(E,t)&&!E.noRec) pill(text,E.center,E.xray==='buried'); });
+  MOMENTS.forEach(m=>{ if(m.show(y)) pill(m.text,m.p,true,m.g); });
+  ctx.font=`700 ${30*u}px "Zen Old Mincho", serif`; ctx.textAlign='center';
+  GEO.forEach(g=>{ if(!g.show(y)) return; const q=projectTo(g.p,W,Hh); if(!q) return; ctx.fillStyle=g.water?'#223f7a':'#1f1a14'; const chs=[...g.text]; chs.forEach((c,k)=>glow(ctx,c,q[0],q[1]+(k-(chs.length-1)/2)*36*u,10*u)); });
+  // caption block (upper band)
+  const P=yearParts(t), s=P.s, x0=vert?72:88, yTop=vert?Hh*0.13+24:72;
+  const hookA=recS&&recS.start?1-ss(2600,3200,now-recS.start):0;
+  if(hookA>0.01){ ctx.save(); ctx.globalAlpha=hookA; ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14';
+    ctx.font=`900 ${104*u}px "Zen Old Mincho", serif`; glow(ctx,'江戸城の地層',x0,yTop+110*u,18*u);
+    ctx.fillStyle='#223f7a'; ctx.font=`900 ${66*u}px "Zen Old Mincho", serif`; glow(ctx,'丸の内は、海だった。',x0,yTop+246*u,16*u); ctx.restore(); }
+  ctx.save(); ctx.globalAlpha=recS&&recS.start?ss(3300,3900,now-recS.start):1;
+  ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14';
+  ctx.fillStyle='#b33a26'; ctx.fillRect(x0,yTop+10*u,14*u,14*u); ctx.fillStyle='#1f1a14'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`; glow(ctx,s.era,x0+28*u,yTop+26*u,12*u);
+  let xx=x0; const by=yTop+180*u;
+  if(P.pre){ ctx.font=`700 ${52*u}px "Zen Old Mincho", serif`; glow(ctx,P.pre,xx,by,14*u); xx+=ctx.measureText(P.pre).width+6*u; }
+  ctx.font=`900 ${160*u}px "Zen Old Mincho", serif`; glow(ctx,P.num,xx,by,18*u); xx+=ctx.measureText(P.num).width+8*u;
+  ctx.font=`700 ${52*u}px "Zen Old Mincho", serif`; glow(ctx,P.suf,xx,by,14*u);
+  let yy=by+64*u; if(P.wa){ ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,P.wa.split('').join(' '),x0,yy,12*u); ctx.fillStyle='#1f1a14'; }
+  const tA=1;
+  if(tA>0.01){ ctx.save(); ctx.globalAlpha*=tA; yy+=86*u; ctx.font=`900 ${62*u}px "Zen Old Mincho", serif`; glow(ctx,s.title,x0,yy,16*u); ctx.restore(); }
+  if(tA>0.01&&s.recNote){ ctx.save(); ctx.globalAlpha*=tA; yy+=60*u; ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,s.recNote,x0,yy,12*u); ctx.restore(); }
+  const ev=currentEvent(t,P.at);
+  if(ev){ const ey=vert?yy+68*u:Hh-96; ctx.font=`900 ${34*u}px "Zen Old Mincho", serif`; ctx.fillStyle=ev.kind==='fire'?'#b33a26':ev.kind==='bury'?'#7d5a36':'#1f1a14';
+    glow(ctx,ev.disp,x0,ey,14*u); const w0=ctx.measureText(ev.disp).width; ctx.fillStyle='#4a3f31'; ctx.font=`700 ${32*u}px "Zen Old Mincho", serif`; glow(ctx,ev.text,x0+w0+18*u,ey,12*u); }
+  if(!vert){ ctx.font=`700 ${24*u}px "Zen Old Mincho", serif`; ctx.textAlign='right'; ctx.fillStyle='#1f1a14'; glow(ctx,'江戸城の地層 ・ アトリエひす鳥',W-60,Hh-48,10*u); }
+  else { ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,'江戸城の地層 ・ アトリエひす鳥',x0,yTop-22*u,10*u); }
+  ctx.restore();
+  if(recS&&(recS.phase==='outro'||recS.phase==='end')) drawTitleCard(ctx,W,Hh,recS.phase==='end'?1:ss(0,900,now-recS.t0),true);
+}
+
+let bgC=null;
+function recBg(){ if(bgC&&bgC.width===rec.W&&bgC.height===rec.H) return bgC; bgC=document.createElement('canvas'); bgC.width=rec.W; bgC.height=rec.H; const x=bgC.getContext('2d');
+  const g=x.createRadialGradient(rec.W/2,rec.H*0.38,0,rec.W/2,rec.H*0.38,Math.max(rec.W,rec.H)*0.75); g.addColorStop(0,'#efe0ad'); g.addColorStop(0.55,'#e0c98f'); g.addColorStop(1,'#cdb173');
+  x.fillStyle=g; x.fillRect(0,0,rec.W,rec.H); x.strokeStyle='rgba(120,88,28,.09)'; x.lineWidth=1.5; const s=rec.H/15;
+  for(let i=0;i<=rec.W;i+=s){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,rec.H); x.stroke(); } for(let j=0;j<=rec.H;j+=s){ x.beginPath(); x.moveTo(0,j); x.lineTo(rec.W,j); x.stroke(); }
+  return bgC; }
+/* ============ loop ============ */
+function resize(){ if(rec){ layoutComp(); return; } renderer.setSize(innerWidth,innerHeight,false); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); const u=innerHeight*DPR*0.55; smoke.mat.uniforms.uScale.value=embers.mat.uniforms.uScale.value=soil.mat.uniforms.uScale.value=u; }
+addEventListener('resize',resize); resize();
+const _pn=performance.now.bind(performance); let _pausedAt=null, _off=0;
+performance.now=()=>(_pausedAt!=null?_pausedAt:_pn())-_off;
+function setPaused(p){ if(p&&_pausedAt==null) _pausedAt=_pn(); else if(!p&&_pausedAt!=null){ _off+=_pn()-_pausedAt; _pausedAt=null; } $('rPause').textContent=_pausedAt!=null?'▶ 再開':'⏸ 一時停止'; $('rPause').classList.toggle('on',_pausedAt!=null); }
+$('rPause').onclick=()=>setPaused(_pausedAt==null);
+const clock=new THREE.Clock(); const vigEl=$('vig');
+function frame(){
+  const dt=Math.min(clock.getDelta(),0.05), time=clock.elapsedTime, now=performance.now();
+  recTick(now);
+  if(tw){ const u=clamp((now-tw.t0)/tw.dur,0,1); T=lerp(tw.from,tw.to,easeIO(u)); if(u>=1){ const cb=tw.done; tw=null; cb&&cb(); } }
+  else if(playing&&holdUntil&&now>holdUntil){ holdUntil=0; nextLeg(); }
+  const y=yearOf(T);
+  if(lastT===null||Math.abs(T-lastT)>1e-5){ lastT=T; updateTerrain(y); updateSkirt(); updateInstances(y); }
+  fires=[]; emitters=[];
+  for(const E of ERAS) updateEra(E,T,time);
+  { const b57=ss(1656.95,1657.25,y)*(1-ss(1657.7,1659.5,y)); if(b57>0.02) FIRE1657.forEach(p=>fires.push({p,r:4,i:b57}));
+    const b45=ss(1944.95,1945.2,y)*(1-ss(1945.8,1948,y)); if(b45>0.02) FIRE1945.forEach(p=>fires.push({p,r:4,i:b45})); }
+  if(y>Y_KANDA+0.3&&y<Y_KANDA+10.5){ const n=Math.floor(80*dt+Math.random()), Tf=2.0, gy=6; const zf=clamp((y-Y_KANDA-1)/9,0,1), zt=-5+zf*67, hy=4+HILL.h*(1-ss(Y_KANDA,Y_KANDA+11,y))+0.4;
+    for(let k=0;k<n;k++){ const px=HILL.x+(Math.random()-0.5)*6, pz=HILL.z+(Math.random()-0.5)*6, sz=Math.random()<0.35, tx=sz?46+Math.random()*6:6+(Math.random()-0.5)*12, tz=sz?-12+Math.random()*50:clamp(zt,-30,60)+(Math.random()-0.5)*8;
+      soil.spawn(px,hy,pz,(tx-px)/Tf,(0.4-hy)/Tf+0.5*gy*Tf,(tz-pz)/Tf,Tf,0.9,0,1); } }
+  let strongest=null;
+  for(const f of fires){ if(!strongest||f.i>strongest.i) strongest=f;
+    const ne=Math.floor(f.i*dt*90+Math.random()); for(let k=0;k<ne;k++){ const a=Math.random()*6.28, r=Math.random()*f.r; embers.spawn(f.p.x+Math.cos(a)*r,f.p.y-2+Math.random()*3,f.p.z+Math.sin(a)*r,(Math.random()-0.5)*1.5+0.6,3+Math.random()*4,(Math.random()-0.5)*1.5,1.2+Math.random()*1.2,0.35,-0.2); }
+    const ns=Math.floor(f.i*dt*28+Math.random()); for(let k=0;k<ns;k++){ const a=Math.random()*6.28, r=Math.random()*f.r*0.7; smoke.spawn(f.p.x+Math.cos(a)*r,f.p.y+Math.random()*2,f.p.z+Math.sin(a)*r,0.9+Math.random()*0.6,2.2+Math.random()*1.5,(Math.random()-0.5)*0.6,3.5+Math.random()*1.5,2.5,7,1); } }
+  for(const em of emitters){ const n=Math.floor(em.rate*dt+Math.random()*em.rate*dt); for(let k=0;k<n;k++) smoke.spawn(em.p[0],em.p[1],em.p[2],0.5+Math.random()*0.3,1.0+Math.random()*0.6,(Math.random()-0.5)*0.3,4+Math.random()*2,em.s,em.s*3.5,em.dark?0.8:0.45); }
+  smoke.update(dt,0.05); embers.update(dt,-0.4); soil.update(dt,-6);
+  if(strongest){ fireLight.position.set(strongest.p.x,strongest.p.y+3,strongest.p.z); fireLight.intensity=3.2*strongest.i*(0.8+Math.random()*0.3); } else fireLight.intensity=0;
+  const vig=1-ss(0,0.45,Math.abs(T-BURY)); vigEl.style.opacity=vig.toFixed(3);
+  sun.intensity=1.15-0.3*vig; hemi.intensity=0.62-0.12*vig+(bolt.visible?1.6:0);
+  waterTex.offset.x+=dt*0.003; ghostSea.uniforms.uA.value=state.xray?0.85*ss(Y_FILL0+6,Y_KANDA+11,y):0; ghostSea.uniforms.uT.value=time;
+  clouds.forEach(c=>{ c.m.position.x=c.x+Math.sin(time*0.05+c.i)*2.5; });
+  if(orbit.auto&&!drag&&now-orbit.lastUser>6000) orbit.tTheta+=dt*(rec?0.03:0.045);
+  applyCamera(); renderer.render(scene,camera);
+  if(rec){ cx2.drawImage(recBg(),0,0); cx2.drawImage(canvas,0,0,rec.W,rec.H); drawOverlay(cx2,rec.W,rec.H,T,y,now); }
+  else { updateCard(T); updateLabels(T,y); }
+  requestAnimationFrame(frame);
+}
+frame();
+if(!reduced) setTimeout(()=>{ if(!playing&&T===0&&!tw&&!rec) startPlay(); },1800);
+})();
+</script>
+
+
+</body></html>

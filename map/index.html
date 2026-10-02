@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>動く歴史地図｜Atelier ひす鳥</title>
+<meta name="description" content="城や都や古墳のまわりで、何が建ち、燃え、埋められてきたか。時代をたどって動かせる3D模型のシリーズ「動く歴史地図」。いただいた指摘と直した記録「直しました帳」も公開しています。">
+<meta property="og:title" content="動く歴史地図｜Atelier ひす鳥">
+<meta property="og:description" content="時代をたどって動かせる3D模型のシリーズ。いただいた指摘と、直した記録も。">
+<meta property="og:image" content="https://his-tori.com/assets/map/collage.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --ink:#1f1a14; --ink-2:#5a4e3e; --ink-3:#8a7c66;
+  --washi:#f5eddb; --washi-a:rgba(246,239,222,.94); --hair:rgba(31,26,20,.2);
+  --kin:#a8842c; --shu:#b33a26; --gunjo:#223f7a; --tsuchi:#7d5a36;
+  --mincho:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --gothic:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{color:var(--ink);font-family:var(--gothic);font-size:15px;line-height:1.9;-webkit-font-smoothing:antialiased;
+  background-color:#dcc58c;
+  background-image:linear-gradient(rgba(120,88,28,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(120,88,28,.08) 1px,transparent 1px),radial-gradient(ellipse at 50% 0%,#f1e3b4 0%,#e0c98f 50%,#cdb173 100%);
+  background-size:72px 72px,72px 72px,100% 100%;background-attachment:scroll}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{width:min(1080px,100% - 32px);margin:0 auto}
+
+/* nav */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0}
+.top a{text-decoration:none;font-size:13px;letter-spacing:.08em;color:var(--ink-2)}
+.top a:hover{color:var(--ink)}
+.top .brand{font-family:var(--mincho);font-weight:700;color:var(--ink)}
+.top .brand span{color:var(--shu);margin-right:.4em}
+
+/* hero */
+.hero{display:flex;gap:28px;align-items:flex-start;padding:28px 0 36px}
+.daisen{writing-mode:vertical-rl;flex:none;display:flex;align-items:center;background:var(--washi);border:1px solid var(--ink);
+  box-shadow:inset 0 0 0 4px var(--washi),inset 0 0 0 5px rgba(31,26,20,.45),0 12px 26px -16px rgba(60,40,10,.6);padding:22px 14px 16px}
+.daisen h1{font-family:var(--mincho);font-weight:900;font-size:36px;letter-spacing:.3em;line-height:1;margin:0}
+.seal{font-family:var(--mincho);font-weight:700;font-size:11px;letter-spacing:.12em;background:var(--shu);color:#f7eee0;padding:7px 4px;margin-block-start:16px;border-radius:2px}
+.lead{max-width:640px}
+.lead .kicker{font-family:var(--mincho);font-weight:700;font-size:13px;letter-spacing:.3em;color:var(--shu);margin:4px 0 10px}
+.lead p.catch{font-family:var(--mincho);font-weight:700;font-size:clamp(1.25rem,2.6vw,1.6rem);line-height:1.8;letter-spacing:.06em;margin:0 0 14px}
+.lead p{margin:0 0 10px;color:var(--ink-2)}
+.lead .note{font-size:13px;color:var(--ink-3)}
+.pill{display:inline-flex;align-items:center;gap:8px;margin-top:8px;padding:8px 16px;border:1px solid var(--ink);background:var(--washi-a);text-decoration:none;font-size:13px;letter-spacing:.06em}
+.pill:hover{background:#fff}
+
+/* section heads */
+.sec{padding:24px 0 40px}
+.sec-h{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--hair);padding-bottom:10px;margin-bottom:24px}
+.sec-h h2{font-family:var(--mincho);font-weight:900;font-size:1.45rem;letter-spacing:.14em;margin:0}
+.sec-h .en{font-size:12px;letter-spacing:.3em;color:var(--shu);text-transform:uppercase}
+
+/* model cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.card{display:flex;flex-direction:column;background:var(--washi-a);border:1px solid rgba(31,26,20,.45);
+  box-shadow:inset 0 0 0 3px var(--washi),inset 0 0 0 4px rgba(31,26,20,.12),0 14px 28px -20px rgba(60,40,10,.6);
+  text-decoration:none;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 3px var(--washi),inset 0 0 0 4px rgba(31,26,20,.12),0 20px 34px -18px rgba(60,40,10,.7)}
+.card .ph{aspect-ratio:16/9;overflow:hidden;margin:10px 10px 0;border:1px solid rgba(31,26,20,.25)}
+.card .ph img{width:100%;height:100%;object-fit:cover}
+.card .bd{padding:14px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card .era{font-size:12px;letter-spacing:.14em;color:var(--ink-3)}
+.card h3{font-family:var(--mincho);font-weight:900;font-size:1.2rem;letter-spacing:.08em;margin:0;line-height:1.5}
+.card p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.85}
+.card .go{margin-top:auto;padding-top:8px;font-size:13px;letter-spacing:.1em;color:var(--shu)}
+.card .go::after{content:" →"}
+.card .fix{display:inline-block;align-self:flex-start;font-size:11px;letter-spacing:.08em;color:var(--tsuchi);border:1px solid var(--tsuchi);padding:0 8px;margin-top:2px}
+.grid-note{margin-top:16px;font-size:13px;color:var(--ink-3)}
+
+/* fix log */
+.log-intro{max-width:720px;color:var(--ink-2);margin:0 0 20px}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.entry{background:var(--washi-a);border:1px solid rgba(31,26,20,.35);border-left:4px solid var(--tsuchi);padding:16px 20px}
+.entry .meta{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;font-size:12px;letter-spacing:.06em;color:var(--ink-3);margin-bottom:6px}
+.entry .meta b{font-family:var(--mincho);font-size:15px;color:var(--ink);letter-spacing:.06em}
+.entry .meta .st{color:#fff;background:var(--tsuchi);padding:0 8px;font-weight:700}
+.entry dl{margin:0;display:grid;grid-template-columns:7.5em 1fr;gap:4px 12px;font-size:14px}
+.entry dt{color:var(--ink-3);font-size:13px}
+.entry dd{margin:0;color:var(--ink)}
+.entry .src{font-size:12px;color:var(--ink-3)}
+.log-foot{margin-top:18px;font-size:14px;color:var(--ink-2)}
+
+/* cta */
+.cta{background:var(--washi);border:1px solid var(--ink);box-shadow:inset 0 0 0 5px var(--washi),inset 0 0 0 6px rgba(31,26,20,.35);padding:30px 28px;text-align:center;margin:10px 0 40px}
+.cta h2{font-family:var(--mincho);font-weight:900;font-size:1.35rem;letter-spacing:.12em;margin:0 0 10px}
+.cta p{margin:0 0 18px;color:var(--ink-2)}
+.cta .btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.cta a{display:inline-block;padding:11px 26px;text-decoration:none;letter-spacing:.1em;font-size:14px;border:1px solid var(--ink)}
+.cta a.main{background:var(--ink);color:var(--washi)}
+.cta a.main:hover{background:#3a3027}
+.cta a.sub{background:transparent}
+.cta a.sub:hover{background:#fff}
+
+footer{padding:10px 0 40px;text-align:center;font-size:12px;letter-spacing:.14em;color:var(--ink-2)}
+footer a{text-decoration:none}
+
+@media (max-width:640px){
+  .hero{gap:16px;padding:12px 0 28px}
+  .daisen{padding:14px 9px 12px}
+  .daisen h1{font-size:24px}
+  .entry{padding:14px 16px}
+  .entry dl{grid-template-columns:1fr;gap:0}
+  .entry dt{margin-top:6px}
+  .cta{padding:24px 18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="top">
+  <a class="brand" href="../"><span>Atelier</span>ひす鳥</a>
+  <div style="display:flex;gap:18px;flex-wrap:wrap">
+    <a href="#models">模型</a>
+    <a href="#fixes">直しました帳</a>
+    <a href="https://www.instagram.com/kurumi_rekishi/" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="daisen"><h1>動く歴史地図</h1><span class="seal">ひす鳥</span></div>
+  <div class="lead">
+    <div class="kicker">MOVING HISTORY MAPS</div>
+    <p class="catch">その土地で、<br>何が建ち、燃え、<br>埋められてきたか。</p>
+    <p>城や都や古墳のまわりの移り変わりを、時代をたどって動かせる3D模型にしています。インスタで公開している「動く歴史地図」を、ここではさわって遊べます。回したり、寄ったり、地面の下を透かしたり。</p>
+    <p class="note">地形と建物の配置は模式図です。建物や古墳の大きさは見やすいように強調しています。年代や数字には、模型の中で出典を添えています。</p>
+    <a class="pill" href="#fixes">いただいた指摘と、直した記録 →</a>
+  </div>
+</header>
+
+<section class="sec" id="models">
+  <div class="sec-h"><h2>模型の棚</h2><span class="en">Models</span></div>
+  <div class="grid">
+    <a class="card" href="edo/">
+      <div class="ph"><img src="../assets/map/edo.jpg" alt="江戸城の地層 — 寛永の天守と堀、丸の内の町並み" loading="lazy"></div>
+      <div class="bd">
+        <span class="era">縄文 〜 令和</span>
+        <h3>江戸城の地層</h3>
+        <p>縄文の海から、令和の東御苑まで。山を崩して海を埋め、三度建った天守と、建たなかった天守。</p>
+        <span class="fix">直しました 3件</span>
+        <span class="go">さわってみる</span>
+      </div>
+    </a>
+    <a class="card" href="osaka/">
+      <div class="ph"><img src="../assets/map/osaka.jpg" alt="大坂城の地層 — 豊臣の大坂城と城下町、河内湖の名残" loading="lazy"></div>
+      <div class="bd">
+        <span class="era">縄文 〜 令和</span>
+        <h3>大坂城の地層</h3>
+        <p>上町台地の北の端に、何が建ち、燃え、埋められてきたか。豊臣の城が土の下へ消えていく瞬間も。</p>
+        <span class="fix">直しました 2件</span>
+        <span class="go">さわってみる</span>
+      </div>
+    </a>
+    <a class="card" href="nagoya/">
+      <div class="ph"><img src="../assets/map/nagoya.jpg" alt="名古屋城の地層 — 名古屋台地の角に建つ大天守と石垣" loading="lazy"></div>
+      <div class="bd">
+        <span class="era">縄文 〜 令和</span>
+        <h3>名古屋城の地層</h3>
+        <p>台地の角に、町ごと引っ越してきた城。清須越、金鯱、空襲、そして御殿の復元まで。</p>
+        <span class="go">さわってみる</span>
+      </div>
+    </a>
+    <a class="card" href="chikujo/">
+      <div class="ph"><img src="../assets/map/chikujo.jpg" alt="慶長の築城ラッシュ — 日本地図の上に次々と建つ天守" loading="lazy"></div>
+      <div class="bd">
+        <span class="era">1600 〜 1615</span>
+        <h3>慶長の築城ラッシュ</h3>
+        <p>城が生まれ、城が消えた15年。関ヶ原のあと各地で城が建ち、一国一城令で消えていった。</p>
+        <span class="go">さわってみる</span>
+      </div>
+    </a>
+    <a class="card" href="kofun/">
+      <div class="ph"><img src="../assets/map/kofun.jpg" alt="大阪・奈良の古墳 — 濠に囲まれた仁徳天皇陵古墳" loading="lazy"></div>
+      <div class="bd">
+        <span class="era">3世紀 〜 7世紀</span>
+        <h3>大阪・奈良の古墳</h3>
+        <p>大きくなって、また小さくなる。纒向と箸墓から、仁徳天皇陵古墳、飛鳥の小さな円墳まで。</p>
+        <span class="go">さわってみる</span>
+      </div>
+    </a>
+    <a class="card" href="nara/">
+      <div class="ph"><img src="../assets/map/nara.jpg" alt="奈良 都は田んぼに、寺は町に — 東大寺大仏殿と門前の町" loading="lazy"></div>
+      <div class="bd">
+        <span class="era">縄文 〜 令和</span>
+        <h3>奈良　都は田んぼに、寺は町に</h3>
+        <p>都は田んぼに。でも寺は残り、寺のまわりに町が育った。縄文から今までの奈良。</p>
+        <span class="go">さわってみる</span>
+      </div>
+    </a>
+    <a class="card" href="jomon/">
+      <div class="ph"><img src="../assets/map/jomon.jpg" alt="縄文の北東北 — 海が入りこんだ津軽と三内丸山" loading="lazy"></div>
+      <div class="bd">
+        <span class="era">約1万年前 〜 令和</span>
+        <h3>縄文の北東北</h3>
+        <p>海と寒さの1万年。海が入り、ムラが栄え、寒くなったあとに、石の輪が現れた。</p>
+        <span class="go">さわってみる</span>
+      </div>
+    </a>
+  </div>
+  <p class="grid-note">※ スマホでも動きます。指でなぞると回り、2本指で寄れます。下の年表の点を押すと、その時代へ飛びます。</p>
+</section>
+
+<section class="sec" id="fixes">
+  <div class="sec-h"><h2>直しました帳</h2><span class="en">Corrections</span></div>
+  <p class="log-intro">インスタのコメントや見直しでいただいた指摘と、どう直したかの記録です。歴史は、たくさんの目で確かめながら描いていくもの。教えてくださった皆さん、ありがとうございます。</p>
+  <ol class="log" reversed>
+    <li class="entry">
+      <div class="meta"><span>2026.10.1</span><b>江戸城の地層</b><span>インスタのコメントから</span><span class="st">直しました 10.2</span></div>
+      <dl>
+        <dt>いただいた指摘</dt><dd>本郷台地の東が海になっている。そこは陸では？ 神田川のつもり？</dd>
+        <dt>直したこと</dt><dd>縄文のあとの上野・下谷のあたりを、海ではなく低地（陸）に。神田川は1620年に伊達政宗が神田山を切り通して掘った川なので、その場面「山を切り通して、川を通す」を新しく足しました。</dd>
+        <dt>確かめた資料</dt><dd class="src">千代田区の町名由来板「駿河台」ほか</dd>
+      </dl>
+    </li>
+    <li class="entry">
+      <div class="meta"><span>2026.9.30</span><b>江戸城の地層</b><span>インスタのコメントから</span><span class="st">直しました 10.2</span></div>
+      <dl>
+        <dt>いただいた指摘</dt><dd>「日本橋」「丸の内」の地名の位置がずれている。</dd>
+        <dt>直したこと</dt><dd>2つの地名の札を、正しい場所へ移しました。</dd>
+      </dl>
+    </li>
+    <li class="entry">
+      <div class="meta"><span>2026.9.28</span><b>大坂城の地層</b><span>インスタのコメントから</span><span class="st">直しました 10.2</span></div>
+      <dl>
+        <dt>いただいた指摘</dt><dd>河内湖は、安土桃山時代にはとっくに消えている。</dd>
+        <dt>直したこと</dt><dd>広い湖は奈良時代までに。中世には土砂で埋まり、「深野池・新開池」という2つの池と湿地だけが残る形にしました。1704年の大和川の付け替えで干上がり、新田になります。地名も「河内湖の名残」「深野池」「新開池」に。</dd>
+        <dt>ひとこと</dt><dd>本物の2つの池は、模型の範囲よりもっと東にあります。模型では、東の縁に池の西の端だけが見える模式にしています。</dd>
+        <dt>確かめた資料</dt><dd class="src">大東市「大東市のおいたち」、東大阪市「東大阪のいまむかし」</dd>
+      </dl>
+    </li>
+    <li class="entry">
+      <div class="meta"><span>2026.9.27</span><b>江戸城の地層</b><span>公開後の見直しから</span><span class="st">直しました 9.27</span></div>
+      <dl>
+        <dt>見つけたこと</dt><dd>神田山を崩した年と、日比谷入江の埋め立てが始まった年が、同じ年（1593年）になっていた。</dd>
+        <dt>直したこと</dt><dd>2段階に分けました。「1592年　城の堀を掘った土で、入江の北を埋めはじめる」「1603年　天下普請。神田山を崩した土で、町づくりが本格化」。</dd>
+        <dt>確かめた資料</dt><dd class="src">遠藤 2004（地学雑誌）、大丸有エリアの資料、中央区の資料</dd>
+      </dl>
+    </li>
+    <li class="entry">
+      <div class="meta"><span>2026.9.27</span><b>大坂城の地層</b><span>インスタのコメントから</span><span class="st">直しました 9.27</span></div>
+      <dl>
+        <dt>いただいた指摘</dt><dd>惣構の空堀が、難波宮の跡の真ん中を突っ切っている。実際はもっと離れているのでは。</dd>
+        <dt>直したこと</dt><dd>空堀を難波宮の南の外へ移し、その外の真田丸もさらに南へ動かしました。</dd>
+        <dt>確かめた資料</dt><dd class="src">大阪市の資料（惣構は方2km）</dd>
+      </dl>
+    </li>
+  </ol>
+  <p class="log-foot">気づいたことがあれば、<a href="https://www.instagram.com/kurumi_rekishi/" target="_blank" rel="noopener">インスタ</a>のコメントやDMで教えてください。確かめて、直して、ここに書き足します。</p>
+</section>
+
+<section class="cta">
+  <h2>あなたの城や町でも、作れます</h2>
+  <p>お城、遺跡、町の移り変わり。展示や観光、授業や発信のための<br>「動く歴史地図」を、史料を確かめながら制作します。</p>
+  <div class="btns">
+    <a class="main" href="../#contact">制作のご相談</a>
+    <a class="sub" href="https://www.instagram.com/kurumi_rekishi/" target="_blank" rel="noopener">インスタで動画を見る</a>
+  </div>
+</section>
+
+<footer><a href="../">← Atelier ひす鳥　his-tori.com</a></footer>
+</div>
+</body>
+</html>
