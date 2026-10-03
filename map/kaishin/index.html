@@ -1,0 +1,1213 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}[hidden]{display:none!important}</style>
+<title>縄文海進と貝塚｜動く歴史地図｜Atelier ひす鳥</title>
+<meta name="description" content="約6000年前、海は関東の奥まで。海が動くと、ムラも動いた。貝塚は、いまの町の下に。（地形と配置は模式図）">
+<meta property="og:title" content="縄文海進と貝塚｜動く歴史地図">
+<meta property="og:description" content="約6000年前、海は関東の奥まで。海が動くと、ムラも動いた。貝塚は、いまの町の下に。">
+<meta property="og:image" content="https://his-tori.com/assets/map/kaishin.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../assets/icon.png">
+</head><body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --ink:#1f1a14; --ink-2:#5a4e3e; --ink-3:#8a7c66;
+    --washi:#f5eddb; --washi-a:rgba(246,239,222,.95); --hair:rgba(31,26,20,.22);
+    --kin:#a8842c; --shu:#b33a26; --tsuchi:#7d5a36; --gunjo:#223f7a;
+    --mincho:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+    --gothic:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  }
+  html,body{height:100%;margin:0}
+  body{color:var(--ink);font-family:var(--gothic);font-size:14px;line-height:1.75;overflow:hidden;-webkit-font-smoothing:antialiased;
+    background-color:#dcc58c;
+    background-image:
+      linear-gradient(rgba(120,88,28,.09) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(120,88,28,.09) 1px,transparent 1px),
+      radial-gradient(ellipse at 50% 38%,#efe0ad 0%,#e0c98f 55%,#cdb173 100%);
+    background-size:72px 72px,72px 72px,100% 100%}
+  #stage{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+  #stage.dragging{cursor:grabbing}
+  button{font:inherit;color:inherit}
+  button:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+  #vig{position:fixed;inset:0;pointer-events:none;z-index:2;opacity:0;background:radial-gradient(ellipse at 50% 45%,transparent 40%,rgba(26,28,40,.62) 100%)}
+
+  /* title: a vertical 題箋 */
+  .plaque{position:fixed;left:22px;top:20px;z-index:10;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+  .head-row{display:flex;gap:14px;align-items:flex-start}
+  .daisen{writing-mode:vertical-rl;display:flex;align-items:center;background:var(--washi);border:1px solid var(--ink);
+    box-shadow:inset 0 0 0 4px var(--washi),inset 0 0 0 5px rgba(31,26,20,.45),0 10px 24px -16px rgba(60,40,10,.6);padding:18px 12px 14px}
+  .daisen h1{font-family:var(--mincho);font-weight:900;font-size:31px;letter-spacing:.32em;line-height:1;margin:0}
+  .seal{font-family:var(--mincho);font-weight:700;font-size:10px;letter-spacing:.12em;background:var(--shu);color:#f7eee0;padding:6px 3px;margin-block-start:14px;border-radius:2px}
+  .sub{writing-mode:vertical-rl;margin:4px 0 0;font-family:var(--mincho);font-size:13.5px;line-height:1.95;letter-spacing:.08em;color:var(--ink-2);max-height:230px;
+    text-shadow:0 0 10px rgba(242,230,196,1),0 0 3px rgba(242,230,196,1)}
+  .meta{font-size:11px;color:var(--ink-2);letter-spacing:.04em;text-shadow:0 0 6px rgba(242,230,196,1)}
+  .tools{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+  .tools .grp{display:flex;gap:4px;flex-wrap:wrap}
+  .tools button{appearance:none;background:var(--washi-a);border:1px solid rgba(31,26,20,.35);padding:6px 11px;font-size:12px;letter-spacing:.05em;cursor:pointer;display:flex;align-items:center;gap:7px;color:var(--ink-2)}
+  .tools button:hover{color:var(--ink);border-color:var(--ink)}
+  .tools button .sw{width:9px;height:9px;border:1px solid var(--ink-3)}
+  .tools button.on{color:var(--ink)}
+  .tools button.on .sw{background:var(--shu);border-color:var(--shu)}
+  .tools .rec-open{border-color:var(--shu);color:var(--shu)}
+  .tools a.back{background:var(--washi-a);border:1px solid rgba(31,26,20,.35);padding:6px 11px;font-size:12px;letter-spacing:.05em;color:var(--ink-2);text-decoration:none}
+  .tools a.back:hover{color:var(--ink);border-color:var(--ink)}
+  .tools .vl{font-size:10.5px;letter-spacing:.2em;color:var(--ink-2);margin:4px 0 0 2px}
+
+  /* era card */
+  .card{position:fixed;right:22px;top:20px;z-index:10;width:340px;max-height:calc(100vh - 170px);overflow-y:auto;
+    background:var(--washi-a);border:1px solid rgba(31,26,20,.6);
+    box-shadow:inset 0 0 0 4px var(--washi),inset 0 0 0 5px rgba(31,26,20,.2),0 14px 30px -18px rgba(60,40,10,.55);padding:20px 24px 16px}
+  .card .kicker{font-family:var(--mincho);font-weight:700;font-size:12.5px;letter-spacing:.3em;display:flex;align-items:center;gap:8px}
+  .card .kicker::before{content:"";width:7px;height:7px;background:var(--shu)}
+  .card .year{font-family:var(--mincho);display:flex;align-items:baseline;gap:4px;margin:6px 0 0;font-variant-numeric:tabular-nums;line-height:1}
+  .card .year .num{font-weight:900;font-size:58px}
+  .card .year .pre,.card .year .suf{font-weight:700;font-size:18px;color:var(--ink-2)}
+  .card .wa{font-family:var(--mincho);font-size:14px;letter-spacing:.3em;color:var(--ink-2);min-height:1.5em;margin-top:6px}
+  .card h2{font-family:var(--mincho);font-weight:900;font-size:21px;letter-spacing:.08em;margin:8px 0 8px;line-height:1.4;text-wrap:balance}
+  .card p{margin:0;font-size:13.5px;text-wrap:pretty}
+  .note{display:grid;grid-template-columns:12px 1fr;gap:8px;margin-top:10px;font-size:12.5px;line-height:1.7;color:var(--ink-2)}
+  .note[hidden]{display:none}
+  .note i{width:8px;height:8px;margin-top:7px;display:block}
+  .note.fire i{background:var(--shu);transform:rotate(45deg)}
+  .note.end i{border:1.5px solid var(--ink-3);border-radius:50%;width:6px;height:6px}
+  .note.under i{background:var(--tsuchi)}
+  .note.fire span b{color:var(--shu);font-weight:700}
+  .legend{margin-top:14px;padding-top:10px;border-top:1px solid var(--hair)}
+  .legend .lt{font-size:10.5px;letter-spacing:.2em;color:var(--ink-3);margin-bottom:6px}
+  .legend ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:3px 12px}
+  .legend li{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-2)}
+  .legend li s{width:18px;height:9px;display:block;text-decoration:none;flex:none}
+
+  /* timeline */
+  .tl{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:10;width:min(1160px,calc(100vw - 32px));
+    background:var(--washi-a);border:1px solid rgba(31,26,20,.55);box-shadow:inset 0 0 0 3px var(--washi),inset 0 0 0 4px rgba(31,26,20,.15);
+    padding:10px 18px 12px 12px;box-sizing:border-box}
+  .ticker{position:absolute;left:0;right:0;top:-36px;text-align:center;font-family:var(--mincho);font-weight:700;font-size:16px;letter-spacing:.08em;
+    transition:opacity .35s;pointer-events:none;text-shadow:0 0 10px rgba(242,230,196,1),0 0 3px rgba(242,230,196,1)}
+  .ticker b{font-weight:900;margin-right:.6em;font-variant-numeric:tabular-nums}
+  .ticker.fire b{color:var(--shu)}
+  .ticker.bury b{color:var(--tsuchi)}
+  .tl-row{display:flex;align-items:center;gap:14px}
+  .play{appearance:none;flex:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--ink);background:var(--ink);color:var(--washi);cursor:pointer;display:grid;place-items:center}
+  .play svg{width:14px;height:14px;fill:currentColor}
+  .play:hover{background:#3a3027}
+  .track{position:relative;flex:1;height:56px;cursor:pointer;touch-action:none;margin:0 16px}
+  .rail{position:absolute;left:0;right:0;top:24px;height:2px;background:rgba(31,26,20,.3)}
+  .fillbar{position:absolute;left:0;top:24px;height:2px;background:var(--kin)}
+  .tick{position:absolute;top:15px;width:2px;height:7px;background:rgba(31,26,20,.3);transform:translateX(-1px)}
+  .tick.fire{background:var(--shu);height:9px;top:13px}
+  .tick.bury{background:var(--tsuchi);height:9px;top:13px}
+  .node{position:absolute;top:0;transform:translateX(-50%);appearance:none;background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;width:64px}
+  .node .ny{font-size:10.5px;color:var(--ink-3);height:15px;line-height:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .node .dot{width:10px;height:10px;border-radius:50%;background:var(--washi);border:1.5px solid rgba(31,26,20,.55);margin-top:4px;box-sizing:border-box}
+  .node .ne{font-family:var(--mincho);font-size:13px;margin-top:5px;color:var(--ink-2);line-height:1.2;white-space:nowrap}
+  .node.bury .ne{color:var(--tsuchi)}
+  .node.on .dot{background:var(--shu);border-color:var(--shu);transform:scale(1.3)}
+  .node.on .ne{color:var(--ink);font-weight:900}
+  .node.on .ny{color:var(--ink)}
+  .node .ny,.node .ne{visibility:hidden}
+  .node.on .ny,.node.on .ne{visibility:visible}
+  .node .dot{width:8px;height:8px}
+  .head{position:absolute;top:18px;width:14px;height:14px;margin-left:-7px;pointer-events:none}
+  .head::before{content:"";position:absolute;inset:0;border:2px solid var(--kin);border-radius:50%;background:rgba(245,237,219,.6)}
+  .keys{display:flex;flex-direction:column;gap:3px;font-size:10.5px;color:var(--ink-3);flex:none;letter-spacing:.04em}
+  .keys span{display:flex;align-items:center;gap:6px}
+  .keys i{width:2px;height:9px;display:block}
+
+  /* labels on the model */
+  .lbl{position:fixed;z-index:4;transform:translate(-50%,-100%);pointer-events:none;white-space:nowrap;transition:opacity .3s;
+    font-family:var(--mincho);font-size:12.5px;font-weight:700;letter-spacing:.06em;background:rgba(246,239,222,.94);border:1px solid rgba(31,26,20,.55);padding:2px 9px 2px 8px;
+    display:flex;align-items:center;gap:6px;will-change:left,top}
+  .lbl::after{content:"";position:absolute;left:50%;bottom:-7px;width:1px;height:6px;background:rgba(31,26,20,.55)}
+  .lbl s{width:6px;height:6px;background:var(--shu);text-decoration:none;display:block}
+  .lbl.buried s{background:var(--tsuchi)}
+  .geo{position:fixed;z-index:3;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;transition:opacity .5s;writing-mode:vertical-rl;
+    font-family:var(--mincho);font-weight:700;font-size:16px;letter-spacing:.3em;color:rgba(31,26,20,.82);
+    text-shadow:0 0 8px rgba(242,230,196,1),0 0 2px rgba(242,230,196,1)}
+  .geo.water{color:var(--gunjo)}
+  .off{opacity:0 !important}
+
+  /* recording mode */
+  #comp{position:fixed;display:none;z-index:20;box-shadow:0 20px 50px -20px rgba(40,25,5,.7)}
+  .recbar{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:30;display:none;gap:6px;align-items:center;background:var(--washi-a);border:1px solid rgba(31,26,20,.55);padding:6px 8px;max-width:calc(100vw - 24px);flex-wrap:wrap;justify-content:center}
+  .recbar button{appearance:none;background:transparent;border:1px solid rgba(31,26,20,.3);padding:6px 11px;font-size:12px;cursor:pointer}
+  .recbar button.on{background:var(--ink);color:var(--washi);border-color:var(--ink)}
+  .recbar button.save{border-color:var(--shu);color:var(--shu)}
+  .recbar .msg{font-size:11.5px;color:var(--ink-2);padding:0 6px;max-width:420px;line-height:1.5}
+  body.rec #comp{display:block}
+  body.rec .recbar{display:flex}
+  body.rec #stage{visibility:hidden}
+  body.rec .plaque,body.rec .card,body.rec .tl,body.rec .lbl,body.rec .geo,body.rec #vig,body.rec #lsvg{display:none}
+
+  @media (max-width:820px){
+    .plaque{left:12px;top:12px}
+    .daisen{padding:12px 8px 10px}
+    .daisen h1{font-size:20px}
+    .sub,.meta{display:none}
+    .tools .vl{display:none}
+    .tools{flex-direction:row;flex-wrap:wrap;max-width:calc(100vw - 90px)}
+    .head-row{gap:8px}
+    .card{left:12px;right:12px;top:auto;bottom:128px;width:auto;max-height:28vh;padding:12px 16px}
+    .card .year .num{font-size:36px}
+    .card h2{font-size:17px;margin:4px 0}
+    .legend{display:none}
+    .node .ny{visibility:hidden}
+    .node.on .ny{visibility:visible}
+    .node .ne{font-size:11px;visibility:hidden}
+    .node.on .ne{visibility:visible}
+    .keys{display:none}
+    .tl{bottom:10px;padding:8px 10px}
+    .track{margin:0 8px}
+  }
+  @media (prefers-reduced-motion:reduce){ .ticker,.lbl,.geo{transition:none} }
+  .keys{display:none!important}
+</style>
+
+<canvas id="stage" aria-label="縄文海進と貝塚 3D模型"></canvas>
+<div id="vig"></div>
+<canvas id="comp" aria-label="収録用の画面"></canvas>
+
+<header class="plaque">
+  <div class="head-row">
+    <div class="daisen"><h1>縄文海進と貝塚</h1><span class="seal">ひす鳥</span></div>
+    <p class="sub">約6000年前、海は関東の奥まで。<br>海が動くと、ムラも動いた。<br>貝塚は、いまの町の下に。</p>
+  </div>
+  <div class="meta">北が上 ・ 高さは強調 ・ 地形・海の形・貝塚の位置は模式</div>
+  <nav class="tools" aria-label="表示">
+    <div class="grp">
+      <button id="bXray"><span class="sw"></span>名前をすべて</button>
+      <button id="bCloud" class="on"><span class="sw"></span>金雲</button>
+      <button id="bSpin" class="on"><span class="sw"></span>ゆっくり回す</button>
+    </div>
+    <div class="vl">視点</div>
+    <div class="grp">
+      <button data-view="bird">鳥瞰</button>
+      <button data-view="castle">関東へ寄る</button>
+      <button data-view="top">真上</button>
+      <button data-view="section">断面</button>
+    </div>
+    <div class="grp"><button class="rec-open" id="bRec" hidden>SNS用に収録する</button><a class="back" href="../">← 動く歴史地図</a></div>
+  </nav>
+</header>
+
+<aside class="card" aria-live="polite">
+  <div class="kicker" id="cEra"></div>
+  <div class="year"><span class="pre" id="cPre"></span><span class="num" id="cYear"></span><span class="suf" id="cSuf"></span></div>
+  <div class="wa" id="cWa"></div>
+  <h2 id="cTitle"></h2>
+  <p id="cDesc"></p>
+  <div class="note fire" id="cFire" hidden><i></i><span></span></div>
+  <div class="note end" id="cEnd" hidden><i></i><span></span></div>
+  <div class="note under" id="cUnder" hidden><i></i><span></span></div>
+  <div class="legend">
+    <div class="lt">凡例</div>
+    <ul id="legend"></ul>
+  </div>
+</aside>
+
+<div class="tl">
+  <div class="ticker off" id="ticker"></div>
+  <div class="tl-row">
+    <button class="play" id="play" aria-label="再生"><svg viewBox="0 0 14 14" id="playIcon"><path d="M3 1.5v11l9-5.5z"/></svg></button>
+    <div class="track" id="track" role="slider" aria-label="時代" tabindex="0">
+      <div class="rail"></div><div class="fillbar" id="fillbar"></div>
+      <div class="head" id="head"></div>
+    </div>
+    <div class="keys"><span><i style="background:var(--shu)"></i>焼失</span><span><i style="background:var(--tsuchi)"></i>土の壁</span></div>
+  </div>
+</div>
+
+<div class="recbar" id="recbar">
+  <button id="rV" class="on">縦 9:16（インスタ）</button>
+  <button id="rH">横 16:9（X）</button>
+  <button id="rPlay">▶ 再生して見る</button>
+  <button id="rPause">⏸ 一時停止</button>
+  <button id="rSave" class="save">● 録画して保存</button>
+  <button id="rClose">× 閉じる</button>
+  <span class="msg" id="rMsg">枠の中だけが動画になります。約85秒。</span>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============ utilities ============ */
+const C=h=>new THREE.Color(h).convertSRGBToLinear();
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const ss=(e0,e1,x)=>{ const t=clamp((x-e0)/(e1-e0),0,1); return t*t*(3-2*t); };
+const lerp=(a,b,t)=>a+(b-a)*t;
+function K(keys,y){ if(y<=keys[0][0]) return keys[0][1]; for(let i=1;i<keys.length;i++){ if(y<=keys[i][0]){ const [y0,v0]=keys[i-1],[y1,v1]=keys[i]; return v0+(v1-v0)*(y-y0)/(y1-y0);} } return keys[keys.length-1][1]; }
+function hash2(i,j){ let h=(Math.imul(i,374761393)+Math.imul(j,668265263))|0; h=Math.imul(h^(h>>>13),1274126177); h^=h>>>16; return (h>>>0)/4294967296; }
+function vn(x,y){ const xi=Math.floor(x), yi=Math.floor(y), xf=x-xi, yf=y-yi; const u=xf*xf*(3-2*xf), v=yf*yf*(3-2*yf);
+  const a=hash2(xi,yi), b=hash2(xi+1,yi), c=hash2(xi,yi+1), d=hash2(xi+1,yi+1); return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v; }
+function fbm(x,y){ return vn(x,y)*0.55+vn(x*2.1+5.3,y*2.1+1.7)*0.3+vn(x*4.3+9.1,y*4.3+3.3)*0.15-0.5; }
+function rng(seed){ let s=seed>>>0; return ()=>{ s=(s+0x6D2B79F5)>>>0; let t=s; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+const inRect=(x,z,r)=>x>=r[0]&&x<=r[1]&&z>=r[2]&&z<=r[3];
+const $=id=>document.getElementById(id);
+
+/* ============ time: 縄文海進と貝塚（素材メモ v3・SNS絵所 2026-10-02。拍の y は並び順の番号。画面の年は num/suf） ============ */
+const BEATS=[
+ {y:0,yr:0,era:'いまの関東',pre:'',num:'いま',suf:'',wa:'',title:'いまの関東',cam:'obl',hold0:4500,feat:[],
+  desc:'いまの関東を斜めから。目印＝東京スカイツリー・東京駅・皇居・東京ディズニーランド・九十九里浜・さいたまスーパーアリーナ。'},
+ {y:10,yr:6000,era:'縄文時代前期',pre:'約',num:'6000',suf:'年前',wa:'',title:'海が、ここまで来ていた',note:'スカイツリーの足もとも、海',note2:'皇居は、海辺の台地の上',cam:'obl',hold:4600,legx:1.6,feat:['okutokyo','kokinu'],
+  desc:'氷期の氷がとけて海面が上がり、約7000〜6000年前、海は川がけずった谷にそって陸の奥まで入り込んだ（縄文海進・日本第四紀学会）。墨田区の東京低地は海進で「長らく海面下」（墨田区）。「皇居から西側に台地が、東側に低地」、皇居の中に縄文の貝塚（千代田区）。九十九里平野は「ほとんどが海の底」（農林水産省関東農政局）。',
+  under:'海の形は模式。今の地形に同じ高さの水を張ったものではない。'},
+ {y:20,yr:6000,era:'縄文時代前期・水子貝塚',pre:'約',num:'6000',suf:'年前',wa:'',title:'海辺の台地に、ムラ',note:'水子貝塚（埼玉・富士見市）',note2:'貝塚の下から、家の跡',cam:'mizuko',hold:6500,feat:['mizuko'],
+  desc:'水子貝塚は縄文時代前期の環状集落跡。「約50の小貝塚が約160メートル径の環状にならんでいる」。小貝塚の「貝層下からは、いずれも竪穴住居跡が発見」（文化遺産オンライン・富士見市）。丸木舟は約7000年前にはあった（市川市・雷下遺跡、長さ約7m）。',
+  under:'ムラ・家・舟の大きさは強調した模式。家の数も模式。'},
+ {y:30,yr:5000,era:'縄文時代中期',pre:'約',num:'5000',suf:'年前',wa:'',title:'ムラの場所が、変わった',note:'千葉の湾岸に、大きな輪のムラ',note2:'浜には、貝を開ける作業場（中里貝塚）',cam:'east',hold:5600,legx:1.6,feat:['nakazato','kasori','ubayama'],
+  desc:'前期後半から海が引き、「後退する海岸線を追うように貝塚の分布が移動する」（千葉県立中央博物館の研究員）。約5,000年前、千葉県の湾岸に40数か所の大型貝塚が「ほぼ一斉に」でき、それは大きなムラ（環状集落）でもあった（柏市資料）。中里貝塚（北区）は浜辺で貝を加工した場所と推測されている（文化遺産オンライン）。',
+  under:'ムラの数・家の数は模式（見つかった家の跡は何百年分の合計）。'},
+ {y:40,yr:4000,era:'縄文時代後期・加曽利貝塚',pre:'約',num:'4000',suf:'年前',wa:'',title:'貝塚の山が、残った',note:'加曽利貝塚は、上から見るとドーナツの形',note2:'日本最大級の貝塚（千葉市）',cam:'kasori',hold:6200,feat:['kasori'],
+  desc:'加曽利貝塚: 北貝塚は「直径約140mでドーナツ形」（中期）、南貝塚は「長径約190mで馬のひづめの形」（後期）。日本最大級（千葉市）。',
+  under:'貝塚の大きさは強調した模式。'},
+ {y:45,yr:149,era:'明治',pre:'',num:'1877',suf:'年',wa:'',title:'貝塚が、掘り出された',note:'大森貝塚＝日本考古学の発祥の地',note2:'モースが、汽車の窓から見つけた',small:'弥生町の貝塚の土器から「弥生土器」の名前（1884年・文京区）',cam:'oomori',hold:5400,legx:1.6,feat:['oomori','yayoi'],
+  desc:'1877年（明治10年）、モースは横浜から東京へ向かう汽車の窓から貝層を見つけ、同じ年の9〜12月に大森貝塚を発掘した。日本で初めての学術的な発掘で「日本考古学発祥の地」（品川区立品川歴史館・大田区）。1884年、向ヶ岡貝塚（弥生町）から採集された壺形土器が「弥生土器」「弥生時代」の名前のもと（文京区）。見つかった正確な地点は分かっていない。',
+  under:'汽車・線路は模式。弥生町は「あたり」（正確な地点は不明）。'},
+ {y:50,yr:0,era:'いま',pre:'',num:'いま',suf:'',wa:'',title:'ディズニーランドは、50年前まで海',note:'ムラと貝塚は、町の下に',cam:'bay',hold:4600,legx:1.2,feat:[],
+  desc:'浦安の舞浜は公有海面の埋め立てで誕生（昭和50年11月29日・浦安市）。'},
+ {y:60,yr:0,ev:'end',era:'いま',pre:'',num:'いま',suf:'',wa:'',title:'いまの日本列島',note:'貝塚が多いのは、内湾の海辺',cam:'japanEnd',hold:8000,feat:[],
+  desc:'貝塚が多いのは、噴火湾・仙台湾・古鬼怒湾・東京湾・三河湾・伊勢湾・瀬戸内海・有明海などの海辺（袖ケ浦市の資料）。',
+  end:'高さ・ムラ・家・舟・目印の大きさは強調した模式。最後の夜景の光は、貝塚の多い海辺に置いた模式。'},
+];
+const STOP_YEARS=BEATS.map(b=>b.y);
+const NS=STOP_YEARS.length, BURY=NS-1, LEG=2.0, HOLD=2400;
+function tOf(y){ if(y===-Infinity) return -Infinity; const Y=STOP_YEARS; if(y<=Y[0]) return (y-Y[0])/(Y[1]-Y[0]);
+  for(let i=1;i<NS;i++){ if(y<=Y[i]) return i-1+(y-Y[i-1])/(Y[i]-Y[i-1]); } return NS-1+(y-Y[NS-1])/100; }
+function yearOf(t){ const Y=STOP_YEARS; if(t<=0) return Y[0]+t*(Y[1]-Y[0]); if(t>=NS-1) return Y[NS-1]; const i=Math.floor(t); return Y[i]+(t-i)*(Y[i+1]-Y[i]); }
+const TH=0;   // 北が上
+const STOPS=BEATS.map(b=>({era:b.era, short:b.title.replace(/[、。]/g,'').slice(0,5), ny:b.num+b.suf, pre:b.pre||'', num:b.num, suf:b.suf, wa:b.wa, title:b.title, recNote:b.note, note2:b.note2, small:b.small, desc:b.desc, under:b.under, end:b.end, hold:b.hold, hold0:b.hold0, len:null, cam:null, beat:b}));
+const EVENTS=[];
+/* ============ renderer / scene ============ */
+const canvas=$('stage');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+const DPR=Math.min(devicePixelRatio,2); renderer.setPixelRatio(DPR);
+renderer.setClearColor(0x000000,0);
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.0;
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();
+scene.fog=new THREE.Fog(0xdcc792,320,720);
+const camera=new THREE.PerspectiveCamera(38,1,0.5,20000);
+
+const hemi=new THREE.HemisphereLight(0xf6ead0,0x5b4a35,0.62); scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff0d2,1.15); sun.position.set(-90,150,110); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-110,right:110,top:110,bottom:-110,near:10,far:420}); sun.shadow.bias=-0.0005; sun.shadow.normalBias=0.02;
+scene.add(sun);
+const fireLight=new THREE.PointLight(0xff8a3a,0,70,2); scene.add(fireLight);
+
+/* ============ geography: 関東（1 unit ≈ 1 km, north = -z）。列島は同じ縮尺で外側に ============ */
+const LL=(lat,lon)=>[(lon-139.975)*90.3,-(lat-35.85)*111];
+const LANDS=[]; const BIWA={x:9999,z:9999}; const CHANNELS=[];
+function inPoly(x,z,P){ let c=false; for(let i=0,j=P.length-1;i<P.length;j=i++){ const [xi,zi]=P[i],[xj,zj]=P[j]; if(((zi>z)!==(zj>z)) && (x<(xj-xi)*(z-zi)/(zj-zi)+xi)) c=!c; } return c; }
+function sdPoly(x,z,P){ let d=1e9; for(let i=0,j=P.length-1;i<P.length;j=i++){ const [ax,az]=P[j],[bx,bz]=P[i]; const dx=bx-ax,dz=bz-az; const t=clamp(((x-ax)*dx+(z-az)*dz)/(dx*dx+dz*dz),0,1); d=Math.min(d,Math.hypot(x-ax-t*dx,z-az-t*dz)); } return inPoly(x,z,P)?-d:d; }
+function distPoly(x,z,pts){ let best=1e9; for(let i=0;i<pts.length-1;i++){ const [ax,az]=pts[i],[bx,bz]=pts[i+1]; const dx=bx-ax,dz=bz-az; const t=clamp(((x-ax)*dx+(z-az)*dz)/(dx*dx+dz*dz),0,1); const d=Math.hypot(x-ax-t*dx,z-az-t*dz); if(d<best) best=d; } return best; }
+function chExist(){ return 1; }
+/* いまの関東の陸（模式）。北と西は箱の外まで陸 */
+const KANTO_LL=[[36.75,138.95],[36.75,140.72],[36.30,140.58],[36.10,140.63],[35.90,140.75],[35.74,140.87],[35.70,140.72],[35.55,140.47],[35.25,140.40],[34.95,140.00],[34.95,139.90],[35.10,139.83],[35.31,139.79],[35.38,139.92],[35.50,140.05],[35.60,140.10],[35.65,140.03],[35.69,139.98],[35.66,139.86],[35.64,139.79],[35.62,139.75],[35.55,139.77],[35.49,139.68],[35.45,139.65],[35.38,139.64],[35.28,139.67],[35.15,139.64],[35.15,139.58],[35.30,139.55],[35.31,139.48],[35.32,139.38],[35.28,139.22],[35.22,139.12],[35.10,139.10],[34.95,139.08],[34.95,138.95]];   // 箱のふちまで陸を伸ばす（列島の地形とつなぐため）
+const KANTO=KANTO_LL.map(p=>LL(...p));
+/* いまの海岸線（白い細線）: 陸の輪郭のうち海に面した所 */
+const COAST_LL=KANTO_LL.slice(1,-2);
+/* 縄文海進でしずむ谷（模式。§4・葛飾区史「荒川低地・中川低地・東京低地」、霞ヶ浦・利根川下流） */
+const VALLEYS=[
+ {w:2.6,pts:[[35.68,139.78],[35.76,139.73],[35.81,139.67],[35.85,139.60],[35.87,139.54],[35.92,139.49]]},            // 荒川低地
+ {w:4.2,pts:[[35.70,139.84],[35.80,139.81],[35.89,139.79],[35.98,139.745],[36.06,139.70],[36.13,139.68],[36.20,139.63],[36.235,139.605]]},  // 中川低地 → 板倉
+ {w:3.2,pts:[[35.70,139.90],[35.80,139.88],[35.92,139.86],[36.02,139.82],[36.10,139.76]]},                           // 古利根・江戸川
+ {w:2.4,pts:[[36.13,139.70],[36.20,139.67],[36.265,139.665]]},                                                        // 渡良瀬 → 藤岡
+ {w:5.5,pts:[[35.65,139.79],[35.70,139.82],[35.73,139.86]]},                                                          // 東京低地（下町）
+ {w:3.6,pts:[[35.74,140.84],[35.80,140.70],[35.87,140.55],[35.90,140.38],[35.90,140.22],[35.90,140.10],[35.93,140.02],[36.05,139.98],[36.15,139.97]]},  // 利根川下流・古鬼怒湾
+ {w:5.5,pts:[[35.97,140.42],[36.04,140.33],[36.11,140.26],[36.17,140.20]]},                                           // 霞ヶ浦
+ {w:2.6,pts:[[35.93,140.58],[36.02,140.55],[36.11,140.52]]},                                                          // 北浦
+ {w:5.5,pts:[[35.72,140.72],[35.64,140.58],[35.56,140.46],[35.46,140.38],[35.40,140.35]]},                       // 九十九里平野（「ほとんどが海の底」関東農政局）
+ {w:2.4,pts:[[35.88,140.16],[35.80,140.20],[35.74,140.21],[35.715,140.175]]},                                         // 印旛 → 佐倉
+ {w:1.9,pts:[[35.83,139.77],[35.88,139.735],[35.93,139.715],[35.965,139.69],[35.995,139.655],[36.02,139.635]]},     // 元荒川・綾瀬（大宮台地の東ふち）
+].map(v=>Object.assign(v,{P:v.pts.map(p=>LL(...p))}));
+const LAKES=[[[36.15,140.22],[36.10,140.30],[36.03,140.38],[35.97,140.47],[35.95,140.43],[36.02,140.33],[36.08,140.24]],[[36.08,140.55],[35.96,140.595],[35.945,140.57],[36.06,140.525]]].map(P=>P.map(p=>LL(...p)));
+function valleyK(x,z){ let k=0; for(const v of VALLEYS){ const d=distPoly(x,z,v.P), w=v.w*(1+0.25*fbm(x*0.15+v.w,z*0.15)); const q=ss(w,w*0.45,d); if(q>k) k=q; } return k; }
+function elev(x,z){
+  let e=0.34+0.08*(fbm(x*0.08,z*0.08)+0.5);
+  const g=(la,lo,h,r,p)=>{ const [cx,cz]=LL(la,lo); return h*Math.exp(-Math.pow(Math.hypot(x-cx,z-cz)/r,p||2)); };
+  const nA=fbm(x*0.05+5,z*0.05+2);
+  e+=0.55*ss(-28,-58,x)*ss(-10,10,-z+20);                     // 武蔵野台地は西ほど高い
+  e+=5.2*(0.7+0.6*nA)*ss(-56,-76,x);                          // 関東山地
+  e+=3.2*(0.7+0.6*nA)*ss(-56,-68,z)*ss(40,10,x);              // 北の山すそ
+  e+=g(35.690,139.742,1.5,1.9,3);   // 皇居＝台地の先（千代田区「皇居から西側に台地が、東側に低地」）
+  e+=g(36.225,140.10,2.6,4.2)+g(35.60,139.40,0.45,8)+g(35.27,139.65,0.7,5);   // 筑波山・多摩丘陵・三浦
+  e+=1.5*(0.7+0.6*nA)*ss(40,62,z)*ss(-5,10,x);                // 房総の丘陵
+  e+=0.08*ss(-5,5,x);                                          // 下総台地
+  return e;
+}
+function factors(x,z){ const sd=sdPoly(x,z,KANTO)+0.8*fbm(x*0.2+3,z*0.2-5); return {sd,e:elev(x,z),vk:valleyK(x,z),lake:LAKES.some(P=>inPoly(x,z,P)),m:sd<0?1:0,nz:fbm(x*0.07+11,z*0.07-7),ch:[],x,z,top:0}; }
+const PLATEAU=0.45;
+function plateauH(f){ if(f.sd>=0) return -0.3; return lerp(-0.25,f.e+PLATEAU*ss(0.2,0.4,f.e),ss(0,1.2,-f.sd)); }   // 谷を埋めた時の高さ（いまの陸）
+function heightFrom(f){
+  if(f.sd>=0) return -0.3-0.05*Math.min(f.sd,40);
+  let h=f.e+PLATEAU*ss(0.2,0.4,f.e); h=lerp(h,0.07+0.03*f.nz,f.vk*ss(1.6+PLATEAU,0.9+PLATEAU,h)); if(f.lake) h=-0.12;   // 台地は一段高く（強調）
+  return lerp(-0.25,h,ss(0,1.2,-f.sd));
+}
+const heightAt=(x,z)=>heightFrom(factors(x,z));
+const onChannel=()=>false;
+const C0={x:0,z:0}; const G=0.4;
+/* ============ terrain ============ */
+const GS=180, GN=200;
+const tgeo=new THREE.PlaneGeometry(GS,GS,GN,GN); tgeo.rotateX(-Math.PI/2);
+const NV=tgeo.attributes.position.count;
+tgeo.setAttribute('color',new THREE.BufferAttribute(new Float32Array(NV*3),3));
+const PX=new Float32Array(NV), PZ=new Float32Array(NV), H=new Float32Array(NV);
+const F=new Array(NV);
+for(let i=0;i<NV;i++){ const x=tgeo.attributes.position.getX(i), z=tgeo.attributes.position.getZ(i); PX[i]=x; PZ[i]=z; F[i]=factors(x,z); }
+const PC={}; Object.entries({low:'#b3cb84',plain:'#a3bd78',forest:'#5f8a55',mtn:'#46694c',alp:'#8a927a',bed:'#cbb88a',bed2:'#a99a76'}).forEach(([k,v])=>{ const c=C(v); PC[k]=[c.r,c.g,c.b]; });
+const VC=[0,0,0];
+const setc=c=>{VC[0]=c[0];VC[1]=c[1];VC[2]=c[2];};
+const mixc=(c,w)=>{ if(w<=0) return; VC[0]+=(c[0]-VC[0])*w; VC[1]+=(c[1]-VC[1])*w; VC[2]+=(c[2]-VC[2])*w; };
+function vcolor(i,y,h){ if(h<0.02){ setc(PC.bed); mixc(PC.bed2,ss(-0.3,-2.5,h)); return VC; } setc(PC.plain); mixc(PC.low,ss(0.25,0.1,h)); mixc(PC.forest,ss(0.9,1.6,h)); mixc(PC.mtn,ss(2.2,3.6,h)); return VC; }
+const terrainMat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.96,metalness:0});
+const terrain=new THREE.Mesh(tgeo,terrainMat); terrain.receiveShadow=true; terrain.castShadow=true; scene.add(terrain);
+let terrainDone=false; const BC=new Float32Array(NV*3);
+function updateTerrain(y){
+  if(terrainDone) return; terrainDone=true;
+  const pos=tgeo.attributes.position.array, col=tgeo.attributes.color.array;
+  for(let i=0;i<NV;i++){ let h=heightFrom(F[i]); const c=vcolor(i,y,h).slice(); const e=Math.max(Math.abs(PX[i]),Math.abs(PZ[i])), eWN=Math.max(-PX[i],-PZ[i]), w=Math.max(ss(60,90,eWN+10*fbm(PX[i]*0.04+7,PZ[i]*0.04-3)),ss(82,90,e));   // 西と北（山側）は広く、ゆらぎをつけて   // 箱のふちは列島の地形へなじませる
+    if(w>0){ const [hj,cj]=jpHC(PX[i],PZ[i]); h+=(hj-h)*w; for(let k=0;k<3;k++) c[k]+=(cj[k]-c[k])*w; }
+    H[i]=h; pos[i*3+1]=h; BC[i*3]=col[i*3]=c[0]; BC[i*3+1]=col[i*3+1]=c[1]; BC[i*3+2]=col[i*3+2]=c[2]; }
+  tgeo.attributes.position.needsUpdate=true; tgeo.attributes.color.needsUpdate=true; tgeo.computeVertexNormals();
+}
+/* water: 群青 with 胡粉 wave lines, as on a folding screen */
+const waterTex=(()=>{ const c=document.createElement('canvas'); c.width=256; c.height=128; const x=c.getContext('2d');
+  x.fillStyle='#4f74a6'; x.fillRect(0,0,256,128); x.strokeStyle='rgba(238,232,212,.17)'; x.lineWidth=4;
+  for(let r=0;r<5;r++){ const yy=r*32+24, off=(r%2)*16; for(let xx=-32+off;xx<288;xx+=32){ x.beginPath(); x.arc(xx,yy,15,Math.PI,2*Math.PI); x.stroke(); x.beginPath(); x.arc(xx,yy,9,Math.PI,2*Math.PI); x.stroke(); } }
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(1000,2000); t.anisotropy=8; return t; })();
+const waterMat=new THREE.MeshStandardMaterial({map:waterTex,color:0xffffff,roughness:0.55,metalness:0,transparent:true,opacity:0.95});
+const water=new THREE.Mesh(new THREE.PlaneGeometry(30000,30000),waterMat); water.position.x=-205; water.position.z=-268; water.rotation.x=-Math.PI/2; water.position.y=0.0; water.receiveShadow=true; scene.add(water);
+
+/* ---- strata skirt ---- */
+const BASE=-7;
+const STRATA={bed:['#4b3f36','基盤'],rock:['#6d6258','山地の岩'],soil:['#5a4834','表土'],mud:['#6f7b80','泥'],sandy:['#b99f78','砂泥']};
+const SC={}; Object.entries(STRATA).forEach(([k,v])=>{ const c=C(v[0]); SC[k]=[c.r,c.g,c.b]; });
+const LOW_B=[['bed',-5.2],['mud',-2.0],['sandy',99]];
+function bands(plateau,h){
+  if(plateau){ const b=Math.max(-5.2,h-0.25); return [[BASE,-5.2,'bed'],[-5.2,b,'rock'],[b,h,'soil']]; }
+  const out=[]; let lo=BASE;
+  for(const [k,hi] of LOW_B){ out.push([Math.min(lo,h),Math.min(hi,h),k]); lo=hi; }
+  return out;
+}
+const edges=[[],[],[],[]];
+for(let k=0;k<=GN;k++){ edges[0].push(k); edges[1].push(k*(GN+1)+GN); edges[2].push(GN*(GN+1)+(GN-k)); edges[3].push((GN-k)*(GN+1)); }
+const MAXQ=4*GN*7;
+const skPos=new Float32Array(MAXQ*18), skCol=new Float32Array(MAXQ*18);
+const skGeo=new THREE.BufferGeometry(); skGeo.setAttribute('position',new THREE.BufferAttribute(skPos,3)); skGeo.setAttribute('color',new THREE.BufferAttribute(skCol,3));
+const skMat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,side:THREE.DoubleSide});
+scene.add(new THREE.Mesh(skGeo,skMat));
+const swPos=new Float32Array(4*GN*18);
+const swGeo=new THREE.BufferGeometry(); swGeo.setAttribute('position',new THREE.BufferAttribute(swPos,3));
+const swMat=new THREE.MeshStandardMaterial({color:C('#2c5294'),transparent:true,opacity:0.6,side:THREE.DoubleSide,roughness:0.4});
+scene.add(new THREE.Mesh(swGeo,swMat));
+function quad(arr,o,ax,ay0,ay1,az,bx,by0,by1,bz){ arr.set([ax,ay0,az, bx,by0,bz, bx,by1,bz, ax,ay0,az, bx,by1,bz, ax,ay1,az],o); }
+function updateSkirt(){ return;
+  let q=0, w=0;
+  for(const idx of edges){
+    for(let k=0;k<idx.length-1;k++){
+      const a=idx[k], b=idx[k+1], plateau=F[a].m>0.5 && H[a]>1.5;
+      const ba=bands(plateau,H[a]), bb=bands(plateau,H[b]);
+      for(let j=0;j<ba.length;j++){
+        if(ba[j][1]-ba[j][0]<1e-3 && bb[j][1]-bb[j][0]<1e-3) continue;
+        quad(skPos,q*18,PX[a],ba[j][0],ba[j][1],PZ[a],PX[b],bb[j][0],bb[j][1],PZ[b]);
+        const c=SC[ba[j][2]]; for(let v=0;v<6;v++){ skCol[q*18+v*3]=c[0]; skCol[q*18+v*3+1]=c[1]; skCol[q*18+v*3+2]=c[2]; } q++;
+      }
+      if(H[a]<0||H[b]<0){ quad(swPos,w*18,PX[a],Math.min(H[a],0),0,PZ[a],PX[b],Math.min(H[b],0),0,PZ[b]); w++; }
+    }
+  }
+  skGeo.setDrawRange(0,q*6); skGeo.attributes.position.needsUpdate=true; skGeo.attributes.color.needsUpdate=true; skGeo.computeVertexNormals();
+  swGeo.setDrawRange(0,w*6); swGeo.attributes.position.needsUpdate=true; swGeo.computeVertexNormals();
+}
+
+/* ---- gold-leaf texture (箔目) ---- */
+function goldLeaf(base,seed){ const c=document.createElement('canvas'); c.width=c.height=256; const x=c.getContext('2d'); const R=rng(seed);
+  const s=32; for(let i=0;i<8;i++) for(let j=0;j<8;j++){ const v=R()*18-9; x.fillStyle=`rgb(${base[0]+v|0},${base[1]+v|0},${base[2]+v*0.6|0})`; x.fillRect(i*s,j*s,s,s); }
+  x.strokeStyle='rgba(120,86,20,.25)'; x.lineWidth=1; for(let k=0;k<=8;k++){ x.beginPath(); x.moveTo(k*s,0); x.lineTo(k*s,256); x.stroke(); x.beginPath(); x.moveTo(0,k*s); x.lineTo(256,k*s); x.stroke(); }
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.wrapS=t.wrapT=THREE.RepeatWrapping; return t; }
+
+/* ---- 金雲: golden clouds framing the scene ---- */
+const clouds=[];
+{
+  const tex=goldLeaf([222,186,100],9); tex.repeat.set(0.08,0.08);
+  const mat=new THREE.MeshStandardMaterial({map:tex,color:0xffffff,roughness:0.32,metalness:0.55,emissive:C('#4a3508'),emissiveIntensity:0.35});
+  const edge=new THREE.LineBasicMaterial({color:C('#8a6620'),transparent:true,opacity:0.7});
+  function cloudShape(len,seed){ const R=rng(seed), s=new THREE.Shape(); const n=Math.max(3,Math.round(len/7)); const step=len/n;
+    s.moveTo(-len/2,0);
+    for(let i=0;i<n;i++){ const x0=-len/2+i*step, hgt=2.2+R()*2.4; s.bezierCurveTo(x0,hgt*1.1,x0+step,hgt*1.1,x0+step,0.2*R()); }
+    s.bezierCurveTo(len/2+2.5,-0.6,len/2+2.5,-2.4,len/2-1,-2.6);
+    const m=Math.max(2,n-1), st2=(len-2)/m;
+    for(let i=0;i<m;i++){ const x0=len/2-1-i*st2; s.bezierCurveTo(x0,-3.6-R()*0.8,x0-st2,-3.6-R()*0.8,x0-st2,-2.6); }
+    s.bezierCurveTo(-len/2-2.2,-2.4,-len/2-2.2,-0.4,-len/2,0); return s; }
+  [[-66,15,-80,62,0.08],[54,19,-86,72,-0.05],[-90,12,8,52,Math.PI/2],[90,17,-18,62,-Math.PI/2+0.08],[-38,21,90,72,Math.PI+0.05],[62,13,82,56,Math.PI-0.1],[93,23,62,42,-Math.PI/2],[-88,24,-48,46,Math.PI/2]].forEach((p,i)=>{
+    const g=new THREE.ExtrudeGeometry(cloudShape(p[3],30+i),{depth:0.5,bevelEnabled:true,bevelThickness:0.2,bevelSize:0.25,bevelSegments:1,curveSegments:10}); g.rotateX(-Math.PI/2);
+    const m=new THREE.Mesh(g,mat); m.position.set(p[0],p[1],p[2]); m.rotation.y=p[4]; m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g,40),edge));
+    scene.add(m); clouds.push({m,x:p[0],z:p[2],i});
+  });
+}
+
+/* ============ era objects ============ */
+const LINE_C=C('#1f1a14'), CHAR=C('#1c1612'), FIRE=C('#ff6a1a'), GLOW=C('#e0a044');
+const ERAS=[]; const APP=0.1, DIE=0.1, DIEB=0.13;
+const state={xray:false,clouds:true};
+class Era{
+  constructor(o){
+    Object.assign(this,{born:-Infinity,died:null,death:null,label:null,xray:null,emit:[],center:null,radius:5,tick:null,seed:Math.random()*10,scorch:null,ghost:false,glowY:null},o);
+    this.roots=[]; this.mats=[]; this.cache={}; this.cur=null;
+    this.lineMat=new THREE.LineBasicMaterial({color:LINE_C,transparent:true,opacity:0,depthWrite:false});
+    this.tb=tOf(this.born); if(this.tb!==-Infinity){ const s=Math.ceil(this.tb-1e-9); if(s-this.tb<APP) this.tb=s-APP; }
+    this.td=this.died==null?null:tOf(this.died); if(this.td!=null){ const s=Math.ceil(this.td-1e-9); const w=this.death==='burn'?DIEB:DIE; if(s-this.td<w && s>this.td) this.td=s-w; }
+    this.ts=this.scorch==null?null:tOf(this.scorch);
+    ERAS.push(this);
+  }
+  at(y){ let r=this.roots.find(r=>Math.abs(r.userData.base-y)<1e-6); if(!r){ r=new THREE.Group(); r.position.y=y; r.userData.base=y; r.visible=false; scene.add(r); this.roots.push(r);} this.cur=r; return this; }
+  mat(hex,o={}){ const key=[hex,o.rough,o.metal,o.k,o.emissive].join('|'); if(this.cache[key]) return this.cache[key];
+    const m=new THREE.MeshStandardMaterial({color:C(hex),roughness:o.rough??0.85,metalness:o.metal??0,map:o.map||null});
+    if(o.emissive){ m.emissive=C(o.emissive); m.emissiveIntensity=o.ei??1; }
+    this.mats.push({m,base:m.color.clone(),baseEm:m.emissive.clone(),baseEi:m.emissiveIntensity}); this.cache[key]=m; return m; }
+  place(mesh,x,y,z,o={}){
+    if(o.parent) mesh.position.set(x,y,z); else mesh.position.set(x,y-this.cur.position.y,z);
+    if(o.ry) mesh.rotation.y=o.ry;
+    mesh.castShadow=o.shadow!==false; mesh.receiveShadow=true; (o.parent||this.cur).add(mesh);
+    if(o.lines!==false) mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,30),this.lineMat));
+    return mesh; }
+  geo(g,hex,x,y,z,o={}){ return this.place(new THREE.Mesh(g,this.mat(hex,o)),x,y,z,o); }
+  geoM(g,mats,x,y,z,o={}){ return this.place(new THREE.Mesh(g,mats),x,y,z,o); }
+  box(w,h,d,hex,x,y,z,o={}){ const g=new THREE.BoxGeometry(w,h,d); g.translate(0,h/2,0); return this.geo(g,hex,x,y,z,o); }
+  inst(geom,hex,list,o={}){
+    const m=new THREE.InstancedMesh(geom,this.mat(hex,o),list.length), d=new THREE.Object3D(), by=this.cur.position.y;
+    list.forEach((p,i)=>{ d.position.set(p[0],p[1]-by,p[2]); d.scale.set(p[3],p[4],p[5]); d.rotation.set(0,p[6]||0,0); d.updateMatrix(); m.setMatrixAt(i,d.matrix); if(p[7]) m.setColorAt(i,C(p[7])); });
+    if(m.instanceColor) m.instanceColor.needsUpdate=true;
+    m.castShadow=o.shadow!==false; m.receiveShadow=true; this.cur.add(m); return m; }
+  group(x,y,z){ const g=new THREE.Group(); g.position.set(x,y-this.cur.position.y,z); this.cur.add(g); return g; }
+}
+
+/* ---- geometry helpers ---- */
+function frustumGeo(w,d,h,ix,iz){ const g=new THREE.BoxGeometry(w,h,d); const p=g.attributes.position;
+  for(let i=0;i<p.count;i++){ if(p.getY(i)>0){ p.setX(i,Math.sign(p.getX(i))*Math.max(0.001,w/2-ix)); p.setZ(i,Math.sign(p.getZ(i))*Math.max(0.001,d/2-iz)); } }
+  g.translate(0,h/2,0); g.computeVertexNormals(); return g; }
+function rectPath(w,d,hole){ const s=hole?new THREE.Path():new THREE.Shape(); s.moveTo(-w/2,-d/2); s.lineTo(w/2,-d/2); s.lineTo(w/2,d/2); s.lineTo(-w/2,d/2); s.lineTo(-w/2,-d/2); return s; }
+function ringFlat(ow,od,iw,id){ const s=rectPath(ow,od); s.holes.push(rectPath(iw,id,true)); const g=new THREE.ShapeGeometry(s); g.rotateX(-Math.PI/2); return g; }
+function ringSolid(ow,od,iw,id,h){ const s=rectPath(ow,od); s.holes.push(rectPath(iw,id,true)); const g=new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:false}); g.rotateX(-Math.PI/2); return g; }
+function triShape(bw,gh,right){ const s=new THREE.Shape(); if(right){ s.moveTo(-bw/2,0); s.lineTo(bw/2,0); s.lineTo(bw/2,gh); } else { s.moveTo(-bw/2,0); s.lineTo(bw/2,0); s.lineTo(0,gh); } s.closePath(); return s; }
+function prism(bw,gh,len,right){ const g=new THREE.ExtrudeGeometry(triShape(bw,gh,right),{depth:len,bevelEnabled:false}); g.translate(0,0,-len/2); return g; }
+function stoneTex(kind){ const c=document.createElement('canvas'); c.width=256; c.height=128; const x=c.getContext('2d'); const R=rng(kind==='nozura'?7:3);
+  if(kind==='nozura'){ x.fillStyle='#5f5a52'; x.fillRect(0,0,256,128); for(let i=0;i<170;i++){ const g=130+R()*55|0; x.fillStyle=`rgb(${g},${g-5},${g-13})`; x.beginPath(); x.ellipse(R()*256,R()*128,6+R()*13,4+R()*8,R()*3,0,7); x.fill(); } }
+  else { x.fillStyle='#8a857b'; x.fillRect(0,0,256,128); let y=0; while(y<128){ const h=11+R()*7; let xx=-R()*20; while(xx<256){ const w=18+R()*22; const g=176+R()*38|0; x.fillStyle=`rgb(${g},${g-4},${g-12})`; x.fillRect(xx+1,y+1,w-2,h-2); xx+=w; } y+=h; } }
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=4; return t; }
+const TEX={nozura:stoneTex('nozura'),kiri:stoneTex('kiri')};
+function stoneMat(E,kind,rx,ry){ const key='st-'+kind+'-'+rx.toFixed(1)+'-'+ry.toFixed(1); if(E.cache[key]) return E.cache[key];
+  const t=TEX[kind].clone(); t.needsUpdate=true; t.repeat.set(rx,ry); const m=E.mat('#ffffff',{map:t,k:key,rough:0.95}); E.cache[key]=m; return m; }
+function platform(E,x,y,z,w,d,h,inset,kind,topHex){ const s=stoneMat(E,kind,Math.max(w,d)/3.2,Math.max(0.5,h/1.6)); const tp=E.mat(topHex); return E.geoM(frustumGeo(w,d,h,inset,inset),[s,s,tp,s,s,s],x,y,z); }
+function hall(E,x,y,z,w,d,wh,rh,wall,roof,o={}){
+  let yy=y;
+  if(o.base){ E.geo(frustumGeo(w+0.5,d+0.5,o.base,0.08,0.08),o.baseCol||'#b8b2a4',x,yy,z); yy+=o.base; }
+  E.box(w,wh,d,wall,x,yy,z);
+  const ov=o.ov??0.6, rw=w+ov, rd=d+ov;
+  const g=d>w? frustumGeo(rw,rd,rh,rw/2-0.05,o.hip?rd*0.3:rd*0.18) : frustumGeo(rw,rd,rh,o.hip?rw*0.3:rw*0.18,rd/2-0.05);
+  E.geo(g,roof,x,yy+wh-0.02,z,{rough:0.7});
+  if(o.trim) E.box(rw+0.04,0.06,rd+0.04,o.trim,x,yy+wh-0.03,z,{lines:false,metal:0.6,rough:0.35});
+  return yy+wh+rh;
+}
+function gable(E,x,y,z,bw,gh,sgn,roof,wall){
+  const g1=new THREE.ExtrudeGeometry(triShape(bw,gh),{depth:0.7,bevelEnabled:false}); g1.translate(0,0,-0.7);
+  E.geo(g1,roof,x,y,z,{ry:sgn>0?0:Math.PI,rough:0.7});
+  const g2=new THREE.ExtrudeGeometry(triShape(bw*0.76,gh*0.72),{depth:0.03,bevelEnabled:false});
+  E.geo(g2,wall,x,y+0.03,z+sgn*0.02,{ry:sgn>0?0:Math.PI,lines:false});
+}
+const UNIT_BOX=new THREE.BoxGeometry(1,1,1);
+function buildKeep(E,cx,y0,cz,S){
+  let y=y0; const T=S.tiers, wins=[];
+  for(let i=0;i<T.length;i++){
+    const [w,d,h]=T[i], top=i===T.length-1, wc=top&&S.topWall?S.topWall:S.wall;
+    E.box(w,h,d,wc,cx,y,cz);
+    const wy=y+h*0.55, nx=Math.max(2,Math.round(w/0.55)), nz=Math.max(2,Math.round(d/0.55));
+    for(let k=0;k<nx;k++){ const x=cx-w/2+(k+0.5)*w/nx; wins.push([x,wy,cz+d/2+0.012,0.2,0.26,0.03],[x,wy,cz-d/2-0.012,0.2,0.26,0.03]); }
+    for(let k=0;k<nz;k++){ const z=cz-d/2+(k+0.5)*d/nz; wins.push([cx+w/2+0.012,wy,z,0.03,0.26,0.2],[cx-w/2-0.012,wy,z,0.03,0.26,0.2]); }
+    const rw=w+0.8, rd=d+0.8; let rh,ix,iz;
+    if(!top){ const [nw,nd]=T[i+1]; rh=0.42; ix=Math.max(0.05,(rw-nw)/2*0.92); iz=Math.max(0.05,(rd-nd)/2*0.92); }
+    else { rh=0.85; ix=rw*0.2; iz=rd/2-0.06; }
+    const ry=y+h-0.04;
+    E.geo(frustumGeo(rw,rd,rh,ix,iz),S.roof,cx,ry,cz,{rough:0.6});
+    if(S.trim) E.box(rw+0.05,0.07,rd+0.05,S.trim,cx,ry,cz,{lines:false,metal:0.7,rough:0.3});
+    if(!top&&(i===0||i===2)) for(const sg of [1,-1]) gable(E,cx,ry+rh*0.12,cz+sg*(rd/2-0.32),rw*0.36,rh*1.55,sg,S.roof,wc);
+    if(top){
+      const rl=rw-2*ix; for(const sg of [1,-1]) E.box(0.14,0.32,0.14,S.shachi,cx+sg*rl/2,ry+rh,cz,{lines:false,metal:0.8,rough:0.25});
+      if(S.balcony){ E.box(w+0.5,0.07,0.06,S.balcony,cx,y+0.32,cz+d/2+0.25,{lines:false}); E.box(w+0.5,0.07,0.06,S.balcony,cx,y+0.32,cz-d/2-0.25,{lines:false}); E.box(0.06,0.07,d+0.5,S.balcony,cx+w/2+0.25,y+0.32,cz,{lines:false}); E.box(0.06,0.07,d+0.5,S.balcony,cx-w/2-0.25,y+0.32,cz,{lines:false}); }
+      if(S.goldPanels) for(const sg of [1,-1]) for(let k=0;k<3;k++) E.box(0.3,0.26,0.03,'#d9b24a',cx-w/3+k*w/3,y+h*0.12,cz+sg*(d/2+0.02),{lines:false,metal:0.8,rough:0.3});
+    } else y=y+h+rh*0.55;
+  }
+  E.inst(UNIT_BOX,S.win||'#1b1918',wins,{shadow:false});
+}
+const SPEC_TOYO={wall:'#221f1d',roof:'#2d2c2e',trim:'#d6a936',shachi:'#e0b43c',balcony:'#7a2a1f',goldPanels:true,win:'#8a6a2c',tiers:[[3.4,3.0,1.2],[2.9,2.5,1.0],[2.4,2.1,0.95],[1.95,1.7,0.9],[1.55,1.3,1.0]]};
+const SPEC_TOKU={wall:'#f0ede4',roof:'#3d4550',trim:null,shachi:'#d9b24a',tiers:[[3.8,3.4,1.3],[3.25,2.85,1.1],[2.7,2.35,1.0],[2.2,1.9,0.95],[1.7,1.45,1.0]]};
+const SPEC_1931={wall:'#f2f0e9',topWall:'#1e1d1d',roof:'#6ea596',trim:'#d6b04a',shachi:'#e2b83e',balcony:'#1e1d1d',goldPanels:true,tiers:[[3.6,3.2,1.3],[3.1,2.7,1.1],[2.6,2.25,1.0],[2.1,1.8,0.95],[1.7,1.4,1.05]]};
+const turret=(wall,roof)=>({wall,roof,shachi:'#8c8c8c',tiers:[[1.5,1.1,0.7],[1.05,0.8,0.6]]});
+function boat(E,x,y,z,o={}){
+  const g=E.group(x,y,z);
+  E.box(o.len||1.6,0.22,o.wid||0.45,o.hull||'#4a3524',0,0,0,{parent:g});
+  if(o.sail){ E.box(0.05,1.2,0.05,'#5c4633',0,0.2,0,{parent:g,lines:false}); E.box(0.04,0.8,o.sailW||0.9,'#ece6d6',0,0.6,0,{parent:g,lines:false,ry:Math.PI/2}); }
+  return g;
+}
+const WATER='#2c5294', WOPT={lines:false,shadow:false,rough:0.4,metal:0};
+
+/* ---------- 列島（同じ縮尺・外側に。関東の箱の中は関東の地形が受け持つ） ---------- */
+const Y=()=>yearOf(T);
+function stopAnim(idx,now,ref,dur){ if(T<idx-0.02){ return [0,null]; } if(T>idx+0.02) return [1,ref]; if(ref==null) ref=now; return [clamp((now-ref)/dur,0,1),ref]; }
+const JP_LL=[
+ // 北海道
+ [[45.52,141.94],[45.35,142.20],[45.0,142.60],[44.70,142.95],[44.35,143.35],[44.10,143.95],[44.0,144.30],[43.92,144.80],[44.07,145.10],[44.35,145.32],[43.95,145.15],[43.60,145.30],[43.38,145.80],[43.27,145.55],[43.15,145.30],[43.0,144.90],[42.98,144.40],[42.93,144.0],[42.60,143.55],[42.30,143.30],[41.93,143.25],[42.15,142.90],[42.30,142.55],[42.50,142.10],[42.63,141.65],[42.60,141.60],[42.53,141.32],[42.45,141.10],[42.38,141.04],[42.31,141.00],[42.33,140.95],[42.345,140.925],[42.352,140.96],[42.350,141.005],[42.362,141.002],[42.368,140.97],[42.372,140.945],[42.385,140.925],[42.40,140.90],[42.43,140.875],[42.46,140.85],[42.49,140.80],[42.505,140.78],[42.535,140.772],[42.57,140.71],[42.575,140.60],[42.57,140.50],[42.57,140.435],[42.54,140.40],[42.50,140.37],[42.40,140.33],[42.30,140.30],[42.25,140.28],[42.17,140.35],[42.12,140.45],[42.10,140.55],[42.11,140.65],[42.07,140.75],[42.03,140.82],[41.97,140.93],[41.90,141.03],[41.82,141.15],[41.78,141.10],[41.75,140.95],[41.77,140.80],[41.77,140.73],[41.82,140.65],[41.75,140.45],[41.60,140.25],[41.42,140.10],[41.70,139.95],[41.87,140.12],[42.20,139.85],[42.60,139.85],[42.98,140.50],[43.37,140.47],[43.20,141.00],[43.25,141.35],[43.70,141.35],[43.95,141.63],[44.40,141.70],[44.90,141.75],[45.20,141.65],[45.42,141.67]],
+ // 本州
+ [[41.53,140.91],[41.43,141.46],[40.80,141.40],[40.50,141.53],[40.20,141.80],[39.65,142.07],[39.25,141.90],[38.90,141.70],[38.43,141.50],[38.35,141.20],[38.25,141.05],[37.90,140.95],[37.40,141.03],[36.90,140.80],[36.45,140.62],[36.30,140.58],[35.74,140.87],[35.55,140.47],[35.25,140.40],[34.92,139.95],[35.10,139.83],[35.31,139.79],[35.60,140.10],[35.69,139.98],[35.62,139.75],[35.45,139.65],[35.20,139.65],[35.14,139.62],[35.30,139.50],[35.25,139.15],[35.08,139.08],[34.65,138.98],[34.60,138.85],[34.95,138.78],[35.10,138.85],[34.95,138.55],[34.62,138.22],[34.70,137.75],[34.58,137.03],[34.72,137.25],[34.85,137.05],[34.73,136.87],[35.05,136.85],[34.75,136.55],[34.45,136.85],[34.25,136.80],[33.95,136.25],[33.45,135.80],[33.70,135.35],[34.10,135.10],[34.35,135.25],[34.65,135.42],[34.68,135.20],[34.65,134.70],[34.60,134.15],[34.48,133.85],[34.40,133.40],[34.30,132.90],[34.35,132.45],[34.10,132.25],[33.95,131.95],[34.00,131.30],[33.95,130.95],[34.30,130.90],[34.65,131.60],[34.90,132.05],[35.40,132.65],[35.55,133.20],[35.50,133.70],[35.55,134.30],[35.65,134.90],[35.75,135.20],[35.55,135.50],[35.75,135.85],[35.95,135.95],[36.30,136.10],[36.55,136.55],[37.10,136.70],[37.40,136.80],[37.50,137.35],[37.10,137.05],[36.80,137.00],[36.75,137.40],[37.00,138.00],[37.35,138.55],[37.92,139.05],[38.20,139.40],[38.60,139.55],[39.10,139.88],[39.70,140.05],[39.95,139.75],[40.20,140.00],[40.60,139.90],[41.00,140.25],[41.20,140.35],[40.85,140.75],[41.25,140.95]],
+ // 四国
+ [[34.25,133.60],[34.35,134.10],[34.20,134.60],[33.85,134.75],[33.40,134.30],[33.25,134.18],[33.55,133.80],[33.50,133.55],[33.20,133.25],[32.73,133.02],[33.00,132.50],[33.40,132.40],[33.85,132.70],[34.05,133.00]],
+ // 天草（模式）
+ [[32.55,130.15],[32.56,130.30],[32.52,130.45],[32.40,130.40],[32.20,130.30],[32.20,130.05],[32.45,130.05]],
+ // 九州
+ [[33.95,130.95],[33.75,131.05],[33.60,131.65],[33.25,131.70],[32.95,132.05],[32.40,131.65],[31.90,131.48],[31.35,131.35],[31.00,131.05],[31.00,130.66],[31.25,130.65],[31.55,130.55],[31.20,130.25],[31.40,130.15],[31.85,130.20],[32.20,130.40],[32.50,130.60],[32.55,130.62],[32.58,130.45],[32.65,130.50],[32.70,130.62],[32.77,130.60],[32.80,130.57],[32.90,130.52],[32.93,130.45],[32.98,130.43],[33.03,130.43],[33.10,130.42],[33.15,130.40],[33.18,130.38],[33.15,130.36],[33.17,130.33],[33.18,130.28],[33.17,130.15],[33.10,130.10],[33.02,130.18],[32.95,130.17],[32.87,130.12],[32.86,130.20],[32.83,130.27],[32.78,130.37],[32.70,130.37],[32.63,130.30],[32.60,130.20],[32.65,130.12],[32.72,130.13],[32.70,129.95],[32.72,129.87],[32.58,129.75],[32.80,129.70],[33.15,129.70],[33.35,129.50],[33.50,129.95],[33.60,130.35],[33.90,130.60]],
+];
+const JP=JP_LL.map(P=>P.map(p=>LL(...p)));
+const JPC={x:-205,z:-268}, JS=1800, JN=360;
+const jcl=h=>{ const a=C(h); return [a.r,a.g,a.b]; }, cP=jcl('#a3bd78'), cF=jcl('#5f8a55'), cM=jcl('#46694c'), cB=jcl('#a99a76');
+function jpHC(x,z){ let sd=1e9; for(const P of JP){ const s=sdPoly(x,z,P); if(s<sd) sd=s; } sd+=3*fbm(x*0.02,z*0.02);
+  if(sd>0) return [0.45-1.65*ss(0,8,sd)-0.02*Math.min(sd,200),cB];   // 海岸はなだらかに（水ぎわが階段状にならないように）
+  const nn=fbm(x*0.006+3,z*0.006-1)+0.5, nb=fbm(x*0.03,z*0.03), h=0.45+ss(0,45,-sd)*(0.6+3.0*nn*nn)+0.15*nb; const k=ss(0.9,1.8,h), m=ss(2.4,3.6,h);
+  let c=[cP[0]+(cF[0]-cP[0])*k,cP[1]+(cF[1]-cP[1])*k,cP[2]+(cF[2]-cP[2])*k]; c=[c[0]+(cM[0]-c[0])*m,c[1]+(cM[1]-c[1])*m,c[2]+(cM[2]-c[2])*m]; return [h,c]; }
+/* ---------- 寄る場所の地形（噴火湾・有明海）。いまの海岸線は手描きの模式。lowは縄文海進で海が入る低地（仮置き） ---------- */
+const PATCHES=[
+ {id:'funka',c:[42.22,140.62],R:65,
+  land:[[43.3,139.8],[43.3,141.9],[42.62,141.9],[42.60,141.60],[42.53,141.32],[42.45,141.10],[42.38,141.04],[42.31,141.00],[42.33,140.95],[42.345,140.925],[42.352,140.96],[42.350,141.005],[42.362,141.002],[42.368,140.97],[42.372,140.945],[42.385,140.925],[42.40,140.90],[42.43,140.875],[42.46,140.85],[42.49,140.80],[42.505,140.78],[42.535,140.772],[42.57,140.71],[42.575,140.60],[42.57,140.50],[42.57,140.435],[42.54,140.40],[42.50,140.37],[42.40,140.33],[42.30,140.30],[42.25,140.28],[42.17,140.35],[42.12,140.45],[42.10,140.55],[42.11,140.65],[42.07,140.75],[42.03,140.82],[41.97,140.93],[41.90,141.03],[41.82,141.15],[41.78,141.10],[41.75,140.95],[41.77,140.80],[41.77,140.73],[41.82,140.65],[41.75,140.45],[41.66,140.30],[41.80,140.10],[41.95,140.12],[42.10,140.00],[42.25,139.90],[42.55,139.90],[42.72,140.05],[42.78,140.25],[42.86,140.20],[43.3,140.3]],
+  low:[[[42.386,140.900],[42.399,140.902],[42.401,140.925],[42.396,140.942],[42.389,140.925]],[[42.530,140.770],[42.540,140.780],[42.552,140.789],[42.550,140.799],[42.535,140.790]]]},   // 北黄金の南の谷（気仙川）・入江貝塚の東（板谷川）
+ {id:'ariake',c:[32.98,130.50],R:65,
+  land:[[33.90,129.50],[33.90,131.70],[31.90,131.70],[31.90,130.80],[32.55,130.62],[32.58,130.45],[32.65,130.50],[32.70,130.62],[32.77,130.60],[32.80,130.57],[32.90,130.52],[32.93,130.45],[32.98,130.43],[33.03,130.43],[33.10,130.42],[33.15,130.40],[33.18,130.38],[33.15,130.36],[33.17,130.33],[33.18,130.28],[33.17,130.15],[33.10,130.10],[33.02,130.18],[32.95,130.17],[32.87,130.12],[32.86,130.20],[32.83,130.27],[32.78,130.37],[32.70,130.37],[32.63,130.30],[32.60,130.20],[32.65,130.12],[32.72,130.13],[32.70,129.95],[32.72,129.87],[32.58,129.75],[32.80,129.70],[33.00,129.65],[33.20,129.60],[33.40,129.55]],
+  isl:[[[32.55,130.15],[32.56,130.30],[32.52,130.45],[32.40,130.40],[32.35,130.15],[32.45,130.05]]],
+  low:[[[33.17,130.13],[33.23,130.16],[33.27,130.22],[33.285,130.27],[33.296,130.31],[33.275,130.36],[33.255,130.40],[33.245,130.43],[33.20,130.45],[33.15,130.43],[33.15,130.36],[33.18,130.28]]]},   // 佐賀平野＝国道34号線付近・筑後平野＝城島町付近まで（下山1994）
+].map(p=>{ const [x,z]=LL(...p.c); return Object.assign(p,{cx:Math.round(x/5)*5,cz:Math.round(z/5)*5,LAND:p.land.map(q=>LL(...q)),ISL:(p.isl||[]).map(P=>P.map(q=>LL(...q))),LOW:p.low.map(P=>P.map(q=>LL(...q)))}); });
+function patchAt(x,z){ for(const p of PATCHES) if(Math.abs(x-p.cx)<p.R&&Math.abs(z-p.cz)<p.R) return p; return null; }
+function patchHC(p,x,z){ let sd=1e9; for(const P of JP){ const s=sdPoly(x,z,P); if(s<sd) sd=s; } sd+=0.8*fbm(x*0.15+3,z*0.15-2)+1.5*fbm(x*0.02,z*0.02); let h,c,lw=0;   // 海岸線は列島の地図と同じ線（箱のふちで四角くずれない）
+  if(sd>0){ h=0.42-1.42*ss(0,3.5,sd)-0.03*Math.min(sd,60); c=cB; }   // 海岸はなだらかに（水ぎわがギザギザにならないように）
+  else { const nn=fbm(x*0.03+3,z*0.03-1)+0.5, nb=fbm(x*0.12,z*0.12); h=0.42+ss(0,14,-sd)*(0.4+2.6*nn*nn)+0.1*nb;
+    for(const P of p.LOW){ lw=Math.max(lw,ss(1.5,-1.5,sdPoly(x,z,P)+1.0*fbm(x*0.2,z*0.2))); } h+=(0.08+0.05*nb-h)*lw;
+    const k=ss(0.9,1.8,h), m=ss(2.4,3.6,h); c=[cP[0]+(cF[0]-cP[0])*k,cP[1]+(cF[1]-cP[1])*k,cP[2]+(cF[2]-cP[2])*k]; c=[c[0]+(cM[0]-c[0])*m,c[1]+(cM[1]-c[1])*m,c[2]+(cM[2]-c[2])*m]; }
+  const w=ss(p.R-14,p.R,Math.max(Math.abs(x-p.cx),Math.abs(z-p.cz)));   // ふちは列島の地形へなじませる
+  if(w>0){ const [hj,cj]=jpHC(x,z); h+=(hj-h)*w; c=c.map((v,i)=>v+(cj[i]-v)*w); lw*=1-w; }
+  return [h,c,lw]; }
+function heightAny(x,z,def){ if(Math.abs(x)<88&&Math.abs(z)<88) return heightAt(x,z); const p=patchAt(x,z); return p?patchHC(p,x,z)[0]:def; }
+const JH=new Float32Array((JN+1)*(JN+1));   // 列島の地形の高さ（穴をあける前）。赤い線をこの水ぎわからとる
+const japan=(()=>{ const g=new THREE.PlaneGeometry(JS,JS,JN,JN); g.rotateX(-Math.PI/2); const p=g.attributes.position, n=p.count, col=new Float32Array(n*3);
+  for(let i=0;i<n;i++){ const x=p.getX(i)+JPC.x, z=p.getZ(i)+JPC.z; let h, c;
+    const ax=Math.max(Math.abs(x),Math.abs(z)), pp=PATCHES.find(q=>Math.max(Math.abs(x-q.cx),Math.abs(z-q.cz))<q.R), ap=pp?Math.max(Math.abs(x-pp.cx),Math.abs(z-pp.cz)):1e9;
+    const hc=jpHC(x,z); JH[i]=hc[0];
+    if(ax<84||(pp&&ap<pp.R-6)){ h=-8; c=cB; } else { [h,c]=hc; if(ax<88||pp) h-=2.5; }   // ふちの一段は緩く下げて、関東の地形の下にもぐらせる
+    p.setY(i,h); col[i*3]=c[0]; col[i*3+1]=c[1]; col[i*3+2]=c[2]; }
+  g.setAttribute('color',new THREE.BufferAttribute(col,3)); g.computeVertexNormals();
+  const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.97})); m.position.set(JPC.x,0,JPC.z); m.receiveShadow=false; scene.add(m); return m; })();
+PATCHES.forEach(p=>{ const N=Math.round(p.R*2/0.55); p.N=N; const g=new THREE.PlaneGeometry(p.R*2,p.R*2,N,N); g.rotateX(-Math.PI/2); const a=g.attributes.position, col=new Float32Array(a.count*3);
+  for(let i=0;i<a.count;i++){ const x=a.getX(i)+p.cx, z=a.getZ(i)+p.cz, [h,c]=patchHC(p,x,z); a.setY(i,h); col[i*3]=c[0]; col[i*3+1]=c[1]; col[i*3+2]=c[2]; }
+  g.setAttribute('color',new THREE.BufferAttribute(col,3)); g.computeVertexNormals(); const m=new THREE.Mesh(g,terrainMat); m.position.set(p.cx,0,p.cz); m.receiveShadow=true; scene.add(m); p.mesh=m; });
+/* 列島の縄文の入り江（模式・§4）。関東は関東の地形が受け持つ */
+const JBAY_LL=[
+ [[43.0,144.30],[43.10,144.25],[43.22,144.32],[43.22,144.48],[43.12,144.56],[43.0,144.50]],              // 古釧路湾
+ [[43.17,141.30],[43.27,141.38],[43.25,141.56],[43.12,141.50]],                                       // 古石狩湾
+ [[42.62,141.60],[42.70,141.65],[42.79,141.69],[42.79,141.74],[42.66,141.73],[42.60,141.71]],          // 美々（太平洋側から）
+ [[38.0,140.92],[38.30,141.02],[38.34,141.10],[38.20,141.08],[37.98,140.99]],                         // 仙台湾
+ [[37.93,139.05],[37.80,138.94],[37.64,138.86],[37.65,138.96],[37.80,139.10],[37.96,139.20]],          // 越後平野
+ [[35.03,136.74],[35.19,136.87],[35.22,136.78],[35.27,136.72],[35.32,136.70],[35.36,136.61],[35.15,136.60],[35.02,136.70]],  // 濃尾
+ [[34.62,135.54],[34.78,135.55],[34.81,135.63],[34.68,135.67],[34.60,135.61]],                         // 河内湾
+ [[34.55,133.80],[34.66,133.85],[34.67,134.03],[34.58,134.06],[34.55,133.95]],                         // 児島湾の奥
+ Object.assign([[33.15,130.12],[33.28,130.18],[33.31,130.40],[33.26,130.56],[33.15,130.50]],{skipRed:1}),     // 有明海の奥
+];
+const JBAY_MAT=new THREE.MeshBasicMaterial({color:0x6a89b6,transparent:true,opacity:0,depthWrite:false,depthTest:false,toneMapped:false});
+JBAY_LL.forEach(P=>{ let pts=P.map(p=>LL(...p)); const cx=pts.reduce((a,q)=>a+q[0],0)/pts.length, cz=pts.reduce((a,q)=>a+q[1],0)/pts.length; pts=pts.map(([x,z])=>[cx+(x-cx)*2.2,cz+(z-cz)*2.2]); const s=new THREE.Shape(); pts.forEach(([x,z],i)=>i?s.lineTo(x,-z):s.moveTo(x,-z)); const g=new THREE.ShapeGeometry(s); g.rotateX(-Math.PI/2); const m=new THREE.Mesh(g,JBAY_MAT); m.position.y=4; m.renderOrder=6; scene.add(m); });
+/* いまの関東の海岸線（白い細線・海が満ちても見える） */
+function ribbon(P,mat,yo){ const pts=[]; for(let i=0;i<P.length-1;i++){ const [ax,az]=P[i],[bx,bz]=P[i+1], n=Math.max(2,Math.ceil(Math.hypot(bx-ax,bz-az)*1.5)); for(let k=0;k<n;k++){ const u=k/n; pts.push([ax+(bx-ax)*u,az+(bz-az)*u]); } } pts.push(P[P.length-1]);
+  const Cn=pts.map((p,i)=>{ const a=pts[Math.max(0,i-1)], b=pts[Math.min(pts.length-1,i+1)], dx=b[0]-a[0], dz=b[1]-a[1], L=Math.hypot(dx,dz)||1; return [p[0],yo,p[1],-dz/L,dx/L]; });
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(new Float32Array(Cn.length*6),3));
+  const idx=[]; for(let i=0;i<Cn.length-1;i++){ const a=i*2; idx.push(a,a+1,a+2,a+1,a+3,a+2); } g.setIndex(idx);
+  const m=new THREE.Mesh(g,mat); m.frustumCulled=false; m.renderOrder=4; scene.add(m);
+  return {g,m,n:idx.length,lastW:-1,set(w){ if(Math.abs(w-this.lastW)<1e-3) return; this.lastW=w; const a=g.attributes.position.array; Cn.forEach(([x,y,z,nx,nz],i)=>{ a.set([x+nx*w,y,z+nz*w,x-nx*w,y,z-nz*w],i*6); }); g.attributes.position.needsUpdate=true; }}; }
+const COAST=ribbon(COAST_LL.map(p=>LL(...p)),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.85,depthWrite:false,toneMapped:false,side:THREE.DoubleSide}),0.3);
+/* 貝塚の点（同じ白・名札は2つだけ）。🔵＝海がいちばん奥まで来たころ／🟤＝海が引いたあと／🗾＝列島 */
+const DOTS=[
+ // 🔵 関東24点＝SNS絵所「素材メモ_縄文海進_貝塚の点_太宰府へ.md」本表（2026-10-02・公式座標7／住所から目安17）
+ ...[['寺西貝塚',36.22472,139.65555],['篠山貝塚',36.23993,139.65420],['原町西貝塚',36.17446,139.70785],['木津内貝塚',36.05661,139.79021],['花積貝塚',35.96722,139.71472],
+   ['小貝戸貝塚',36.00281,139.62851],['関山貝塚',35.98852,139.64734],['黒浜貝塚',35.98713,139.67561],['桜山貝塚',35.98047,139.70862],['柏崎貝塚',35.93476,139.70059],['黒谷貝塚',35.92035,139.73036],
+   ['五味貝戸貝塚',35.90788,139.58121],['側ヶ谷戸貝塚',35.89206,139.60120],['大戸貝塚',35.85877,139.63916],['小谷場貝塚',35.84718,139.67677],['上福岡貝塚',35.88103,139.52377],['水子貝塚',35.84540,139.56150],
+   ['居木橋貝塚',35.61777,139.72681],['本郷貝塚',35.96221,139.83066],['幸田貝塚',35.84604,139.92384],['飛ノ台貝塚',35.71056,139.97417],['取掛西貝塚',35.71637,140.01244],['上座貝塚',35.72124,140.15704],['陸平貝塚',36.01763,140.34860]].map(([n,la,lo])=>({n,ll:[la,lo],k:'b'})),
+ // 噴火湾14点＝SNS絵所「素材メモ_縄文海進_北海道九州_太宰府へ.md」本表（縄文前期が登録された貝塚・全部公式データ）
+ ...[['北黄金貝塚',42.40203,140.91060],['北黄金貝塚C地点',42.40611,140.90833],['若生貝塚',42.50195,140.81363],['有珠6遺跡',42.51415,140.79434],['ポロチャシ南尾根貝塚',42.50832,140.78789],['入江貝塚',42.54255,140.77458],['静狩貝塚',42.57938,140.42865],
+   ['絵鞆貝塚',42.33944,140.95056],['エンルム遺跡',42.33802,140.93216],['陣屋1遺跡',42.36911,140.94802],['幌萌遺跡',42.36641,140.96378],['本輪西遺跡',42.36079,140.97585],['本輪西2遺跡',42.36437,140.98881],['中島町遺跡',42.35419,141.00719]].map(([n,la,lo])=>({n,ll:[la,lo],k:'f'})),
+ // 有明海10点＝同メモ本表の早期〜前期（中期以降の4点は入れない）
+ ...[['東名遺跡',33.29415,130.30870],['二川貝塚',33.09223,130.46699],['腹赤貝塚',32.91916,130.47976],['尾田貝塚',32.88309,130.59429],['川戸貝塚',32.79013,130.64062],['カキワラ貝塚',32.74946,130.76710],['轟貝塚',32.67978,130.64089],['曽畑貝塚',32.68223,130.68438],['際崎貝塚',32.61258,130.47004],['前島貝塚',32.52362,130.42291]].map(([n,la,lo])=>({n,ll:[la,lo],k:'a'})),
+ {n:'加曽利貝塚',ll:[35.62402,140.16538],k:'k'},{n:'中里貝塚',ll:[35.748,139.745],k:'k'},{n:'大森貝塚',ll:[35.59571,139.73102],k:'o'},
+ {n:'東釧路貝塚',ll:[42.99,144.41],k:'j'},{n:'美々貝塚',ll:[42.78,141.70],k:'j'},{n:'金堀貝塚',ll:[38.31,141.00],k:'j'},{n:'大曲輪貝塚',ll:[35.123,136.935],k:'j'},{n:'彦崎貝塚',ll:[34.555,133.88],k:'j'},
+].map((d,i)=>{ const [x,z]=LL(...d.ll); let xx=x, zz=z; if(d.k==='b'){ let h=heightAt(xx,zz); for(let t=0;t<14&&h<0.55;t++){ let bx=xx,bz=zz,bh=h; for(let q=0;q<8;q++){ const x2=xx+Math.cos(q*Math.PI/4)*0.35, z2=zz+Math.sin(q*Math.PI/4)*0.35, h2=heightAt(x2,z2); if(h2>bh){ bh=h2; bx=x2; bz=z2; } } xx=bx; zz=bz; h=bh; } }   /* 模式の入り江に落ちた貝塚は、いちばん近い台地のふちへ */
+  const y=Math.max(heightAny(xx,zz,0.6),0.3); return Object.assign(d,{x:xx,z:zz,y,i}); });
+{ const cnt={}; DOTS.forEach(d=>{ d.o=cnt[d.k]=(cnt[d.k]??-1)+1; }); }   // 種類ごとの順番（北黄金・東名がいちばん先に灯る）
+const DB=DOTS.filter(d=>d.k==='b'); DB.forEach(d=>{ d.tl=2.45+0.45*ss(35.6,36.25,d.ll[0]); });
+/* 点は光る点（大きさは画面上で一定）。芯＝白い点、まわり＝ぼんやり光る輪。夜は輪が強く光る */
+const TEXDOT=(()=>{ const c=document.createElement('canvas'); c.width=c.height=128; const x=c.getContext('2d');   // 貝のマーク（ホタテ形）
+  const fan=()=>{ x.beginPath(); x.moveTo(64,104); x.arc(64,104,62,Math.PI*1.16,Math.PI*1.84); x.closePath(); };
+  x.save(); x.shadowColor='rgba(20,28,45,0.75)'; x.shadowBlur=10; x.fillStyle='#ffffff'; fan(); x.fill(); x.fillRect(44,96,40,16); x.restore();
+  x.fillStyle='#fffaf0'; fan(); x.fill(); x.fillStyle='#fffaf0'; x.beginPath(); x.moveTo(42,98); x.lineTo(86,98); x.lineTo(80,114); x.lineTo(48,114); x.closePath(); x.fill();
+  x.strokeStyle='#3b3226'; x.lineWidth=5; x.lineJoin='round'; fan(); x.stroke(); x.beginPath(); x.moveTo(42,98); x.lineTo(86,98); x.lineTo(80,114); x.lineTo(48,114); x.closePath(); x.stroke();
+  x.lineWidth=3.2; x.strokeStyle='#8a7a62'; for(let k=1;k<7;k++){ const a=Math.PI*(1.16+0.68*k/7); x.beginPath(); x.moveTo(64,100); x.lineTo(64+Math.cos(a)*56,104+Math.sin(a)*56); x.stroke(); } const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; return t; })();
+const TEXGLOW=(()=>{ const c=document.createElement('canvas'); c.width=c.height=64; const x=c.getContext('2d'); const g=x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(0.18,'rgba(255,248,215,0.9)'); g.addColorStop(0.45,'rgba(255,230,160,0.35)'); g.addColorStop(1,'rgba(255,220,140,0)'); x.fillStyle=g; x.fillRect(0,0,64,64); const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; return t; })();
+const TEXSPARK=(()=>{ const c=document.createElement('canvas'); c.width=c.height=32; const x=c.getContext('2d'); const g=x.createRadialGradient(16,16,0,16,16,16); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(0.35,'rgba(255,250,225,0.95)'); g.addColorStop(0.6,'rgba(255,235,180,0.3)'); g.addColorStop(1,'rgba(255,225,150,0)'); x.fillStyle=g; x.fillRect(0,0,32,32); const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; return t; })();
+function ptsLayer(n,tex,size,add){ const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*3),3)); g.setAttribute('color',new THREE.BufferAttribute(new Float32Array(n*3),3));
+  const m=new THREE.PointsMaterial({size,map:tex,vertexColors:true,transparent:true,depthWrite:false,depthTest:false,sizeAttenuation:false,toneMapped:false,blending:add?THREE.AdditiveBlending:THREE.NormalBlending});
+  const p=new THREE.Points(g,m); p.frustumCulled=false; p.renderOrder=add?8:9; scene.add(p); return {g,m,p,pos:g.attributes.position,col:g.attributes.color}; }
+/* 夜景の点（貝塚が多い海辺に、数と位置は模式）。袖ケ浦市の資料が挙げる貝塚の多い所: 噴火湾・仙台湾・古鬼怒湾・東京湾・三河湾・伊勢湾・瀬戸内海・有明海 */
+const CL=[]; { const R=rng(91);
+  const inJP=(x,z)=>{ let sd=1e9; for(const P of JP){ const s=sdPoly(x,z,P); if(s<sd) sd=s; } return sd; };
+  const area=(n,la0,la1,lo0,lo1,dmin,dmax,gname)=>{ let g=0; while(n>0&&g++<n*400){ const la=la0+R()*(la1-la0), lo=lo0+R()*(lo1-lo0); const [x,z]=LL(la,lo); if(Math.abs(x)<88&&Math.abs(z)<88) continue; const sd=inJP(x,z); if(sd>-dmin||sd<-dmax) continue; CL.push({x,z,y:1.0,tw:R()*6.28,tb:4.2+R()*0.4,g:gname}); n--; } };
+  area(11,41.9,42.65,140.1,141.2,1,4,'funka');    // 噴火湾
+  area(13,37.8,38.55,140.8,141.6,1,4,'sendai');    // 仙台湾
+  area(8,34.55,34.95,136.85,137.45,1,4,'mikawa');  // 三河湾
+  area(8,34.45,35.15,136.45,136.95,1,4,'ise');  // 伊勢湾
+  area(22,33.85,34.75,131.4,134.7,1,4,'seto');   // 瀬戸内海
+  area(10,32.5,33.35,130.05,130.7,1,4,'ariake');   // 有明海
+  area(130,31.0,45.5,129.6,145.8,1,5,'other');   // ほかの海辺（まばら）
+  // 関東: 東京湾のまわりと、むかしの入り江（奥東京湾・古鬼怒湾）のふち
+  let g=0, n=26; while(n>0&&g++<200000){ const x=-75+R()*150, z=-60+R()*120; const f=factors(x,z); const h=heightFrom(f); if(h<0.12||h>1.4) continue; const nearV=f.vk>0.02&&f.vk<0.6, nearC=f.sd>-7&&f.sd<-0.6&&z>-8; if(!nearV&&!nearC) continue; CL.push({x,z,y:h+0.2,tw:R()*6.28,tb:4.2+R()*0.4,k:1,g:'kanto'}); n--; } }
+const NSRC=DOTS.length, NALL=NSRC+CL.length;
+const GORDER=['funka','sendai','kanto','mikawa','ise','seto','ariake'];   // 北から南へ
+const PDOT=ptsLayer(NALL,TEXDOT,15,false), PGLOW=ptsLayer(NALL,TEXGLOW,46,true), PSPK=ptsLayer(NALL,TEXSPARK,7,true); PSPK.p.renderOrder=10;
+/* 冒頭: 点をつなぐ線（奥東京湾の岸をなぞる） */
+const LINE_ORDER=['居木橋貝塚','水子貝塚','上福岡貝塚','五味貝戸貝塚','側ヶ谷戸貝塚','大戸貝塚','小谷場貝塚','黒谷貝塚','柏崎貝塚','桜山貝塚','黒浜貝塚','関山貝塚','小貝戸貝塚','寺西貝塚','篠山貝塚','原町西貝塚','木津内貝塚','本郷貝塚','幸田貝塚','飛ノ台貝塚','取掛西貝塚'];   // 西岸を北へ→大宮台地の西ふちを南へ→東ふちを北へ（いちばん奥＝板倉）→東岸を南へ
+const LINEP=LINE_ORDER.map(n=>{ const d=DOTS.find(q=>q.n===n); return [d.x,d.z]; });
+const TRACE=ribbon(LINEP,new THREE.MeshBasicMaterial({color:0xffd75a,transparent:true,opacity:0.95,depthWrite:false,toneMapped:false,side:THREE.DoubleSide}),1.2);
+var playT0=0; let ENDK=0, NIGHT=0, endT0=null, hookT0=null, s1T0=null, AQ=-1, introP=0, p1=0, pF=0, pA=0, sFT0=null, sAT0=null;
+/* 赤い線＝縄文の海のふち（海が J の高さまで来た時の水ぎわ）。いまの海岸に近い所は描かない（内陸に入った所だけ） */
+const REDC=0xd0215f;   // 赤い線（オレンジに寄せない・ラズベリー寄り）
+function contourSegs(N,X,Z,V,L,keep){ const out=[]; const ip=(i1,j1,i2,j2)=>{ const a=V(i1,j1), b=V(i2,j2), t=(L-a)/((b-a)||1e-6); return [X(i1)+(X(i2)-X(i1))*t, Z(j1)+(Z(j2)-Z(j1))*t]; };
+  for(let j=0;j<N-1;j++) for(let i=0;i<N-1;i++){ const a=V(i,j)>L, b=V(i+1,j)>L, c=V(i+1,j+1)>L, d=V(i,j+1)>L, k=a|(b<<1)|(c<<2)|(d<<3); if(k===0||k===15) continue;
+    const E=[()=>ip(i,j,i+1,j),()=>ip(i+1,j,i+1,j+1),()=>ip(i+1,j+1,i,j+1),()=>ip(i,j+1,i,j)];
+    const T={1:[[3,0]],2:[[0,1]],3:[[3,1]],4:[[1,2]],5:[[3,0],[1,2]],6:[[0,2]],7:[[3,2]],8:[[2,3]],9:[[0,2]],10:[[0,1],[2,3]],11:[[1,2]],12:[[1,3]],13:[[0,1]],14:[[0,3]]}[k];
+    T.forEach(([e1,e2])=>{ const A=E[e1](), B=E[e2](); if(keep((A[0]+B[0])/2,(A[1]+B[1])/2)) out.push([A[0],A[1],B[0],B[1]]); }); }
+  return out; }
+function segLine(segs,y,col){ const n=segs.length, g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(Math.max(1,n)*12),3)); const idx=[]; for(let k=0;k<n;k++){ const b=k*4; idx.push(b,b+1,b+2,b+1,b+3,b+2); } g.setIndex(idx);
+  const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:col||REDC,transparent:true,opacity:0,depthWrite:false,depthTest:false,toneMapped:false,side:THREE.DoubleSide})); m.renderOrder=5; m.frustumCulled=false; m.visible=false; scene.add(m);
+  return {m,lastW:-1,set(w){ if(Math.abs(w-this.lastW)<w*0.01) return; this.lastW=w; const a=g.attributes.position.array; segs.forEach(([x1,z1,x2,z2],k)=>{ const dx=x2-x1, dz=z2-z1, L=Math.hypot(dx,dz)||1, ux=dx/L*w*0.5, uz=dz/L*w*0.5, nx=-dz/L*w, nz=dx/L*w; a.set([x1-ux+nx,y,z1-uz+nz, x1-ux-nx,y,z1-uz-nz, x2+ux+nx,y,z2+uz+nz, x2+ux-nx,y,z2+uz-nz],k*12); }); g.attributes.position.needsUpdate=true; }}; }
+const RED={near:[],far:null,white:[]};
+function buildRed(){ const J=0.24;
+  RED.near.push(segLine(contourSegs(GN+1,i=>-GS/2+i*GS/GN,j=>-GS/2+j*GS/GN,(i,j)=>H[j*(GN+1)+i],J,(x,z)=>sdPoly(x,z,KANTO)<-2.5&&Math.max(Math.abs(x),Math.abs(z))<80),0.5));
+  PATCHES.forEach(p=>{ const N=p.N+1, s=2*p.R/p.N, A=p.mesh.geometry.attributes.position; RED.near.push(segLine(contourSegs(N,i=>p.cx-p.R+i*s,j=>p.cz-p.R+j*s,(i,j)=>A.getY(j*N+i),J,(x,z)=>p.LOW.some(P=>sdPoly(x,z,P)<3)&&Math.max(Math.abs(x-p.cx),Math.abs(z-p.cz))<p.R-12),0.5)); });
+  const fs=[]; JBAY_LL.forEach((P,bi)=>{ if(P.skipRed) return; let pts=P.map(q=>LL(...q)); const cx=pts.reduce((a,q)=>a+q[0],0)/pts.length, cz=pts.reduce((a,q)=>a+q[1],0)/pts.length; pts=pts.map(([x,z])=>[cx+(x-cx)*2.2,cz+(z-cz)*2.2]);
+    for(let k=0;k<pts.length;k++){ const [x1,z1]=pts[k], [x2,z2]=pts[(k+1)%pts.length], n=Math.max(1,Math.ceil(Math.hypot(x2-x1,z2-z1)/3)); for(let q=0;q<n;q++){ const a=[x1+(x2-x1)*q/n,z1+(z2-z1)*q/n], b=[x1+(x2-x1)*(q+1)/n,z1+(z2-z1)*(q+1)/n], mx=(a[0]+b[0])/2, mz=(a[1]+b[1])/2; let sd=1e9; for(const Q of JP){ const v=sdPoly(mx,mz,Q); if(v<sd) sd=v; } if(sd<-2) fs.push([a[0],a[1],b[0],b[1]]); } } });
+  const SJ=JBAY_LL.map(P=>{ let pts=P.map(q=>LL(...q)); const cx=pts.reduce((a,q)=>a+q[0],0)/pts.length, cz=pts.reduce((a,q)=>a+q[1],0)/pts.length; return pts.map(([x,z])=>[cx+(x-cx)*2.2,cz+(z-cz)*2.2]); });
+  const s5=JS/JN; contourSegs(JN+1,i=>JPC.x-JS/2+i*s5,j=>JPC.z-JS/2+j*s5,(i,j)=>JH[j*(JN+1)+i],0.24,(x,z)=>Math.max(Math.abs(x),Math.abs(z))>92&&!SJ.some(Q=>inPoly(x,z,Q))).forEach(q=>fs.push(q));   // 縄文の海のふち＝日本中の海岸（描いた地形の水ぎわ）。低い平野だけ大きく内へ
+  for(let k=0;k<COAST_LL.length-1;k++){ const [x1,z1]=LL(...COAST_LL[k]), [x2,z2]=LL(...COAST_LL[k+1]); fs.push([x1,z1,x2,z2]); }   // 関東の海岸
+  RED.far=segLine(fs,6);
+  PATCHES.forEach(p=>{ const N=p.N+1, s=2*p.R/p.N, A=p.mesh.geometry.attributes.position; RED.white.push(segLine(contourSegs(N,i=>p.cx-p.R+i*s,j=>p.cz-p.R+j*s,(i,j)=>A.getY(j*N+i),0.02,(x,z)=>Math.max(Math.abs(x-p.cx),Math.abs(z-p.cz))<p.R-8),0.45,0xffffff)); });   // いまの海岸線（白）＝描いた地形の水ぎわ
+}
+function redAlpha(){ return ss(0.6,0.95,T)*(1-ss(6.3,6.8,T)); }
+function waterLevel(){ return 0.24*ss(200,5500,curYr()); }   // 海は年の数字と一緒に動く
+/* 元は海だった所（入り江の谷）を、海が引いたあと水色がかった色に */
+const AQC=C('#8fc6da');
+function recolor(aq){ const col=tgeo.attributes.color.array; for(let i=0;i<NV;i++){ const h=H[i], c=[BC[i*3],BC[i*3+1],BC[i*3+2]]; const f=F[i]; let w=0; if(h>0.02&&f.vk>0.05) w=aq*ss(0.05,0.6,f.vk)*ss(1.4,0.9,h)*0.8; col[i*3]=c[0]+(AQC.r-c[0])*w; col[i*3+1]=c[1]+(AQC.g-c[1])*w; col[i*3+2]=c[2]+(AQC.b-c[2])*w; } tgeo.attributes.color.needsUpdate=true; }
+const JAPAN_VIEW={t:[-215,0.3,-700],d:4300*1.15,ph:0.62};
+/* ====== v8: 関東のムラ・舟・今の目印（大きさは強調した模式） ====== */
+function curYr(){ const i=Math.floor(T), f=T-i; if(i>=NS-1) return BEATS[NS-1].yr; const a=BEATS[i].yr, b=BEATS[Math.min(NS-1,i+1)].yr; return a+(b-a)*ss(0.08,0.92,f); }
+// 舞浜の埋め立て地（いまだけ）
+const LANDFILL=(()=>{ const P=[[35.665,139.855],[35.66,139.93],[35.63,139.935],[35.618,139.895],[35.63,139.858]].map(q=>LL(...q)); const sh=new THREE.Shape(); P.forEach(([x,z],i)=>i?sh.lineTo(x,-z):sh.moveTo(x,-z)); const g=new THREE.ShapeGeometry(sh); g.rotateX(-Math.PI/2); const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:0xc9c3a4,roughness:0.95,transparent:true,opacity:1})); m.position.y=0.3; m.renderOrder=3; scene.add(m); return m; })();
+// 今の目印
+const MARKS=[['スカイツリー',35.7101,139.8107,'tower',1],['東京駅',35.6816,139.7672,'pin',1],['皇居',35.6841,139.7522,'pin',0],['ディズニーランド',35.6321,139.8816,'pin',1,1],['九十九里浜',35.535,140.4356,'pin',-1],['さいたまスーパーアリーナ',35.8926,139.6317,'pin',0]].map(([n,la,lo,kind,side,fill],i)=>{ const [x,z]=LL(la,lo); const y0=fill?0.3:Math.max(heightAt(x,z),0.05);
+  const g=new THREE.Group(); g.position.set(x,y0,z); const mat=new THREE.MeshBasicMaterial({color:kind==='tower'?0xe8ecf0:0xc8361e,transparent:true,toneMapped:false}), pm=new THREE.MeshBasicMaterial({color:0x3c3226,transparent:true});
+  if(kind==='tower'){ g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.42,10,8).translate(0,5,0),mat)); g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.55,0.35,12).translate(0,7,0),mat)); g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.38,0.38,0.26,12).translate(0,8.4,0),mat)); }
+  else { g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,3.6,6).translate(0,1.8,0),pm)); g.add(new THREE.Mesh(new THREE.SphereGeometry(0.55,14,10).translate(0,3.75,0),mat)); }
+  g.renderOrder=7; scene.add(g); return {n,x,z,y0,g,mats:[mat,pm],top:new THREE.Vector3(x,y0+(kind==='tower'?10.3:4.4),z),side,i,k:1,ghost:1}; });
+// いまの町（ビル。強調した模式。6000年前へ戻ると消える）
+const CITY=(()=>{ const R=rng(77), B=[]; [[35.685,139.75,9,1100],[35.71,139.65,6,320],[35.46,139.62,5,300],[35.53,139.70,3.5,180],[35.885,139.63,4.5,220],[35.80,139.72,3,130],[35.61,140.11,4,220],[35.70,139.98,3.5,190],[35.65,139.90,2.2,90],[35.72,139.93,3,140],[35.68,140.03,2.8,120],[35.79,139.90,3,130],[35.87,139.97,3,110],[35.80,139.47,3,100],[35.70,139.41,3,90],[35.55,139.45,3,90],[35.34,139.49,3,70],[35.78,139.60,3,90]].forEach(([la,lo,sg,n])=>{ const [cx,cz]=LL(la,lo); let g=0; while(n>0&&g++<n*30){ const r=sg*Math.sqrt(-2*Math.log(R()+1e-6)), a=R()*6.283, x=cx+Math.cos(a)*r, z=cz+Math.sin(a)*r; const f=factors(x,z); if(f.sd>-0.8||f.lake) continue; const y=plateauH(f); const near=Math.exp(-r*r/(sg*sg)), core=Math.exp(-Math.hypot(x-LL(35.685,139.755)[0],z-LL(35.685,139.755)[1])/6); B.push([x,y,z,0.2+R()*0.28,0.25+R()*(0.4+1.6*near*near+2.6*core),R()]); n--; } });
+  const im=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1).translate(0,0.5,0),new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.8}),B.length); const cA=C('#d9d5cc'), cB2=C('#bfc4c9'), cC=C('#ece6da'); B.forEach((b,k)=>im.setColorAt(k,b[5]<0.4?cA:b[5]<0.75?cB2:cC)); im.castShadow=true; scene.add(im); return {im,B,last:-1}; })();
+function updateCity(k){ if(Math.abs(k-CITY.last)<0.01) return; CITY.last=k; CITY.B.forEach((b,i)=>{ dummy2.position.set(b[0],b[1],b[2]); dummy2.scale.set(b[3],Math.max(1e-3,b[4]*k),b[3]); dummy2.updateMatrix(); CITY.im.setMatrixAt(i,dummy2.matrix); }); CITY.im.instanceMatrix.needsUpdate=true; CITY.im.visible=k>0.01; }
+// ムラ（竪穴住居の輪）
+const TEXSMOKE=(()=>{ const c=document.createElement('canvas'); c.width=c.height=64; const x=c.getContext('2d'); const g=x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(255,255,255,0.55)'); g.addColorStop(0.5,'rgba(255,255,255,0.25)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,64,64); const t=new THREE.CanvasTexture(c); return t; })();   // 煙（光らない）
+const HOUSE_G=new THREE.ConeGeometry(0.5,0.78,9).translate(0,0.39,0), MOUND_G=new THREE.SphereGeometry(0.28,10,6).scale(1,0.45,1);
+const HOUSE_M=new THREE.MeshStandardMaterial({color:0x6b4e33,roughness:1}), SHELL_M=new THREE.MeshStandardMaterial({color:0xf4eedc,roughness:0.8});
+function village(la,lo,n,R,arc,seed,dir){ const [cx,cz]=LL(la,lo), R0=rng(seed), pos=[];
+  for(let k=0;k<n;k++){ const a=(arc>6.2?2*Math.PI*k/n:dir-arc/2+arc*k/(n-1))+(R0()-0.5)*0.25, r=R*(0.88+R0()*0.24); let x=cx+Math.cos(a)*r, z=cz+Math.sin(a)*r, h=heightAt(x,z);
+    for(let t=0;t<12&&h<0.34;t++){ let bx=x,bz=z,bh=h; for(let q=0;q<8;q++){ const xx=x+Math.cos(q*Math.PI/4)*0.35, zz=z+Math.sin(q*Math.PI/4)*0.35, hh=heightAt(xx,zz); if(hh>bh){ bh=hh; bx=xx; bz=zz; } } x=bx; z=bz; h=bh; }   // 家は台地の上に（谷に落ちたら高い方へ寄せる）
+    pos.push([x,Math.max(h,0.1),z]); }
+  const hm=new THREE.InstancedMesh(HOUSE_G,HOUSE_M,n), mm=new THREE.InstancedMesh(MOUND_G,SHELL_M,n); hm.castShadow=true; scene.add(hm); scene.add(mm);
+  const sm=new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*3*3),3)),new THREE.PointsMaterial({map:TEXSMOKE,color:0x8f8a82,size:1.3,transparent:true,opacity:0,depthWrite:false,sizeAttenuation:true})); sm.frustumCulled=false; scene.add(sm);
+  return {cx,cz,pos,hm,mm,sm,n}; }
+const dummy2=new THREE.Object3D();
+function setInst(im,pos,f,yo){ pos.forEach((p,k)=>{ const s=Math.max(1e-3,f(k)); dummy2.position.set(p[0],p[1]+(yo||0),p[2]); dummy2.scale.setScalar(s); dummy2.updateMatrix(); im.setMatrixAt(k,dummy2.matrix); }); im.instanceMatrix.needsUpdate=true; }
+function vsmoke(v,a,tt,rise){ const A=v.sm.geometry.attributes.position.array; v.pos.forEach((p,k)=>{ for(let q=0;q<3;q++){ const ph=((tt*0.35+k*0.37+q/3)%1); A.set([p[0]+Math.sin(ph*5+k)*0.18,p[1]+0.7+ph*(rise||2.4),p[2]+ph*0.4],(k*3+q)*3); } }); v.sm.geometry.attributes.position.needsUpdate=true; v.sm.material.opacity=0.8*a; v.sm.visible=a>0.01; }
+const V_MIZUKO=village(35.8230,139.5400,9,1.5,7,11,0);   // 水子貝塚のそば（台地の上に輪で置く・位置は模式）
+const V_KASORI=village(35.62402,140.16538,12,1.7,7,12,0);
+const V_UBA=village(35.73751,139.96788,10,1.45,5.2,13,-Math.PI/2);
+const RING_K=(()=>{ const m=new THREE.Mesh(new THREE.TorusGeometry(1.7,0.34,10,64).rotateX(Math.PI/2).scale(1,0.55,1),SHELL_M); m.position.set(V_KASORI.cx,Math.max(heightAt(V_KASORI.cx,V_KASORI.cz),0.1)+0.05,V_KASORI.cz); m.scale.setScalar(1e-3); scene.add(m); return m; })();
+const RING_U=(()=>{ const m=new THREE.Mesh(new THREE.TorusGeometry(1.45,0.3,10,56,5.2).rotateX(Math.PI/2).scale(1,0.55,1),SHELL_M); m.rotation.y=Math.PI/2+2.6; m.position.set(V_UBA.cx,Math.max(heightAt(V_UBA.cx,V_UBA.cz),0.1)+0.05,V_UBA.cz); m.scale.setScalar(1e-3); scene.add(m); return m; })();
+const RING_SHELLS=ptsLayer(26,TEXDOT,30,false); RING_SHELLS.p.renderOrder=9;
+const _rv=new THREE.Vector3();
+function ringShells(){ const A=RING_SHELLS.pos.array, Cc=RING_SHELLS.col.array; let k=0; [[RING_K,14,1.7,2*Math.PI],[RING_U,12,1.45,5.2]].forEach(([r,n,R,arc])=>{ r.updateMatrixWorld(); for(let q=0;q<n;q++,k++){ const a=arc*(q+0.5)/n; _rv.set(R*Math.cos(a),0.36,R*Math.sin(a)).applyMatrix4(r.matrixWorld); A.set([_rv.x,r.visible&&r.scale.x>0.6?_rv.y:-9999,_rv.z],k*3); Cc[k*3]=Cc[k*3+1]=Cc[k*3+2]=1; } }); RING_SHELLS.pos.needsUpdate=RING_SHELLS.col.needsUpdate=true; }   // ドーナツの上に貝のマーク
+// 中里（浜の作業場）: 湯気
+const NAKAZATO=(()=>{ const [cx,cz]=LL(35.7454,139.7530); const pos=[]; for(let k=0;k<5;k++) pos.push([cx+(k-2)*0.35,0.3,cz+0.25*Math.sin(k*1.7)]); const sm=new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(new Float32Array(5*3*3),3)),new THREE.PointsMaterial({map:TEXSMOKE,color:0xf2f0ec,size:1.1,transparent:true,opacity:0,depthWrite:false,sizeAttenuation:true})); sm.frustumCulled=false; scene.add(sm); return {pos,sm}; })();
+// 丸木舟（入り江をすべる）
+const CANOE=(()=>{ const g=new THREE.Group(); const wood=new THREE.MeshStandardMaterial({color:0x5b3b22,roughness:0.9}); g.add(new THREE.Mesh(new THREE.BoxGeometry(0.75,0.07,0.15),wood)); const ppl=new THREE.MeshStandardMaterial({color:0x2c241c}); [-0.18,0.16].forEach(dx=>{ const b=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.045,0.16,6).translate(dx,0.11,0),ppl); g.add(b); const h=new THREE.Mesh(new THREE.SphereGeometry(0.04,8,6).translate(dx,0.22,0),ppl); g.add(h); }); g.visible=false; g.scale.setScalar(2.2); scene.add(g);
+  const P=[[35.838,139.622],[35.846,139.606],[35.854,139.588],[35.862,139.568]].map(q=>LL(...q));   /* 水子のムラの前の入り江 */ return {g,P}; })();
+function moveCanoe(g,P,on,tt,per){ g.visible=on; if(!on) return; const s=0.5-0.5*Math.cos(tt*2*Math.PI/per), f=s*(P.length-1), i=Math.min(P.length-2,Math.floor(f)), w=f-i, x=P[i][0]+(P[i+1][0]-P[i][0])*w, z=P[i][1]+(P[i+1][1]-P[i][1])*w; g.position.set(x,waterLevel()+0.03,z); g.rotation.y=-Math.atan2(P[i+1][1]-P[i][1],P[i+1][0]-P[i][0]); }
+const CANOE2=CANOE.g.clone(); scene.add(CANOE2); const CANOE2P=[[35.700,139.905],[35.688,139.935],[35.676,139.965],[35.668,139.995]].map(q=>LL(...q));
+/* ムラの灯り: 海が引くのに合わせて、内陸の灯りが消え、海に近い所に灯りがつく（同じ人とは言わない。矢印も使わない） */
+const LIGHTS=(()=>{ const A=DB.map(d=>[d.x,d.y+0.6,d.z,-sdPoly(d.x,d.z,KANTO)]).sort((a,b)=>b[3]-a[3]); const R=rng(321), Bp=[]; let g=0; while(Bp.length<22&&g++<40000){ const x=-8+R()*45, z=-2+R()*42, f=factors(x,z); const m=-f.sd; if(m<1.5||m>9||f.vk>0.05) continue; Bp.push([x,heightFrom(f)+0.6,z,m]); } [[35.62402,140.16538],[35.73751,139.96788]].forEach(q=>{ const [x,z]=LL(...q); const f=factors(x,z); Bp.push([x,heightFrom(f)+0.9,z,-f.sd]); }); Bp.sort((a,b)=>b[3]-a[3]);
+  const L=ptsLayer(A.length+Bp.length,TEXGLOW,38,true); L.p.renderOrder=8; return {A,B:Bp,L}; })();
+function updateLights(tt){ const P=LIGHTS.L.pos.array, Cc=LIGHTS.L.col.array, nA=LIGHTS.A.length, nB=LIGHTS.B.length; const near=1-ss(150,320,orbit.dist);
+  LIGHTS.A.forEach((p,k)=>{ const t0=2.08+0.55*k/nA, a=(T<1.02?ss(0.4,0.9,p1):1)*(T>=0.98?1:0)*(1-ss(t0,t0+0.12,T)); const fl=0.8+0.2*Math.sin(tt*6+k); P.set([p[0],a>0.01?p[1]:-9999,p[2]],k*3); Cc.set([a*fl*near*0.9,a*fl*near*0.62,a*fl*near*0.3],k*3); });
+  LIGHTS.B.forEach((p,k)=>{ const t0=2.3+0.6*k/nB, a=ss(t0,t0+0.1,T)*(1-ss(3.35,3.75,T)); const fl=0.8+0.2*Math.sin(tt*6+k*1.3); P.set([p[0],a>0.01?p[1]:-9999,p[2]],(nA+k)*3); Cc.set([a*fl*near*0.9,a*fl*near*0.62,a*fl*near*0.3],(nA+k)*3); });
+  LIGHTS.L.pos.needsUpdate=LIGHTS.L.col.needsUpdate=true; }
+/* 明治: 汽車（横浜→東京）。モースは汽車の窓から大森の貝層を見つけた */
+const RAIL=[[35.466,139.622],[35.531,139.697],[35.561,139.718],[35.588,139.7335],[35.609,139.7395],[35.628,139.742],[35.666,139.758]]   /* 線路は模式。大森貝塚（遺跡庭園）は線路の西側 */.map(q=>{ const [x,z]=LL(...q); return [x,z]; });
+function groundAt(x,z){ const f=factors(x,z); return Math.max(heightFrom(f),plateauH(f)); }   /* 明治の地面（入り江は埋まっている） */
+const RAILLINE=(()=>{ const pts=[]; for(let i=0;i<RAIL.length-1;i++){ const [ax,az]=RAIL[i],[bx,bz]=RAIL[i+1], n=Math.max(2,Math.ceil(Math.hypot(bx-ax,bz-az)/0.3)); for(let k=0;k<n;k++){ const u=k/n; pts.push([ax+(bx-ax)*u,az+(bz-az)*u]); } } pts.push(RAIL[RAIL.length-1]);
+  const w=0.09, pos=[], idx=[]; pts.forEach((p,i)=>{ const a=pts[Math.max(0,i-1)], b=pts[Math.min(pts.length-1,i+1)], dx=b[0]-a[0], dz=b[1]-a[1], L=Math.hypot(dx,dz)||1, nx=-dz/L*w, nz=dx/L*w, y=Math.max(groundAt(p[0],p[1]),0.3)+0.05; pos.push(p[0]+nx,y,p[1]+nz,p[0]-nx,y,p[1]-nz); if(i){ const q=(i-1)*2; idx.push(q,q+1,q+2,q+1,q+3,q+2); } });
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setIndex(idx);
+  const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:0x3a3028,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2})); m.visible=false; scene.add(m); return {m}; })();   /* 線路は地面に沿って敷く */
+const TRAIN=(()=>{ const g=new THREE.Group(); const mk=(c,len)=>new THREE.Mesh(new THREE.BoxGeometry(len,0.32,0.34),new THREE.MeshStandardMaterial({color:c,roughness:0.7})); const cars=[mk(0x1c1a1a,0.75),mk(0x6b3f26,0.65),mk(0x6b3f26,0.65)]; cars.forEach(c=>g.add(c)); const st=new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(new Float32Array(8*3),3)),new THREE.PointsMaterial({map:TEXSMOKE,color:0xe8e4dc,size:0.9,transparent:true,opacity:0.8,depthWrite:false})); st.frustumCulled=false; scene.add(st); g.visible=false; scene.add(g); return {g,cars,st}; })();
+function railAt(s){ let tot=0; const seg=[]; for(let i=0;i<RAIL.length-1;i++){ const L=Math.hypot(RAIL[i+1][0]-RAIL[i][0],RAIL[i+1][1]-RAIL[i][1]); seg.push(L); tot+=L; } let d=clamp(s,0,1)*tot; for(let i=0;i<seg.length;i++){ if(d<=seg[i]||i===seg.length-1){ const w=d/seg[i]; return [RAIL[i][0]+(RAIL[i+1][0]-RAIL[i][0])*w,RAIL[i][1]+(RAIL[i+1][1]-RAIL[i][1])*w,Math.atan2(RAIL[i+1][1]-RAIL[i][1],RAIL[i+1][0]-RAIL[i][0])]; } d-=seg[i]; } return [0,0,0]; }
+function moveTrain(tt){ const on=T>4.6&&T<5.4, a=ss(4.6,4.9,T)*(1-ss(5.15,5.4,T)); RAILLINE.m.material.opacity=0.85*a; RAILLINE.m.visible=a>0.01; TRAIN.g.visible=on; TRAIN.st.visible=on;
+  if(!on) return; const s0=0.32+0.42*((tt/9)%1);   /* 大森のあたりを走る */ const A=TRAIN.st.geometry.attributes.position.array; TRAIN.cars.forEach((c,k)=>{ const [x,z,an]=railAt(s0-k*0.012); const gy=Math.max(groundAt(x,z),0.3); c.position.set(x,gy+0.21,z); c.rotation.y=-an; if(k===0){ for(let q=0;q<8;q++){ const ph=((tt*0.8+q/8)%1); A.set([x-Math.cos(an)*ph*0.6,gy+0.5+ph*1.2,z-Math.sin(an)*ph*0.6],q*3); } } }); TRAIN.st.geometry.attributes.position.needsUpdate=true; }
+// 入り江の奥から土で埋まっていく（海が引くのを、谷の奥→海の方へ見せる）
+let FILL=null, lastFT=-1;
+function fillThreshold(yr){ if(yr>5940) return 999; const K=[[0,-60],[1500,0],[4000,12],[5000,26],[5940,70]]; for(let i=1;i<K.length;i++){ if(yr<=K[i][0]){ const [a,fa]=K[i-1], [b,fb]=K[i]; return fa+(fb-fa)*(yr-a)/(b-a); } } return 999; }
+function updateFill(){ if(!terrainDone) return; if(!FILL){ FILL=[]; for(let i=0;i<NV;i++){ if(F[i].vk>0.02&&!F[i].lake&&H[i]<PLATEAU+0.9&&H[i]>-0.02){ const ph=Math.max(H[i],plateauH(F[i])); if(ph-H[i]<0.02) continue; const c=vcolor(i,0,ph).slice(); FILL.push([i,H[i],-sdPoly(PX[i],PZ[i],KANTO),ph,c]); } } }
+  const FT=fillThreshold(curYr()); if(Math.abs(FT-lastFT)<0.15) return; lastFT=FT; const pos=tgeo.attributes.position.array;
+  const col=tgeo.attributes.color.array; FILL.forEach(([i,h0,m,ph,c])=>{ const s=FT>900?0:ss(FT,FT+5,m); pos[i*3+1]=h0+(ph-h0)*s; for(let k=0;k<3;k++) col[i*3+k]=BC[i*3+k]+(c[k]-BC[i*3+k])*s; }); tgeo.attributes.position.needsUpdate=true; tgeo.attributes.color.needsUpdate=true; tgeo.computeVertexNormals(); }
+let p2=0,s2T0=null,p3=0,s3T0=null,p4=0,s4T0=null,p5=0,s5T0=null,pE=0,sET0=null;
+function drawMarks(ctx,W,Hh,u,vert){ const a0=1-ss(600,1100,orbit.dist); if(a0<0.02) return; ctx.save(); ctx.textBaseline='middle'; ctx.font=`700 ${28*u}px "Zen Old Mincho", serif`;
+  if(CANOE.g.visible&&orbit.dist<80){ const q=projectTo(new THREE.Vector3(CANOE.g.position.x,CANOE.g.position.y+0.9,CANOE.g.position.z),W,Hh); if(q){ const t='丸木舟', tw=ctx.measureText(t).width, bw=tw+24*u, bh=40*u; ctx.globalAlpha=0.95; ctx.fillStyle='rgba(255,252,244,0.92)'; ctx.fillRect(q[0]-bw/2,q[1]-bh-6*u,bw,bh); ctx.fillStyle='#1f1a14'; ctx.textAlign='center'; ctx.fillText(t,q[0],q[1]-bh/2-6*u+1); } }
+  MARKS.forEach(m=>{ if(m.k<0.05||!m.g.visible) return; const q=projectTo(m.top,W,Hh); if(!q) return; if(vert&&(q[1]<Hh*0.36||q[1]>Hh*0.9)) return; const tw=ctx.measureText(m.n).width, pad=10*u, bw=tw+pad*2+14*u, bh=40*u;
+    let bx=m.side>0?q[0]+16*u:m.side<0?q[0]-16*u-bw:q[0]-bw/2, by=m.side===0?q[1]-bh-14*u:q[1]-bh/2; bx=clamp(bx,100,W-100-bw); if(vert&&by<Hh*0.4) return;   /* 上の文字とかぶる名札は出さない */
+    ctx.globalAlpha=a0*m.k*m.ghost; ctx.fillStyle='rgba(255,252,244,0.92)'; ctx.fillRect(bx,by,bw,bh); ctx.fillStyle='#c8361e'; ctx.fillRect(bx+pad,by+bh/2-5*u,10*u,10*u); ctx.fillStyle='#1f1a14'; ctx.textAlign='left'; ctx.fillText(m.n,bx+pad+14*u,by+bh/2+1); });
+  ctx.restore(); }
+
+function updateKaishin(now){
+  const rs=typeof recS!=='undefined'&&recS&&recS.start?recS.start:playT0;
+  let p; [p,hookT0]=stopAnim(0,now,hookT0,4500); if(rs) p=clamp((now-rs)/4500,0,1); introP=T<0.02?p:1;
+  if(T<0.02){ const c=stopCam(0); orbit.dist=orbit.tDist=c.dist*(1-0.1*ss(0,1,introP)); }   // 冒頭も止まらない（ゆっくり寄る）   // 冒頭の解説: 日本地図で海が入り、赤い線が出る
+  [p1,s1T0]=stopAnim(1,now,s1T0,3600); [p2,s2T0]=stopAnim(2,now,s2T0,3000); [p3,s3T0]=stopAnim(3,now,s3T0,3000); [p4,s4T0]=stopAnim(4,now,s4T0,4500); [p5,s5T0]=stopAnim(5,now,s5T0,5000); [pE,sET0]=stopAnim(NS-1,now,sET0,7000);                                                      // 関東（7000〜6000年前）: 貝塚の点が順に灯る
+  if(terrainDone&&!RED.far) buildRed();
+  if(playing||rec){ orbit.auto=false; orbit.theta=orbit.tTheta=0; }   // 再生中・収録中は、いつも北が上（ぐるっと回らない）
+  if(T<NS-1-0.001&&Math.abs(T-Math.round(T))>0.001){ const i=Math.floor(T), u=T-i, A=stopCam(i), Bc=stopCam(i+1); if(i===0) A.dist*=0.9;   // 冒頭でゆっくり寄った分から続ける（引き戻さない）   // 遠い場所への移動は、いったん高く上がって弧を描く
+    const D=Math.hypot(Bc.target[0]-A.target[0],Bc.target[2]-A.target[2]), gm=Math.sqrt(A.dist*Bc.dist), arc=1.15*D>Math.max(A.dist,Bc.dist), top=arc?1.15*D:gm, zin=Bc.dist<A.dist*0.8, zout=Bc.dist>A.dist*1.25, ut=arc?ss(0.1,0.9,u):zin?ss(0,0.65,u):zout?ss(0.35,1,u):ss(0.1,0.9,u), ud=arc?u:zin?ss(0.3,1,u):zout?ss(0,0.65,u):u;
+    orbit.target.set(A.target[0]+(Bc.target[0]-A.target[0])*ut,0.3,A.target[2]+(Bc.target[2]-A.target[2])*ut);
+    orbit.dist=Math.exp(Math.log(A.dist)+(Math.log(Bc.dist)-Math.log(A.dist))*ud+Math.log(top/gm)*4*u*(1-u)); orbit.phi=A.phi+(Bc.phi-A.phi)*u; orbit.theta=0;
+    orbit.tTarget.copy(orbit.target); orbit.tDist=orbit.dist; orbit.tPhi=orbit.phi; orbit.tTheta=0; }
+  else if(Math.round(T)>0&&Math.abs(T-Math.round(T))<=0.001){ const c=stopCam(Math.round(T)); orbit.tDist=c.dist; orbit.tTarget.set(...c.target); orbit.tPhi=c.phi; orbit.tTheta=0; }   // 着いたら、その場所のカメラにきちんと合わせる
+  water.position.y=waterLevel(); updateFill();
+  { const yr=curYr(), tt=now/1000;   // 目印・埋め立て地・ムラ・舟
+    LANDFILL.material.opacity=1-ss(20,80,yr); LANDFILL.visible=LANDFILL.material.opacity>0.01; updateCity(1-ss(5,120,yr));
+    MARKS.forEach(m=>{ m.k=T<0.02?ss(0.06+m.i*0.06,0.16+m.i*0.06,introP):1; m.ghost=1-0.45*ss(100,1500,yr); m.g.scale.setScalar(Math.max(1e-3,m.k)); m.mats.forEach(q=>q.opacity=m.ghost); m.g.visible=m.k>0.01&&orbit.dist>62;   /* 寄った場面では今の目印を出さない */ if(m.n==='ディズニーランド') m.g.position.y=LANDFILL.visible?0.3:waterLevel()+0.02; });
+    const kM=k=>T<1.98?0:T<2.02?ss(0.05+k*0.06,0.15+k*0.06,p2):1-ss(2.12,2.45,T); setInst(V_MIZUKO.hm,V_MIZUKO.pos,kM); setInst(V_MIZUKO.mm,V_MIZUKO.pos,k=>T<2.1?0:ss(2.15,2.5,T)*(1-0.5*ss(6.2,6.8,T)));
+    vsmoke(V_MIZUKO,T<1.98?0:T<2.02?ss(0.3,0.7,p2):1-ss(2.1,2.3,T),tt);
+    const kE=k=>T<2.98?0:T<3.02?ss(0.05+k*0.012,0.2+k*0.012,p3):1-ss(3.35,3.75,T); setInst(V_KASORI.hm,V_KASORI.pos,kE); setInst(V_UBA.hm,V_UBA.pos,kE);
+    const sE=T<2.98?0:T<3.02?ss(0.3,0.7,p3):1-ss(3.1,3.3,T); vsmoke(V_KASORI,sE,tt); vsmoke(V_UBA,sE,tt); V_KASORI.mm.visible=V_UBA.mm.visible=false;
+    const rg=T<2.98?0:T<3.02?0.45*ss(0.35,1,p3):0.45+0.55*ss(3.05,3.75,T), up=T<3.98?0:T<4.02?ss(0.05,0.6,p4):1; [RING_K,RING_U].forEach(r=>{ r.scale.set(Math.max(1e-3,rg),Math.max(1e-3,rg*(1+1.6*up)),Math.max(1e-3,rg)); r.visible=rg>0.01; }); ringShells();   // 加曽利の場面で、貝塚の輪がぐっと立ち上がる
+    { const a=T<2.98?0:T<3.02?ss(0.2,0.6,p3):1-ss(3.08,3.3,T), A=NAKAZATO.sm.geometry.attributes.position.array; NAKAZATO.pos.forEach((p,k)=>{ for(let q=0;q<3;q++){ const ph=((tt*0.5+k*0.29+q/3)%1); A.set([p[0]+Math.sin(ph*6+k)*0.15,p[1]+ph*1.6,p[2]],(k*3+q)*3); } }); NAKAZATO.sm.geometry.attributes.position.needsUpdate=true; NAKAZATO.sm.material.opacity=0.7*a; NAKAZATO.sm.visible=a>0.01; }
+    moveCanoe(CANOE.g,CANOE.P,T>0.95&&T<2.45,tt,10); moveCanoe(CANOE2,CANOE2P,T>2.55&&T<3.5,tt+3,9);   // 丸木舟が入り江・湾を行き来する
+    updateLights(tt); moveTrain(tt);
+  }
+  { const sc=Math.max(1,orbit.dist/230), rx=1000/sc, ry=2000/sc, R0=waterTex.repeat;   // 波の模様は画面上でいつも同じ大きさ（遠景で細かくなってチカチカしないように）
+    if(Math.abs(rx-R0.x)>R0.x*0.002){ const u=(orbit.target.x+205+15000)/30000, v=(15000-268-orbit.target.z)/30000;
+      waterTex.offset.x+=u*(R0.x-rx); waterTex.offset.y+=v*(R0.y-ry); R0.set(rx,ry); } }
+  JBAY_MAT.opacity=0; JBAY_MAT.visible=JBAY_MAT.opacity>0.01;
+  const wsc=clamp(orbit.dist/220,0.2,14); COAST.set(0.6*wsc); COAST.m.material.opacity=0.85*(1-ss(600,1500,orbit.dist)); COAST.m.visible=COAST.m.material.opacity>0.01;
+  TRACE.m.visible=false;
+  if(RED.far){ const ra=redAlpha(), nearA=1-ss(2600,3600,orbit.dist), farA=ss(1000,1800,orbit.dist); RED.near.forEach(r=>{ r.set(0.42*wsc); r.m.material.opacity=0.95*ra*nearA; r.m.visible=r.m.material.opacity>0.01; }); RED.far.set(0.4*wsc); RED.far.m.material.opacity=0.95*ra*farA; RED.far.m.visible=RED.far.m.material.opacity>0.01;
+    RED.white.forEach(r=>{ r.set(0.45*wsc); r.m.material.opacity=0.85*(1-ss(600,1500,orbit.dist)); r.m.visible=r.m.material.opacity>0.01; }); }
+  NIGHT=ss(6.15,6.9,T); ENDK=NIGHT;
+  const tt=now/1000, P=PDOT.pos.array, Cc=PDOT.col.array, PG=PGLOW.pos.array, CG=PGLOW.col.array;
+  const farV=orbit.dist>1500;
+  const PS=PSPK.pos.array, CS=PSPK.col.array;
+  const put=(i,x,y,z,k,glow,core,spk)=>{ PS[i*3]=x; PS[i*3+1]=(farV&&k>0.02)?y:-9999; PS[i*3+2]=z; CS[i*3]=spk; CS[i*3+1]=spk*0.96; CS[i*3+2]=spk*0.84; const hide=k<0.25||!core||farV; P[i*3]=x; P[i*3+1]=hide?-9999:y; P[i*3+2]=z; Cc[i*3]=Cc[i*3+1]=Cc[i*3+2]=1; PG[i*3]=x; PG[i*3+1]=k<0.02?-9999:y; PG[i*3+2]=z; if(farV){ CG[i*3]=1.0; CG[i*3+1]=0.78; CG[i*3+2]=0.42; } else { CG[i*3]=glow*1.0; CG[i*3+1]=glow*0.95; CG[i*3+2]=glow*0.8; } };   // 遠景のにじみは足し算にしない（重なって白い塊になるため）
+  DOTS.forEach((d,i)=>{ let k=0;
+    if(d.k==='b'){ k=T<0.98?0:T<1.02?ss(0.1+d.o*0.02,0.18+d.o*0.02,p1):1; }   // 前期の貝塚（6000年前の海辺）
+    else if(d.k==='k'){ k=0; }
+    else if(d.k==='o'){ k=ss(4.55,4.95,T)*(1-ss(6.3,6.8,T)); }   // 大森貝塚（明治に掘り出された）
+    else { k=ss(6.45,6.9,T); }   // 列島の貝塚は最後の夜景で
+    const tw=farV?0.75+0.25*Math.sin(tt*2.3+i*1.7):1; put(i,d.x,d.y+0.5,d.z,k,k*(farV?0.3+0.1*NIGHT:0.35+0.65*NIGHT)*tw,true,k*(0.75+0.25*tw)); });
+  CL.forEach((c,j)=>{ const gi=GORDER.indexOf(c.g), t0=0.06+gi*0.11, pulse=gi<0?0:Math.exp(-Math.pow((pE-t0-0.05)/0.05,2)), k=(gi<0?0.75*ss(6.4,6.9,T):(T<NS-1.02?0:ss(t0,t0+0.06,pE))*(1+1.6*pulse))*ss(1300,1700,orbit.dist),   // 列島の内湾が1つずつ光る   // 夜景用の模式の光は、引きの画面だけ
+    tw=0.6+0.4*Math.sin(tt*(1.5+(j%7)*0.3)+c.tw); put(NSRC+j,c.x,c.y,c.z,k,k*(0.16+0.12*NIGHT)*tw,false,k*(0.45+0.55*tw)); });
+  PDOT.pos.needsUpdate=PDOT.col.needsUpdate=PGLOW.pos.needsUpdate=PGLOW.col.needsUpdate=PSPK.pos.needsUpdate=PSPK.col.needsUpdate=true;
+  PDOT.m.size=34; PGLOW.m.size=farV?20+6*NIGHT:60; const gb=farV?THREE.NormalBlending:THREE.AdditiveBlending; if(PGLOW.m.blending!==gb){ PGLOW.m.blending=gb; PGLOW.m.needsUpdate=true; } PGLOW.m.opacity=farV?0.16+0.34*NIGHT:1; PSPK.m.size=6+1.5*NIGHT; waterMat.opacity=0.95+0.05*NIGHT;
+  const dk=1-0.78*NIGHT; terrainMat.color.setScalar(dk); japan.material.color.setScalar(dk); waterMat.color.setRGB(1-0.75*NIGHT,1-0.72*NIGHT,1-0.6*NIGHT); forestMesh.material.color.setScalar(dk);
+  scene.fog.color.setRGB(0.86-0.8*NIGHT,0.78-0.72*NIGHT,0.57-0.45*NIGHT);
+  scene.fog.near=orbit.dist*1.6; scene.fog.far=orbit.dist*4.5;
+  const nr=Math.max(0.5,orbit.dist*0.004), fr=Math.max(1600,orbit.dist*6); if(Math.abs(camera.near-nr)>0.01||Math.abs(camera.far-fr)>1){ camera.near=nr; camera.far=fr; camera.updateProjectionMatrix(); }
+}
+function updateEnding(now,dt){ updateKaishin(now); if(T>=NS-1-0.02){ if(endT0==null) endT0=now; } else if(T<NS-1.2) endT0=null; }
+for(let i=clouds.length-1;i>=0;i--){ scene.remove(clouds[i].m); clouds.splice(i,1); }
+function awayK(){ return 1; }
+/* 拍ごとのカメラ（北が上） */
+const CAMS={
+  obl:()=>[6,0.3,-22,195,1.12],
+  mizuko:()=>{ const [x,z]=LL(35.832,139.562); return [x,0.3,z-7,28,1.1]; },
+  east:()=>[-7,0.3,-4,100,1.06],
+  kasori:()=>{ const [x,z]=LL(35.624,140.165); return [x,0.3,z-6,32,0.86]; },
+  oomori:()=>{ const [x,z]=LL(35.598,139.732); return [x,0.3,z-8,40,1.05]; },
+  bay:()=>{ const [x,z]=LL(35.660,139.840); return [x,0.3,z-16,80,1.08]; },
+  japanEnd:()=>[-215,0.3,-700,4300,0.62],
+};
+STOPS.forEach(st=>{ const b=st.beat, c=CAMS[b.cam](); st.cam=[c[0],c[1],c[2],c[3],c[4],c[5]!=null?c[5]:TH]; });
+const SPOT_ON=false;
+/* ============ instanced forest（関東の山だけ） ============ */
+const dummy=new THREE.Object3D();
+const forest=[]; { const R=rng(5); for(let i=0;i<40000&&forest.length<5000;i++){ const x=-89+R()*178, z=-89+R()*178, f=factors(x,z); const h=heightFrom(f); if(h<1.3||R()<ss(30,52,Math.max(-x,-z,Math.abs(x),Math.abs(z))+10*fbm(x*0.05,z*0.05))) continue; forest.push({x,z,g:h,s:0.35+R()*0.3,c:R()}); } }
+const forestMesh=new THREE.InstancedMesh(new THREE.ConeGeometry(0.8,2.2,6).translate(0,1.1,0),new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.95}),forest.length);
+forest.forEach((t,i)=>{ dummy.position.set(t.x,t.g,t.z); dummy.scale.setScalar(t.s); dummy.updateMatrix(); forestMesh.setMatrixAt(i,dummy.matrix); forestMesh.setColorAt(i,C(t.c<0.5?'#2f5a3e':'#3a6a48')); });
+forestMesh.castShadow=true; forestMesh.receiveShadow=true; scene.add(forestMesh);
+function updateInstances(){}
+let allNames=false;
+/* ============ particles ============ */
+const VS='attribute float aSize;attribute float aAlpha;varying float vA;uniform float uScale;void main(){vA=aAlpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=aSize*uScale/max(1.0,-mv.z);gl_Position=projectionMatrix*mv;}';
+const FS='uniform vec3 uColor;varying float vA;void main(){float d=length(gl_PointCoord-0.5);float a=smoothstep(0.5,0.0,d)*vA;if(a<0.01)discard;gl_FragColor=vec4(uColor,a);}';
+class Parts{
+  constructor(n,hex,additive,am){ this.n=n; this.am=am; this.i=0;
+    this.pos=new Float32Array(n*3); this.vel=new Float32Array(n*3); this.life=new Float32Array(n); this.max=new Float32Array(n).fill(1); this.size=new Float32Array(n); this.alpha=new Float32Array(n); this.s0=new Float32Array(n); this.gr=new Float32Array(n); this.a0=new Float32Array(n).fill(1);
+    const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(this.pos,3)); g.setAttribute('aSize',new THREE.BufferAttribute(this.size,1)); g.setAttribute('aAlpha',new THREE.BufferAttribute(this.alpha,1)); this.g=g;
+    this.mat=new THREE.ShaderMaterial({uniforms:{uColor:{value:new THREE.Color(hex)},uScale:{value:500}},vertexShader:VS,fragmentShader:FS,transparent:true,depthWrite:false,blending:additive?THREE.AdditiveBlending:THREE.NormalBlending});
+    this.pts=new THREE.Points(g,this.mat); this.pts.frustumCulled=false; scene.add(this.pts); }
+  spawn(x,y,z,vx,vy,vz,life,s0,gr,a0=1){ const i=this.i; this.i=(i+1)%this.n; this.pos[i*3]=x; this.pos[i*3+1]=y; this.pos[i*3+2]=z; this.vel[i*3]=vx; this.vel[i*3+1]=vy; this.vel[i*3+2]=vz; this.life[i]=life; this.max[i]=life; this.s0[i]=s0; this.gr[i]=gr; this.a0[i]=a0; }
+  update(dt,buoy){ for(let i=0;i<this.n;i++){ if(this.life[i]<=0){ this.alpha[i]=0; continue; } this.life[i]-=dt; const k=i*3; this.vel[k+1]+=buoy*dt; this.pos[k]+=this.vel[k]*dt; this.pos[k+1]+=this.vel[k+1]*dt; this.pos[k+2]+=this.vel[k+2]*dt;
+      const u=1-this.life[i]/this.max[i]; this.alpha[i]=this.am*this.a0[i]*ss(0,0.12,u)*(1-u); this.size[i]=this.s0[i]+this.gr[i]*u; }
+    this.g.attributes.position.needsUpdate=true; this.g.attributes.aAlpha.needsUpdate=true; this.g.attributes.aSize.needsUpdate=true; }
+}
+const smoke=new Parts(900,0x5e5a55,false,0.42), embers=new Parts(700,0xffa640,true,1.0), soil=new Parts(700,0x6e5234,false,0.95);
+let fires=[], emitters=[];
+
+const bolt={visible:false};
+/* ============ era update ============ */
+function updateEra(E,t,time){
+  const a=E.tb===-Infinity?1:clamp((t-E.tb)/APP,0,1);
+  let d=E.td!=null?clamp((t-E.td)/(E.death==='burn'?DIEB:DIE),0,1):0;
+  if(E.death==='bury') d=0;
+  const vis=a>0&&d<1; for(const r of E.roots) r.visible=vis;
+  E.a=a; E.d=d; E.alive=a>0.6&&d<0.3&&!(E.death==='bury'&&t>E.td);
+  if(!vis){ if(E.tick) E.tick(time,a,d); return; }
+  if(E.ghost){ for(const rec of E.mats) rec.m.visible=false; for(const r of E.roots) r.scale.y=1; E.lineMat.opacity=0.6*ss(0,1,a); E.lineMat.visible=true; return; }
+  const rise=1-Math.pow(1-clamp(a/0.65,0,1),3); let sy=Math.max(0.002,rise);
+  let so=ss(0.35,0.95,a), lo=ss(0,0.2,a)*(1-0.9*ss(0.55,1,a)), ch=0, fire=0;
+  if(E.death==='burn'){ ch=ss(0,0.45,d); fire=Math.sin(Math.PI*ss(0,0.9,d)); sy*=lerp(1,0.08,ss(0.45,1,d)); so*=1-ss(0.75,1,d); lo*=1-ss(0.7,1,d); }
+  else if(E.death==='fade'){ so*=1-ss(0,0.5,d); lo=Math.max(lo,0.85*ss(0,0.3,d)*(1-ss(0.55,1,d))); }
+  else if(E.death==='fill'){ so*=1-d; }
+  if(E.ts!=null) ch=Math.max(ch,0.9*ss(E.ts,E.ts+0.04,t));
+  let ghost=1, glow=0;
+  if(state.xray){ if(E.xray==='ghost') ghost=0.13; if(E.xray==='buried'&&t>E.td) glow=0.55; }
+  if(E.glowY!=null) glow=Math.max(glow,0.6*ENDK);
+  for(const r of E.roots) r.scale.y=sy;
+  const fl=0.7+0.3*Math.sin(time*23+E.seed)*Math.sin(time*7.1+E.seed);
+  for(const rec of E.mats){ const m=rec.m, op=so*ghost*(E.away?awayK():1), tr=op<0.999; if(m.transparent!==tr){ m.transparent=tr; m.needsUpdate=true; } m.opacity=op; m.depthWrite=op>0.4;
+    if(ch>0) m.color.copy(rec.base).lerp(CHAR,ch*0.85); else m.color.copy(rec.base);
+    if(fire>0.01){ m.emissive.copy(FIRE); m.emissiveIntensity=fire*fl*0.9; } else if(glow>0){ m.emissive.copy(GLOW); m.emissiveIntensity=glow; } else { m.emissive.copy(rec.baseEm); m.emissiveIntensity=rec.baseEi; } }
+  E.lineMat.opacity=state.xray&&E.xray==='ghost'?Math.max(lo,0.4):lo; E.lineMat.visible=E.lineMat.opacity>0.01;
+  if(fire>0.05&&E.center) fires.push({p:E.center,r:E.radius,i:fire});
+  if(a>=1&&d===0) for(const em of E.emit) emitters.push(em);
+  if(E.tick) E.tick(time,a,d);
+}
+
+/* ============ labels ============ */
+const labels=ERAS.filter(E=>E.label).map(E=>{ const el=document.createElement('div'); el.className='lbl off'+(E.xray==='buried'?' buried':''); el.innerHTML='<s></s>'+E.label; document.body.appendChild(el); return {E,el,text:E.label}; });
+const LSVG=(()=>{ const ns='http://www.w3.org/2000/svg'; const sv=document.createElementNS(ns,'svg'); sv.id='lsvg'; sv.setAttribute('style','position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:3'); document.body.appendChild(sv); return sv; })();
+const DN=n=>DOTS.find(d=>d.n===n);
+const POI=[
+ {id:'itakura',n:'群馬（海なし県）の貝塚',p:[DN('寺西貝塚').x,DN('寺西貝塚').z],h:1.2,y0:30},
+ {id:'kasori',n:'加曽利貝塚',p:LL(35.62402,140.16538),h:1.4,y0:30},
+ {id:'ubayama',n:'姥山貝塚',p:LL(35.73751,139.96788),h:1.4,y0:30},
+ {id:'nakazato',n:'中里貝塚',p:LL(35.7454,139.7530),h:1.8,y0:30},
+ {id:'oomori',n:'大森貝塚（大森駅のそば）',p:LL(35.59571,139.73102),h:1.4,y0:45},
+ {id:'yayoi',n:'弥生町のあたり（文京区）',p:LL(35.7165,139.7605),h:1.2,y0:45},
+ {id:'mizuko',n:'水子貝塚',p:LL(35.8230,139.5400),h:1.6,y0:20},
+ {id:'okutokyo',n:'奥東京湾',p:LL(35.86,139.80),h:0.4,y0:30},
+ {id:'kokinu',n:'古鬼怒湾',p:LL(35.93,140.36),h:0.4,y0:30},
+ {id:'kushiro',n:'古釧路湾',p:LL(43.12,144.40),h:0.8,y0:0},
+ {id:'ishikari',n:'古石狩湾',p:LL(43.20,141.43),h:0.8,y0:0},
+ {id:'okutokyo2',n:'奥東京湾・古鬼怒湾',p:LL(35.90,139.95),h:0.8,y0:0},
+ {id:'kawachi',n:'河内湾',p:LL(34.70,135.60),h:0.8,y0:0},
+ {id:'kitakogane',n:'北黄金貝塚（世界遺産）',p:[DN('北黄金貝塚').x,DN('北黄金貝塚').z],h:1.2,y0:10},
+ {id:'higashimyo',n:'東名遺跡',p:[DN('東名遺跡').x,DN('東名遺跡').z],h:1.2,y0:20},
+];
+const BI={}; POI.forEach(k=>BI[k.id]=[]); STOPS.forEach((st,i)=>{ (st.beat.feat||[]).forEach(id=>{ if(BI[id]) BI[id].push(i); }); });
+const MOMENTS=POI.map(k=>{ const ts=tOf(k.y0), y=Math.max(heightAny(k.p[0],k.p[1],0.7),0.3)+k.h; return {text:k.n,ks:BI[k.id],p:new THREE.Vector3(k.p[0],y+0.1,k.p[1]),g:new THREE.Vector3(k.p[0],y,k.p[1]),
+  show:yy=>{ const t=tOf(yy); if(allNames) return t>=ts-0.02; return BI[k.id].some(q=>Math.abs(t-q)<0.55); } }; })
+ .map(m=>{ const el=document.createElement('div'); el.className='lbl off'; el.innerHTML='<s></s>'+m.text; document.body.appendChild(el); return Object.assign(m,{el,ln:null}); });
+const near=()=>orbit.dist<700, far=()=>orbit.dist>1500;
+const GEO=[
+ {text:'東京湾',ll:[35.50,139.86],water:true,s:near},{text:'噴火湾',ll:[42.27,140.62],water:true,s:near},{text:'有明海',ll:[32.98,130.28],water:true,s:near},{text:'太平洋',ll:[35.40,140.70],water:true,s:near},
+ {text:'北海道',ll:[43.60,142.80],s:far},{text:'九州',ll:[32.50,130.95],s:far},{text:'四国',ll:[33.70,133.50],s:far},
+].map(g=>{ const [x,z]=LL(...g.ll); const el=document.createElement('div'); el.className='geo off'+(g.water?' water':''); el.textContent=g.text; document.body.appendChild(el);
+  const inK=Math.abs(x)<88&&Math.abs(z)<88; return Object.assign(g,{el,show:()=>g.s(),p:new THREE.Vector3(x,(inK?Math.max(heightAt(x,z),0.3):1)+(far===g.s?30:1.5),z)}); });
+/* いまの町と県（うすく重ねる・関東に寄った時だけ） */
+const PLACES=[['横浜',35.466,139.622,1],['さいたま',35.861,139.645,1],['千葉',35.607,140.106,1],['川越',35.925,139.486,0],['春日部',35.975,139.752,0],['古河',36.178,139.755,0],['館林',36.245,139.542,0],['つくば',36.083,140.111,0],['成田',35.776,140.318,0],['銚子',35.735,140.827,0],['熊谷',36.147,139.389,0],
+ ['室蘭',42.315,140.974,0],['伊達',42.472,140.865,0],['長万部',42.514,140.375,0],['八雲',42.255,140.265,0],['森',42.108,140.575,0],['函館',41.769,140.729,1],
+ ['佐賀',33.249,130.299,1],['柳川',33.163,130.406,0],['大牟田',33.030,130.446,0],['島原',32.788,130.370,0],['諫早',32.844,130.053,0],['熊本',32.803,130.708,1],['久留米',33.319,130.508,0],
+ ['佐賀県',33.36,130.08,2],['福岡県',33.36,130.62,2],['長崎県',32.98,129.88,2],['熊本県',32.70,130.85,2],
+ ['群馬県',36.36,139.28,2],['栃木県',36.40,139.92,2],['茨城県',36.28,140.33,2],['埼玉県',36.04,139.30,2],['千葉県',35.48,140.25,2],['東京都',35.70,139.38,2],['神奈川県',35.38,139.33,2]]
+ .map(([n,la,lo,k])=>{ const [x,z]=LL(la,lo); const y=Math.max(heightAny(x,z,0.6),0.3)+0.3; return {n,k,v:new THREE.Vector3(x,y,z)}; });
+function drawPlaces(ctx,W,Hh,u,vert){ const a=1-ss(500,900,orbit.dist); if(a<0.02) return; ctx.save(); ctx.textBaseline='middle';
+  PLACES.forEach(p=>{ const q=projectTo(p.v,W,Hh); if(!q) return; if(vert&&(q[1]<Hh*0.4||q[1]>Hh*0.86)) return; if(q[0]<110||q[0]>W-110) return;
+    if(p.k===2){ ctx.globalAlpha=a*0.5; ctx.font=`700 ${30*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#2f2f2f'; ctx.textAlign='center'; glow(ctx,p.n,q[0],q[1],10*u); }
+    else { ctx.globalAlpha=a*0.85; ctx.fillStyle='#3a3128'; ctx.fillRect(q[0]-4*u,q[1]-4*u,8*u,8*u); ctx.font=`700 ${(p.k?26:22)*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#2a241c'; ctx.textAlign='left'; glow(ctx,p.n,q[0]+9*u,q[1],10*u); } });
+  ctx.restore(); }
+const V=new THREE.Vector3();
+function projectTo(p,W,Hh){ V.copy(p).project(camera); if(V.z>1||Math.abs(V.x)>1.1||Math.abs(V.y)>1.1) return null; return [(V.x+1)/2*W,(1-V.y)/2*Hh]; }
+function labelOn(E,t){ return E.xray==='buried'? (state.xray&&t>E.td) : E.alive; }
+function updateLabels(t,y){
+  const put=(el,on,p)=>{ let q=null; if(on) q=projectTo(p,innerWidth,innerHeight); if(q){ el.style.left=q[0]+'px'; el.style.top=q[1]+'px'; } el.classList.toggle('off',!q); };
+  labels.forEach(({E,el})=>put(el,labelOn(E,t),E.center));
+  MOMENTS.forEach(m=>{ put(m.el,m.show(y),m.p); if(m.ln){ const on=!m.el.classList.contains('off'); const q=on?projectTo(m.p,innerWidth,innerHeight):null, gq=on?projectTo(m.g,innerWidth,innerHeight):null; if(q&&gq&&isFinite(q[0])&&isFinite(gq[0])){ m.ln.setAttribute('x1',q[0]); m.ln.setAttribute('y1',q[1]); m.ln.setAttribute('x2',gq[0]); m.ln.setAttribute('y2',gq[1]); m.ln.style.display=''; } else m.ln.style.display='none'; } });
+  GEO.forEach(g=>put(g.el,g.show(y),g.p));
+}
+
+/* ============ camera ============ */
+const orbit={target:new THREE.Vector3(2,1,4),theta:-0.93,phi:0.95,dist:250,tTarget:new THREE.Vector3(2,1,4),tTheta:-0.93,tPhi:0.95,tDist:250,auto:!reduced,lastUser:0};
+function applyCamera(){ const s=0.07; orbit.theta+=(orbit.tTheta-orbit.theta)*s; orbit.phi+=(orbit.tPhi-orbit.phi)*s; orbit.dist+=(orbit.tDist-orbit.dist)*s; orbit.target.lerp(orbit.tTarget,s);
+  const p=orbit.phi,t=orbit.theta; camera.position.set(orbit.target.x+orbit.dist*Math.sin(p)*Math.sin(t),orbit.target.y+orbit.dist*Math.cos(p),orbit.target.z+orbit.dist*Math.sin(p)*Math.cos(t)); camera.lookAt(orbit.target); }
+let drag=null,pinch=null;
+canvas.addEventListener('pointerdown',e=>{ canvas.setPointerCapture(e.pointerId); orbit.lastUser=performance.now(); drag={x:e.clientX,y:e.clientY,btn:e.button,shift:e.shiftKey}; canvas.classList.add('dragging'); });
+canvas.addEventListener('pointermove',e=>{ if(!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y; drag.x=e.clientX; drag.y=e.clientY; orbit.lastUser=performance.now();
+  if(drag.btn===2||drag.shift){ const right=new THREE.Vector3().setFromMatrixColumn(camera.matrix,0); const fwd=new THREE.Vector3(-Math.sin(orbit.theta),0,-Math.cos(orbit.theta)); const k=orbit.dist*0.0014; orbit.tTarget.addScaledVector(right,-dx*k).addScaledVector(fwd,dy*k); }
+  else { orbit.tTheta-=dx*0.0062; orbit.tPhi=clamp(orbit.tPhi-dy*0.005,0.08,1.45); } });
+const endDrag=()=>{ drag=null; canvas.classList.remove('dragging'); };
+canvas.addEventListener('pointerup',endDrag); canvas.addEventListener('pointercancel',endDrag); canvas.addEventListener('contextmenu',e=>e.preventDefault());
+canvas.addEventListener('wheel',e=>{ e.preventDefault(); orbit.lastUser=performance.now(); orbit.tDist=clamp(orbit.tDist*(1+Math.sign(e.deltaY)*0.09),2.4,420); },{passive:false});
+canvas.addEventListener('touchstart',e=>{ if(e.touches.length===2){ drag=null; pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);} },{passive:true});
+canvas.addEventListener('touchmove',e=>{ if(e.touches.length===2&&pinch){ const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); orbit.tDist=clamp(orbit.tDist*(pinch/d),2.4,420); pinch=d; orbit.lastUser=performance.now(); } },{passive:true});
+canvas.addEventListener('touchend',()=>{pinch=null;});
+const VIEWS={bird:[-0.93,0.95,250,[2,1,4]],castle:[-0.93,0.9,34,[C0.x,G,C0.z]],top:[0,0.1,290,[0,0,-4]],section:[0.05,1.36,250,[0,-3,0]]};
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{ const v=VIEWS[b.dataset.view]; orbit.tTheta=v[0]; orbit.tPhi=v[1]; orbit.tDist=v[2]; orbit.tTarget.set(...v[3]); orbit.lastUser=performance.now(); }));
+let rec=null;
+function stopCam(i){ const vert=rec&&rec.mode==='v'; const c=STOPS[i].cam||[2,1,4,250,0.95];
+  return {dist:c[3]*(vert?1.15:1),target:c.slice(0,3),phi:c[4]||1.0,theta:c[5]}; }
+function applyStopCam(i){ const c=stopCam(i); orbit.tDist=c.dist; orbit.tTarget.set(...c.target); orbit.tPhi=c.phi; if(c.theta!=null){ let th=c.theta; while(th-orbit.tTheta>Math.PI) th-=2*Math.PI; while(orbit.tTheta-th>Math.PI) th+=2*Math.PI; orbit.tTheta=th; } }
+const bSpin=$('bSpin'); if(reduced) bSpin.classList.remove('on');
+bSpin.onclick=()=>{ orbit.auto=!orbit.auto; bSpin.classList.toggle('on',orbit.auto); orbit.lastUser=0; };
+const bX=$('bXray');
+bX.onclick=()=>{ allNames=!allNames; bX.classList.toggle('on',allNames); };
+const bCloud=$('bCloud'); bCloud.onclick=()=>{ state.clouds=!state.clouds; bCloud.classList.toggle('on',state.clouds); clouds.forEach(c=>c.m.visible=state.clouds); };
+
+/* ============ timeline ============ */
+const track=$('track'), head=$('head'), fillbar=$('fillbar'), ticker=$('ticker');
+const pct=t=>(t/(NS-1)*100);
+EVENTS.forEach(ev=>{ if(ev.t<0||ev.t>NS-1) return; const d=document.createElement('div'); d.className='tick'+(ev.kind?' '+ev.kind:''); d.style.left=pct(ev.t)+'%'; d.title=ev.disp+' '+ev.text; track.appendChild(d); });
+const nodes=STOPS.map((s,i)=>{ const b=document.createElement('button'); b.className='node'+(s.bury?' bury':''); b.style.left=pct(i)+'%'; b.innerHTML=`<span class="ny">${s.ny}</span><span class="dot"></span><span class="ne">${s.short}</span>`; b.setAttribute('aria-label',s.era+' '+s.ny);
+  b.addEventListener('pointerdown',e=>e.stopPropagation()); b.addEventListener('click',()=>{ stopPlay(); jump(i,1.8); }); track.appendChild(b); return b; });
+$('legend').innerHTML=[['#f4eedc','貝のマーク＝貝塚（前期）'],['#8a6a44','竪穴住居のムラ（大きさは強調した模式）'],['#d0215f','赤い線＝縄文の海のふち（約6000年前・模式）'],['#4f74a6','海'],['#c8361e','いまの目印']].map(([c,n])=>`<li><s style="background:${c}"></s>${n}</li>`).join('');
+
+let T=0, lastT=null, lastStop=-1, tw=null, playing=false, holdUntil=0;
+const easeIO=u=>u<0.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
+function goTo(target,dur){ tw={from:T,to:target,t0:performance.now(),dur:Math.max(0.2,dur)*1000,done:null}; }
+function jump(i,dur){ applyStopCam(i); goTo(i,dur); }
+const playIcon=$('playIcon');
+function updPlay(){ playIcon.innerHTML=playing?'<path d="M3 1.5h3v11H3zM8 1.5h3v11H8z"/>':'<path d="M3 1.5v11l9-5.5z"/>'; $('play').setAttribute('aria-label',playing?'一時停止':'再生'); }
+function nextLeg(){ const next=Math.min(NS-1,Math.floor(T+1e-3)+1); jump(next,LEG*(next-T)*((STOPS[next].beat&&STOPS[next].beat.legx)||1)); tw.done=()=>{ if(!playing) return; if(next>=NS-1){ playing=false; updPlay(); return; } holdUntil=performance.now()+(STOPS[next].hold||HOLD); }; }
+function startPlay(){ playing=true; if(T>=NS-1-1e-3) T=0; if(T<0.01&&STOPS[0].hold0){ holdUntil=performance.now()+STOPS[0].hold0; playT0=performance.now(); } else { holdUntil=0; nextLeg(); } updPlay(); }
+function stopPlay(){ playing=false; holdUntil=0; if(tw&&tw.done) tw.done=null; updPlay(); }
+$('play').onclick=()=>{ playing?stopPlay():startPlay(); };
+let scrub=false;
+const tFromX=cx=>{ const r=track.getBoundingClientRect(); return clamp((cx-r.left)/r.width,0,1)*(NS-1); };
+track.addEventListener('pointerdown',e=>{ stopPlay(); tw=null; scrub=true; track.setPointerCapture(e.pointerId); T=tFromX(e.clientX); });
+track.addEventListener('pointermove',e=>{ if(scrub) T=tFromX(e.clientX); });
+track.addEventListener('pointerup',()=>{ if(!scrub) return; scrub=false; const r=Math.round(T); if(Math.abs(T-r)<0.06) goTo(r,0.3); });
+addEventListener('keydown',e=>{ if(rec){ if(e.key==='Escape') exitRec(); else if(e.key===' '){ e.preventDefault(); setPaused(_pausedAt==null); } return; }
+  if(e.key==='ArrowRight'){ stopPlay(); jump(Math.min(NS-1,Math.floor(T+1e-3)+1),1.8); } else if(e.key==='ArrowLeft'){ stopPlay(); jump(Math.max(0,Math.ceil(T-1e-3)-1),1.8); } else if(e.key===' '&&e.target===document.body){ e.preventDefault(); playing?stopPlay():startPlay(); } });
+
+function yearParts(t){ const f=t-Math.floor(t); let i=clamp(Math.round(t),0,NS-1); if(t<NS-1&&f>0.04) i=clamp(Math.ceil(t),0,NS-1); const s=STOPS[i]; let pre=s.pre,num=s.num,suf=s.suf;   /* 次の場面の文字は出発と同時に。年が変わる移動では数字を数える */
+  const a=STOPS[clamp(Math.floor(t),0,NS-1)].beat, b=STOPS[clamp(Math.floor(t)+1,0,NS-1)].beat; if(f>0.04&&f<0.96&&a.yr!==b.yr){ const yr=a.yr+(b.yr-a.yr)*ss(0.08,0.92,f); if(yr>=300){ pre='約'; num=String(Math.round(yr/100)*100); suf='年前'; } else { pre=''; num=String(Math.round(2026-yr)); suf='年'; } }
+  return {i,s,pre,num,suf,wa:s.wa,at:Math.abs(t-i)<0.02,cnt:f>0.04&&f<0.96&&a.yr!==b.yr}; }
+function currentEvent(t,atStop){ let ev=null; if(atStop) return null; for(const e of EVENTS){ if(false) ev=e; } return ev; }
+function setNote(id,html){ const n=$(id); if(html){ n.hidden=false; n.querySelector('span').innerHTML=html; } else n.hidden=true; }
+function updateCard(t){
+  const P=yearParts(t), s=P.s;
+  if(P.i!==lastStop){ lastStop=P.i; $('cEra').textContent=s.era; $('cTitle').textContent=s.title; $('cDesc').textContent=s.desc; setNote('cFire',s.fire); setNote('cEnd',s.end); setNote('cUnder',s.under); nodes.forEach((n,k)=>n.classList.toggle('on',k===P.i)); }
+  $('cPre').textContent=P.pre; $('cYear').textContent=P.num; $('cSuf').textContent=P.suf; $('cWa').textContent=P.wa;
+  head.style.left=pct(t)+'%'; fillbar.style.width=pct(t)+'%'; track.setAttribute('aria-valuetext',P.num+P.suf);
+  const ev=currentEvent(t,Math.abs(t-P.i)<0.015);
+  if(ev){ ticker.innerHTML=`<b>${ev.disp}</b>${ev.text}`; ticker.className='ticker '+ev.kind; } else ticker.classList.add('off');
+}
+
+/* ============ recording mode (SNS) ============ */
+const comp=$('comp'), cx2=comp.getContext('2d'), recbar=$('recbar'), rMsg=$('rMsg');
+let recS=null, recorder=null;
+function layoutComp(){ if(!rec) return; const top=recbar.offsetHeight+24, m=16; const sc=Math.min((innerWidth-2*m)/rec.W,(innerHeight-top-m)/rec.H);
+  comp.style.width=rec.W*sc+'px'; comp.style.height=rec.H*sc+'px'; comp.style.left=(innerWidth-rec.W*sc)/2+'px'; comp.style.top=top+'px'; }
+function setRecMode(mode){ rec.mode=mode; rec.W=mode==='v'?1080:1920; rec.H=mode==='v'?1920:1080; comp.width=rec.W; comp.height=rec.H;
+  renderer.setPixelRatio(1); renderer.setSize(rec.W,rec.H,false); camera.aspect=rec.W/rec.H; camera.updateProjectionMatrix();
+  const u=rec.H*0.55; smoke.mat.uniforms.uScale.value=embers.mat.uniforms.uScale.value=soil.mat.uniforms.uScale.value=u;
+  $('rV').classList.toggle('on',mode==='v'); $('rH').classList.toggle('on',mode==='h'); applyStopCam(clamp(Math.round(T),0,NS-1)); layoutComp(); }
+function enterRec(){ stopPlay(); rec={mode:'v'}; document.body.classList.add('rec'); setRecMode('v'); }
+function exitRec(){ if(recorder&&recorder.state==='recording') recorder.stop(); recS=null; rec=null; document.body.classList.remove('rec'); renderer.setPixelRatio(DPR); resize(); applyStopCam(clamp(Math.round(T),0,NS-1)); }
+function recRun(exporting){ stopPlay(); tw=null; T=0; lastT=null; orbit.auto=true; orbit.lastUser=0; orbit.theta=orbit.tTheta=-0.9; applyStopCam(0); const c=stopCam(0); orbit.dist=c.dist; orbit.target.set(...c.target); orbit.phi=c.phi;
+  recS={phase:'play',t0:performance.now(),start:performance.now(),exporting}; startPlay(); rMsg.textContent=exporting?'録画中…このタブを前に出したままにしてください':'再生中';
+  if(exporting) startRecorder(); }
+function startRecorder(){
+  const types=['video/mp4;codecs=avc1.640028','video/mp4;codecs=avc1.4D0028','video/mp4','video/webm;codecs=vp9','video/webm'];
+  const mime=window.MediaRecorder&&types.find(m=>MediaRecorder.isTypeSupported(m));
+  if(!mime){ rMsg.textContent='このブラウザは書き出しに対応していません。画面収録（⌘+Shift+5）で枠を録ってください'; recS.exporting=false; return; }
+  const chunks=[]; recorder=new MediaRecorder(comp.captureStream(30),{mimeType:mime,videoBitsPerSecond:14e6});
+  recorder.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+  recorder.onstop=async()=>{ const blob=new Blob(chunks,{type:mime}); const ext=mime.includes('mp4')?'mp4':'webm';
+    const filename='縄文海進と貝塚_'+(rec&&rec.mode==='h'?'横':'縦')+'.'+ext;
+    const dl=window.claude&&window.claude.use?await window.claude.use('downloads').catch(()=>null):null;
+    if(dl){ rMsg.textContent='保存の確認が出ます'; try{ await dl.save({filename,data:blob}); rMsg.textContent=ext+'を保存しました'; }
+      catch(e){ rMsg.textContent=e&&e.code==='declined'?'保存をやめました。もう一度「録画して保存」でやり直せます':'この画面では保存できませんでした。画面収録（⌘+Shift+5）で枠を録ってください'; } return; }
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+    rMsg.textContent=ext+'を保存しました（ダウンロードフォルダ）'; };
+  recorder.start(1000);
+}
+$('bRec').onclick=enterRec; $('rClose').onclick=exitRec;
+$('rV').onclick=()=>{ if(!recS) setRecMode('v'); }; $('rH').onclick=()=>{ if(!recS) setRecMode('h'); };
+$('rPlay').onclick=()=>{ setPaused(false); recRun(false); }; $('rSave').onclick=()=>{ setPaused(false); recRun(true); };
+function recTick(now){
+  if(!recS) return;
+  const el=now-recS.t0;
+  if(recS.phase==='intro'&&el>2800){ recS.phase='play'; recS.t0=now; startPlay(); }
+  else if(recS.phase==='play'&&!playing&&!tw&&T>=NS-1-1e-3&&endT0!=null&&now-endT0>(STOPS[NS-1].hold||HOLD)+1500){ recS.phase='outro'; recS.t0=now; }
+  else if(recS.phase==='outro'&&el>4200){ recS.phase='end'; if(recorder&&recorder.state==='recording') recorder.stop(); else rMsg.textContent='おわり。もう一度「再生」か「録画して保存」'; }
+}
+/* draw captions into the recording frame. Vertical: all text in the upper band (13%〜), lower band left clear. */
+function glow(ctx,txt,x,y,blur){ ctx.save(); ctx.shadowColor='rgba(245,236,212,1)'; ctx.shadowBlur=blur; ctx.fillText(txt,x,y); ctx.fillText(txt,x,y); ctx.restore(); ctx.fillText(txt,x,y); }
+function drawPanel(ctx,cxp,cyp,w,h){ ctx.fillStyle='rgba(246,239,222,.97)'; ctx.fillRect(cxp-w/2,cyp-h/2,w,h); ctx.strokeStyle='#1f1a14'; ctx.lineWidth=2; ctx.strokeRect(cxp-w/2,cyp-h/2,w,h); ctx.lineWidth=1; ctx.strokeStyle='rgba(31,26,20,.45)'; ctx.strokeRect(cxp-w/2+8,cyp-h/2+8,w-16,h-16); }
+function drawTitleCard(ctx,W,Hh,a,outro){
+  ctx.save(); ctx.globalAlpha=a; ctx.fillStyle='rgba(218,196,140,.3)'; ctx.fillRect(0,0,W,Hh);
+  const u=Math.min(W,Hh)/1080, cxp=W/2, cyp=rec.mode==='v'?Hh*0.40:Hh*0.5, chars=[...'縄文海進と貝塚'], gap=Math.min(118*u,708*u/chars.length), sz=Math.min(100*u,gap*0.85), ph=rec.mode==='v'?878*u:chars.length*gap+170*u, cofs=(ph-170*u-chars.length*gap)/2;
+  drawPanel(ctx,cxp,cyp,190*u,ph); ctx.fillStyle='#1f1a14'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`900 ${sz}px "Zen Old Mincho", serif`;
+  chars.forEach((ch,k)=>{ const py=cyp-ph/2+70*u+cofs+gap*(k+0.5); if('、。'.includes(ch)) ctx.fillText(ch,cxp+sz*0.34,py-sz*0.34); else ctx.fillText(ch,cxp,py); });
+  ctx.fillStyle='#b33a26'; ctx.fillRect(cxp-19*u,cyp+ph/2-70*u,38*u,52*u); ctx.fillStyle='#f7eee0'; ctx.font=`700 ${15*u}px "Zen Old Mincho", serif`; ctx.fillText('ひす',cxp,cyp+ph/2-54*u); ctx.fillText('鳥',cxp,cyp+ph/2-36*u);
+  ctx.fillStyle='#1f1a14'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`;
+  const sub=outro?'アトリエひす鳥':'約7000〜6000年前';
+  const sy=rec.mode==='v'?cyp+ph/2+60*u:cyp+ph/2-40*u; if(rec.mode==='v') glow(ctx,sub,cxp,sy,14*u); else { ctx.textAlign='left'; glow(ctx,sub,cxp+140*u,cyp,14*u); }
+  ctx.restore();
+}
+const KEYROWS={keep:'天守＝建った年が分かっているもの',yagura:'石垣と櫓＝天守の年が未確認の城',sub:'灰色の小さな城＝各地の支城（模式）',ring:'金のふち＝天下普請（大名に命じた築城）'};
+/* 凡例の絵は本物の模型をその場で撮る（手描きだと模型と違って見える） */
+let KEYIMG=null;
+function keyShots(){ if(KEYIMG) return KEYIMG; KEYIMG={};
+  const cv=document.createElement('canvas'); cv.width=cv.height=256;
+  const rr=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,preserveDrawingBuffer:true}); rr.setClearColor(0,0); rr.outputEncoding=THREE.sRGBEncoding; rr.toneMapping=THREE.ACESFilmicToneMapping;
+  const cam=new THREE.PerspectiveCamera(24,1,0.5,200), th=-0.93, ph=1.0; const aim=(dist,ty)=>{ cam.position.set(Math.sin(th)*Math.sin(ph)*dist,ty+Math.cos(ph)*dist,Math.cos(th)*Math.sin(ph)*dist); cam.lookAt(0,ty,0); };
+  class IE{ constructor(sc){ this.sc=sc; this.roots=[]; this.mats=[]; this.cache={}; this.cur=null; this.lineMat=new THREE.LineBasicMaterial({visible:false}); } at(y){ const r=new THREE.Group(); r.position.y=y; this.sc.add(r); this.cur=r; return this; } }
+  ['mat','place','geo','geoM','box','inst','group'].forEach(k=>IE.prototype[k]=Era.prototype[k]);
+  const shot=(k,dist,ty,build)=>{ aim(dist,ty); const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xf6ead0,0x5b4a35,0.7)); const sl=new THREE.DirectionalLight(0xfff0d2,1.2); sl.position.set(-9,15,11); sc.add(sl);
+    const E=new IE(sc); E.at(0); build(E,sc); rr.render(sc,cam); const o=document.createElement('canvas'); o.width=o.height=256; o.getContext('2d').drawImage(cv,0,0); KEYIMG[k]=o; };
+  const base=E=>{ platform(E,0,-0.1,0,2.9,2.9,0.55,0.18,'kiri','#b6ae94'); return 0.45; };
+  const yag=(E,t)=>buildKeep(E,0.5,t,0.45,{wall:'#f0ede4',roof:'#3d4550',shachi:'#8c8c8c',tiers:[[1.1,0.9,0.5],[0.8,0.65,0.42]]});
+  shot('keep',12,1.9,E=>{ const t=base(E); miniKeep(E,0,t,0,1.55,'#f0ede4','#3a4048',4,'#d9b24a'); });
+  shot('yagura',10,1.0,E=>{ yag(E,base(E)); });
+  shot('sub',6.5,0.45,(E,sc)=>{ ['#8d8a82','#e8e3d6','#3d4550'].forEach((c,j)=>{ const d=SUBPART[j], m=new THREE.Mesh(UNIT_BOX,new THREE.MeshStandardMaterial({color:C(c),roughness:0.85})); m.position.set(d[4],d[0],d[5]); m.scale.set(d[1],d[2],d[3]); sc.add(m); }); });
+  shot('ring',12,0.9,E=>{ const t=base(E); yag(E,t); E.geo(ringFlat(4.1,4.1,3.4,3.4),'#d9b24a',0,0.03,0,{lines:false,metal:0.8,rough:0.3,emissive:'#6a4a10',ei:0.5}); });
+  rr.dispose(); return KEYIMG; }
+function keyIcon(ctx,k,cx,cy,s){ const im=keyShots()[k]; if(im) ctx.drawImage(im,cx-s/2,cy-s/2,s,s); }
+const KEYLINE=[[['keep','天守＝建った年が分かる城'],['yagura','石垣と櫓＝天守の年は未確認']],[['sub','灰色の小城＝支城（模式）']]];
+function drawKeyLine(ctx,x,y,u,a){ if(a<0.01) return; ctx.save(); ctx.globalAlpha*=a; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.font=`700 ${27*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#3a3128';
+  const c1=52*u+Math.max(...KEYLINE.map(r=>ctx.measureText(r[0][1]).width))+30*u;
+  KEYLINE.forEach((row,j)=>{ const cy=y+j*50*u; row.forEach(([k,txt],i)=>{ const xx=x+(i?c1:0); keyIcon(ctx,k,xx+22*u,cy,52*u); glow(ctx,txt,xx+52*u,cy+1,16*u); }); });
+  ctx.restore(); }
+function drawOverlay(ctx,W,Hh,t,y,now){
+  const u=Math.min(W,Hh)/1080, vert=rec.mode==='v';
+  drawPlaces(ctx,W,Hh,u,vert); drawMarks(ctx,W,Hh,u,vert);
+  const vig=1-ss(0,0.45,Math.abs(t-BURY));
+  if(vig>0.01){ const g=ctx.createRadialGradient(W/2,Hh*0.45,Math.min(W,Hh)*0.3,W/2,Hh*0.45,Math.max(W,Hh)*0.7); g.addColorStop(0,'rgba(26,28,40,0)'); g.addColorStop(1,`rgba(26,28,40,${(0.25+0.4*ENDK)*vig})`); ctx.fillStyle=g; ctx.fillRect(0,0,W,Hh); }
+  // model labels
+  ctx.textBaseline='middle'; ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`;
+  const pill=(txt,p,buried,g)=>{ const q=projectTo(p,W,Hh); if(!q) return; const gq=g?projectTo(g,W,Hh):null; const tw2=ctx.measureText(txt).width, pw=tw2+46*u, ph=44*u, SM=vert?100:60, x=Math.min(Math.max(q[0]-pw/2,SM),W-SM-pw), yy=q[1]-ph-12*u;
+    ctx.fillStyle='rgba(246,239,222,.95)'; ctx.fillRect(x,yy,pw,ph); ctx.strokeStyle='rgba(31,26,20,.6)'; ctx.lineWidth=1.5*u; ctx.strokeRect(x,yy,pw,ph);
+    ctx.beginPath(); ctx.moveTo(Math.min(Math.max(q[0],x+12*u),x+pw-12*u),yy+ph); ctx.lineTo(gq?gq[0]:q[0],gq?gq[1]:q[1]); ctx.stroke(); ctx.fillStyle=buried?'#7d5a36':'#b33a26'; ctx.fillRect(x+14*u,yy+ph/2-6*u,12*u,12*u);
+    ctx.fillStyle='#1f1a14'; ctx.textAlign='left'; ctx.fillText(txt,x+34*u,yy+ph/2+1); };
+  labels.forEach(({E,text})=>{ if(labelOn(E,t)&&!E.noRec) pill(text,E.center,E.xray==='buried'); });
+  const PILLS=[];
+  const pillAt=(txt,gx,gy,a)=>{ if(gy<(vert?Hh*0.45:Hh*0.3)||gy>(vert?Hh*0.86:Hh*0.9)) return; ctx.save(); ctx.globalAlpha*=a; const SM=vert?100:60, tw2=ctx.measureText(txt).width, pw=tw2+46*u, ph=44*u; let x=gx-pw/2, right=true; x=Math.min(Math.max(x,SM),W-SM-pw); const yy0=Math.max(gy-ph-16*u,vert?Hh*0.45:Hh*0.5); let yy=yy0; for(let k=0;k<5&&PILLS.some(r=>x<r[0]+r[2]&&x+pw>r[0]&&yy<r[1]+r[3]+6*u&&yy+ph+6*u>r[1]);k++) yy+=ph+8*u; PILLS.push([x,yy,pw,ph]);
+    ctx.fillStyle='rgba(246,239,222,.95)'; ctx.fillRect(x,yy,pw,ph); ctx.strokeStyle='rgba(31,26,20,.6)'; ctx.lineWidth=1.5*u; ctx.strokeRect(x,yy,pw,ph);
+    if(yy!==yy0||Math.abs(x+pw/2-gx)>pw*0.6){ ctx.beginPath(); ctx.moveTo(x+pw/2,yy+ph); ctx.lineTo(gx,gy); ctx.stroke(); } ctx.fillStyle='#b33a26'; ctx.fillRect(x+14*u,yy+ph/2-6*u,12*u,12*u);
+    ctx.fillStyle='#1f1a14'; ctx.textAlign='left'; ctx.fillText(txt,x+34*u,yy+ph/2+1); ctx.restore(); };
+  MOMENTS.forEach(m=>{ if(m.noRec||!m.show(y)) return;
+    if(m.ks&&!allNames){ const d=Math.min(...m.ks.map(k=>Math.abs(t-k))), a=1-ss(0.2,0.45,d); if(a<0.01) return; const q=projectTo(m.g,W,Hh); if(q) pillAt(m.text,q[0],q[1],a); }
+    else pill(m.text,m.p,false,m.g); });
+  ctx.font=`700 ${30*u}px "Zen Old Mincho", serif`; ctx.textAlign='center';
+  GEO.forEach(g=>{ if(!g.show(y)) return; const q=projectTo(g.p,W,Hh); if(!q||q[0]<(vert?110:70)||q[0]>W-(vert?110:70)||(vert&&(q[1]<Hh*0.42||q[1]>Hh*0.82))) return; ctx.fillStyle=g.water?'#223f7a':'#1f1a14'; const chs=[...g.text]; chs.forEach((c,k)=>glow(ctx,c,q[0],q[1]+(k-(chs.length-1)/2)*36*u,10*u)); });
+  // caption block (upper band)
+  const P=yearParts(t), s=P.s, x0=vert?100:88, yTop=vert?Hh*0.13+24:72;
+  const hookA=recS&&recS.start?1-ss(2600,3200,now-recS.start):0;
+  if(hookA>0.01){ ctx.save(); ctx.globalAlpha=hookA; ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14';
+    ctx.font=`900 ${92*u}px "Zen Old Mincho", serif`; glow(ctx,'縄文海進と貝塚',x0,yTop+110*u,18*u);
+    ctx.fillStyle='#223f7a'; ctx.font=`900 ${58*u}px "Zen Old Mincho", serif`; glow(ctx,'6000年前、海はどこまで？',x0,yTop+230*u,16*u); ctx.restore(); }
+  ctx.save(); ctx.globalAlpha=recS&&recS.start?ss(3300,3900,now-recS.start):1;
+  ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14';
+  ctx.fillStyle='#b33a26'; ctx.fillRect(x0,yTop+10*u,14*u,14*u); ctx.fillStyle='#1f1a14'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`; if(!P.cnt) glow(ctx,s.era,x0+28*u,yTop+26*u,12*u);
+  let xx=x0; const by=yTop+180*u;
+  if(P.pre){ ctx.font=`700 ${52*u}px "Zen Old Mincho", serif`; glow(ctx,P.pre,xx,by,14*u); xx+=ctx.measureText(P.pre).width+6*u; }
+  ctx.font=`900 ${160*u}px "Zen Old Mincho", serif`; glow(ctx,P.num,xx,by,18*u); xx+=ctx.measureText(P.num).width+8*u;
+  ctx.font=`700 ${52*u}px "Zen Old Mincho", serif`; glow(ctx,P.suf,xx,by,14*u);
+  let yy=by+64*u; if(P.wa){ ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,P.wa.split('').join(' '),x0,yy,12*u); ctx.fillStyle='#1f1a14'; }
+  const tA=P.cnt?0:1;   // 年を数えている間は、数字だけ
+  if(tA>0.01){ ctx.save(); ctx.globalAlpha*=tA; yy+=86*u; ctx.font=`900 ${62*u}px "Zen Old Mincho", serif`; { const mw=W-x0-90*u, tw=ctx.measureText(s.title).width; if(tw>mw) ctx.font=`900 ${62*u*mw/tw}px "Zen Old Mincho", serif`; } glow(ctx,s.title,x0,yy,16*u); ctx.restore(); }
+  if(tA>0.01&&s.recNote){ ctx.save(); ctx.globalAlpha*=tA; yy+=60*u; ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,s.recNote,x0,yy,12*u); ctx.restore(); }
+  if(tA>0.01&&s.note2){ ctx.save(); yy+=54*u; ctx.font=`700 ${36*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#223f7a'; glow(ctx,s.note2,x0,yy,12*u); ctx.restore(); }
+  if(tA>0.01&&s.small){ ctx.save(); yy+=46*u; ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#5a4f40'; const ww=W-100-x0, wd=[...s.small]; let ln='', lines=[]; for(const ch of wd){ if(ctx.measureText(ln+ch).width>ww){ lines.push(ln); ln=ch; } else ln+=ch; } lines.push(ln); lines.forEach((l,k)=>glow(ctx,l,x0,yy+k*34*u,10*u)); yy+=(lines.length-1)*34*u; ctx.restore(); }
+  const ev=currentEvent(t,P.at);
+  if(ev){ const ey=vert?yy+68*u:Hh-96; ctx.font=`900 ${34*u}px "Zen Old Mincho", serif`; ctx.fillStyle=ev.kind==='fire'?'#b33a26':ev.kind==='bury'?'#7d5a36':'#1f1a14';
+    glow(ctx,ev.disp,x0,ey,14*u); const w0=ctx.measureText(ev.disp).width; ctx.fillStyle='#4a3f31'; ctx.font=`700 ${32*u}px "Zen Old Mincho", serif`; glow(ctx,ev.text,x0+w0+18*u,ey,12*u); }
+  if(!vert){ ctx.font=`700 ${24*u}px "Zen Old Mincho", serif`; ctx.textAlign='right'; ctx.fillStyle='#1f1a14'; glow(ctx,'縄文海進と貝塚 ・ アトリエひす鳥',W-60,Hh-48,10*u); }
+  else { ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,'縄文海進と貝塚 ・ アトリエひす鳥',x0,yTop-22*u,10*u); }
+  ctx.restore();
+  if(recS&&recS.start){ const e=now-recS.start;
+    // 凡例（冒頭だけ・下寄せ）
+    { const la=ss(0.7,0.98,t)*(1-ss(2.15,2.5,t)); if(la>0.01){ ctx.save(); ctx.globalAlpha=la; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#1f1a14'; const ly=vert?Hh*0.865:Hh-90; glow(ctx,'貝のマーク＝貝塚　赤い線＝縄文の海のふち',W/2,ly,14*u); glow(ctx,'白い線＝いまの海岸線　● いまの目印',W/2,ly+(vert?52:44)*u,14*u); ctx.restore(); } }
+    if(endT0!=null){ const ea=ss(5200,6600,now-endT0)*(recS.phase==='play'?1:1-ss(0,700,now-recS.t0)); if(ea>0.01){ ctx.save(); ctx.globalAlpha=ea; ctx.textAlign='center'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14'; ctx.font=`900 ${46*u}px "Zen Old Mincho", serif`; glow(ctx,'海が動くと、ムラも動いた。',W/2,vert?Hh*0.43:Hh*0.72,22*u); ctx.restore(); } } }
+  if(recS&&(recS.phase==='outro'||recS.phase==='end')) drawTitleCard(ctx,W,Hh,recS.phase==='end'?1:ss(0,900,now-recS.t0),true);
+}
+
+let bgC=null;
+function recBg(){ if(bgC&&bgC.width===rec.W&&bgC.height===rec.H) return bgC; bgC=document.createElement('canvas'); bgC.width=rec.W; bgC.height=rec.H; const x=bgC.getContext('2d');
+  const g=x.createRadialGradient(rec.W/2,rec.H*0.38,0,rec.W/2,rec.H*0.38,Math.max(rec.W,rec.H)*0.75); g.addColorStop(0,'#efe0ad'); g.addColorStop(0.55,'#e0c98f'); g.addColorStop(1,'#cdb173');
+  x.fillStyle=g; x.fillRect(0,0,rec.W,rec.H); x.strokeStyle='rgba(120,88,28,.09)'; x.lineWidth=1.5; const s=rec.H/15;
+  for(let i=0;i<=rec.W;i+=s){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,rec.H); x.stroke(); } for(let j=0;j<=rec.H;j+=s){ x.beginPath(); x.moveTo(0,j); x.lineTo(rec.W,j); x.stroke(); }
+  return bgC; }
+/* ============ loop ============ */
+function resize(){ if(rec){ layoutComp(); return; } renderer.setSize(innerWidth,innerHeight,false); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); const u=innerHeight*DPR*0.55; smoke.mat.uniforms.uScale.value=embers.mat.uniforms.uScale.value=soil.mat.uniforms.uScale.value=u; }
+addEventListener('resize',resize); resize();
+const _pn=performance.now.bind(performance); let _pausedAt=null, _off=0;
+performance.now=()=>(_pausedAt!=null?_pausedAt:_pn())-_off;
+function setPaused(p){ if(p&&_pausedAt==null) _pausedAt=_pn(); else if(!p&&_pausedAt!=null){ _off+=_pn()-_pausedAt; _pausedAt=null; } $('rPause').textContent=_pausedAt!=null?'▶ 再開':'⏸ 一時停止'; $('rPause').classList.toggle('on',_pausedAt!=null); }
+$('rPause').onclick=()=>setPaused(_pausedAt==null);
+const clock=new THREE.Clock(); const vigEl=$('vig');
+function frame(){
+  const dt=Math.min(clock.getDelta(),0.05), time=clock.elapsedTime, now=performance.now();
+  recTick(now);
+  if(tw){ const u=clamp((now-tw.t0)/tw.dur,0,1); T=lerp(tw.from,tw.to,easeIO(u)); if(u>=1){ const cb=tw.done; tw=null; cb&&cb(); } }
+  else if(playing&&holdUntil&&now>holdUntil){ holdUntil=0; nextLeg(); }
+  const y=yearOf(T);
+  if(lastT===null||Math.abs(T-lastT)>1e-5){ lastT=T; updateTerrain(y); updateSkirt(); updateInstances(y); }
+  fires=[]; emitters=[];
+  for(const E of ERAS) updateEra(E,T,time);
+  updateEnding(now,dt);
+  let strongest=null;
+  for(const f of fires){ if(!strongest||f.i>strongest.i) strongest=f;
+    const ne=Math.floor(f.i*dt*90+Math.random()); for(let k=0;k<ne;k++){ const a=Math.random()*6.28, r=Math.random()*f.r; embers.spawn(f.p.x+Math.cos(a)*r,f.p.y-2+Math.random()*3,f.p.z+Math.sin(a)*r,(Math.random()-0.5)*1.5+0.6,3+Math.random()*4,(Math.random()-0.5)*1.5,1.2+Math.random()*1.2,0.35,-0.2); }
+    const ns=Math.floor(f.i*dt*28+Math.random()); for(let k=0;k<ns;k++){ const a=Math.random()*6.28, r=Math.random()*f.r*0.7; smoke.spawn(f.p.x+Math.cos(a)*r,f.p.y+Math.random()*2,f.p.z+Math.sin(a)*r,0.9+Math.random()*0.6,2.2+Math.random()*1.5,(Math.random()-0.5)*0.6,3.5+Math.random()*1.5,2.5,7,1); } }
+  for(const em of emitters){ const n=Math.floor(em.rate*dt+Math.random()*em.rate*dt); for(let k=0;k<n;k++) smoke.spawn(em.p[0],em.p[1],em.p[2],0.5+Math.random()*0.3,1.0+Math.random()*0.6,(Math.random()-0.5)*0.3,4+Math.random()*2,em.s,em.s*3.5,em.dark?0.8:0.45); }
+  smoke.update(dt,0.05); embers.update(dt,-0.4); soil.update(dt,-4);
+  if(strongest){ fireLight.position.set(strongest.p.x,strongest.p.y+3,strongest.p.z); fireLight.intensity=3.2*strongest.i*(0.8+Math.random()*0.3); } else fireLight.intensity=0;
+  const vig=1-ss(0,0.45,Math.abs(T-BURY)); vigEl.style.opacity=vig.toFixed(3);
+  sun.intensity=(1.15-0.3*vig)*(1-0.4*ENDK); hemi.intensity=(0.62-0.12*vig)*(1-0.3*ENDK); sun.color.setRGB(1,0.94-0.12*ENDK,0.82-0.05*ENDK);
+  waterTex.offset.x+=dt*0.003;
+  clouds.forEach(c=>{ c.m.position.x=c.x+Math.sin(time*0.05+c.i)*2.5; });
+  if(orbit.auto&&!drag&&now-orbit.lastUser>6000) orbit.tTheta+=dt*(rec?0.004:0.02);
+  applyCamera(); renderer.render(scene,camera);
+  if(rec){ cx2.drawImage(recBg(),0,0); cx2.drawImage(canvas,0,0,rec.W,rec.H); drawOverlay(cx2,rec.W,rec.H,T,y,now); }
+  else { updateCard(T); updateLabels(T,y); }
+  requestAnimationFrame(frame);
+}
+frame();
+if(!reduced) setTimeout(()=>{ if(!playing&&T===0&&!tw&&!rec) startPlay(); },1800);
+})();
+</script>
+
+
+</body></html>
