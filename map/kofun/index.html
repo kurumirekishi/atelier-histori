@@ -1071,4 +1071,40 @@ if(!reduced) setTimeout(()=>{ if(!playing&&T===0&&!tw&&!rec) startPlay(); },1800
 </script>
 
 
+<!-- site: スマホの操作性（解説カードを折りたたみ・題箋と道具を小さく） -->
+<style>
+@media (max-width:820px){
+  .plaque{gap:6px!important}
+  .daisen{padding:8px 6px 7px!important}
+  .daisen h1{font-size:15px!important;letter-spacing:.2em!important}
+  .seal{font-size:8px!important;padding:3px 2px!important;margin-block-start:6px!important}
+  .tools{gap:4px!important;max-width:calc(100vw - 24px)!important}
+  .tools .grp{gap:4px!important}
+  .tools button,.tools a.back{font-size:11px!important;padding:4px 8px!important}
+  .card{top:auto!important;bottom:calc(var(--tlh,84px) + 18px)!important;max-height:none!important;overflow:visible!important;padding:8px 12px 8px!important}
+  .card .kicker{font-size:11px!important}
+  .card .year{margin-top:2px!important}
+  .card .year .num{font-size:26px!important}
+  .card .year .pre,.card .year .suf{font-size:13px!important}
+  .card .wa{display:none!important}
+  .card h2{font-size:14px!important;margin:3px 0 0!important;padding-right:64px}
+  .card:not(.open) p,.card:not(.open) .note,.card:not(.open) .legend{display:none!important}
+  .card.open{max-height:46vh!important;overflow-y:auto!important}
+  .card.open h2{margin-bottom:6px!important}
+  .mtoggle{position:absolute;right:8px;bottom:8px;appearance:none;border:1px solid rgba(31,26,20,.45);background:var(--washi,#f5eddb);color:var(--ink,#1f1a14);font-size:11px;letter-spacing:.06em;padding:4px 8px;cursor:pointer}
+  .card.open .mtoggle{position:sticky;float:right;bottom:auto;top:0;margin:-2px -4px 4px 8px}
+}
+@media (min-width:821px){ .mtoggle{display:none} }
+</style>
+<script>
+(function(){
+  var card=document.querySelector('aside.card'), tl=document.querySelector('.tl');
+  if(!card) return;
+  var b=document.createElement('button'); b.className='mtoggle'; b.type='button'; b.textContent='解説 ▾';
+  b.addEventListener('click',function(e){ e.stopPropagation(); var o=card.classList.toggle('open'); b.textContent=o?'閉じる ▴':'解説 ▾'; });
+  card.insertBefore(b,card.firstChild);
+  function fit(){ if(tl) document.documentElement.style.setProperty('--tlh',tl.offsetHeight+'px'); }
+  addEventListener('resize',fit); fit(); setTimeout(fit,500);
+})();
+</script>
 </body></html>
