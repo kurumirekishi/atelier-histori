@@ -224,6 +224,7 @@
   <button id="rPlay">▶ 再生して見る</button>
   <button id="rPause">⏸ 一時停止</button>
   <button id="rSave" class="save">● 録画して保存</button>
+  <button id="rLang">English</button>
   <button id="rClose">× 閉じる</button>
   <span class="msg" id="rMsg">枠の中だけが動画になります。約85秒。</span>
 </div>
@@ -232,6 +233,7 @@
 <script>
 (function(){
 'use strict';
+let EN=new URLSearchParams(location.search).get('lang')==='en'||location.hash==='#en';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ============ utilities ============ */
@@ -1087,7 +1089,7 @@ function startRecorder(){
   const chunks=[]; recorder=new MediaRecorder(comp.captureStream(30),{mimeType:mime,videoBitsPerSecond:14e6});
   recorder.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
   recorder.onstop=async()=>{ const blob=new Blob(chunks,{type:mime}); const ext=mime.includes('mp4')?'mp4':'webm';
-    const filename='京都の地層_'+(rec&&rec.mode==='h'?'横':'縦')+'.'+ext;
+    const filename=(EN?'Kyoto_EN_':'京都の地層_')+(rec&&rec.mode==='h'?'横':'縦')+'.'+ext;
     const dl=window.claude&&window.claude.use?await window.claude.use('downloads').catch(()=>null):null;
     if(dl){ rMsg.textContent='保存の確認が出ます'; try{ await dl.save({filename,data:blob}); rMsg.textContent=ext+'を保存しました'; }
       catch(e){ rMsg.textContent=e&&e.code==='declined'?'保存をやめました。もう一度「録画して保存」でやり直せます':'この画面では保存できませんでした。画面収録（⌘+Shift+5）で枠を録ってください'; } return; }
@@ -1143,6 +1145,60 @@ function drawKeyLine(ctx,x,y,u,a){ if(a<0.01) return; ctx.save(); ctx.globalAlph
   const c1=52*u+Math.max(...KEYLINE.map(r=>ctx.measureText(r[0][1]).width))+30*u;
   KEYLINE.forEach((row,j)=>{ const cy=y+j*50*u; row.forEach(([k,txt],i)=>{ const xx=x+(i?c1:0); keyIcon(ctx,k,xx+22*u,cy,52*u); glow(ctx,txt,xx+52*u,cy+1,16*u); }); });
   ctx.restore(); }
+
+/* ===== English（SNS絵所の英訳 2026-10-07）。動画に映る字幕・名札・冒頭・締め・題箋だけ ===== */
+const EN_BEATS=[
+ ['Before the capital','before ','794','','People at the edge of the basin','Jomon to the northeast, Yayoi to the south, the Hata clan to the west','',''],
+ ['','','794','','A capital on a grid','About 4.5 km east–west, 5.2 km north–south','Just 10 years after Nagaoka-kyo (784)',''],
+ ['Early Heian period','','794','–','Markets and temples, in pairs','East and West Temples, East and West Markets','Sakyo (Left) is east, Ukyo (Right) is west — left and right as seen by the emperor',''],
+ ['','','866','','A minister’s pond garden in the west','Nishi-Sanjo-dai, thought to be the house of Fujiwara no Yoshimi','Emperor Seiwa visited in 866','In 2011, the oldest hiragana found in Heian-kyo was dug up here'],
+ ['Saga, west of the capital','','876','','A palace becomes a temple','Emperor Saga’s villa became Daikakuji Temple','Outside the old capital (today’s Ukyo Ward)',''],
+ ['10th century','','980','','The western half fades','Ukyo was likely low, damp ground','A late-10th-century text: “few houses in the west”','In 980 a storm toppled Rajomon Gate. It was never rebuilt'],
+ ['Age of the retired emperors','','11th','–12th c.','A giant pagoda across the Kamo River','Hoshoji Temple’s octagonal nine-story pagoda','Estimated over 80 m tall. Another villa at Toba to the south',''],
+ ['','','1227','','The imperial palace disappears','After its last fire, it was never rebuilt','The site became a wasteland, “Uchino”',''],
+ ['','','1233','','The West Temple never came back','Saiji’s pagoda burned and was not rebuilt','Toji (East Temple) still stands',''],
+ ['','','1331','','The palace settles 2 km east','One of the temporary palaces becomes the Gosho','Today’s Kyoto Imperial Palace (buildings from 1855)',''],
+ ['Arashiyama, west of the capital','','1339','','Tenryuji Temple in Arashiyama','Founded by Ashikaga Takauji, with Muso Soseki as first abbot','The temple says Arashiyama and Togetsukyo Bridge were once its grounds',''],
+ ['The Onin War','','1467','–77','The Onin War','Kamigyo, at the center of the fighting, mostly burned','Shimogyo was hardly set on fire',''],
+ ['After the war','','1477','–','Two towns: Kamigyo and Shimogyo','Said to be linked by Muromachi Street','Each walled with moats',''],
+ ['','','1587','','A golden castle on the old palace site','Hideyoshi’s Jurakudai, built on Uchino','Just over 1 km west of the Gosho',''],
+ ['','','1591','','Hideyoshi walls the city with earth','The Odoi: about 22.5 km long. Inside it was “Rakuchu,” outside “Rakugai”','Heian-kyo itself had only simple fences and ditches',''],
+ ['','','1603','','Nijo Castle is built','The first castle also had a five-story keep','Jurakudai was torn down after 8 years (1595)',''],
+ ['Early Meiji','','1869','','The emperor and government move to Tokyo','No official decree ever moved the capital','The nobles’ quarter around the palace became a green park',''],
+ ['','','1890','','Water arrives from Lake Biwa','The Lake Biwa Canal — boats ride down the Keage incline','Its power ran Japan’s first streetcar in 1895',''],
+ ['West of the capital','','1910','','A train to Arashiyama','From Shijo-Omiya to Arashiyama (today’s Randen)','A film studio opened in Uzumasa in 1926',''],
+ ['Today','','Now','','Kyoto today','A piece of the Odoi survives at Kitano Tenmangu Shrine','',''],
+];
+const EN_LBL={'北白川の縄文のムラ':'Jomon village (Kitashirakawa)','秦氏の堰（桂川）':'Hata clan weir (Katsura R.)','広隆寺（603年）':'Koryuji Temple (603)','朱雀大路（いまの千本通のあたり）':'Suzaku Avenue (around today’s Senbon St.)',
+ '大極殿（平安宮）':'Daigokuden (Heian Palace)','羅城門':'Rajomon Gate','東寺':'Toji (East Temple)','西寺':'Saiji (West Temple)','東市':'East Market','西市':'West Market','神泉苑':'Shinsen-en Garden',
+ '西三条第':'Nishi-Sanjo-dai','西三条第の跡（ひらがなの土器）':'Nishi-Sanjo-dai site (hiragana pottery)','大覚寺（もとは離宮の嵯峨院）':'Daikakuji (once Emperor Saga’s villa)','法勝寺の八角九重塔':'Hoshoji’s octagonal pagoda',
+ '内野（平安宮の跡）':'Uchino (old palace site)','京都御所':'Kyoto Imperial Palace','京都御苑':'Kyoto Gyoen Park','天龍寺':'Tenryuji Temple','渡月橋':'Togetsukyo Bridge','上京':'Kamigyo','下京':'Shimogyo','室町通':'Muromachi St.',
+ '聚楽第':'Jurakudai','御土居':'Odoi wall','北野天満宮':'Kitano Tenmangu','北野天満宮の御土居':'Odoi at Kitano Tenmangu','寺町':'Teramachi (temple row)','二条城（最初の五層の天守）':'Nijo Castle (first five-story keep)',
+ '琵琶湖疏水':'Lake Biwa Canal','蹴上の発電所':'Keage power station','嵐電（1910年）':'Randen line (1910)','太秦':'Uzumasa',
+ '鴨川':'Kamo R.','高野川':'Takano R.','桂川':'Katsura R.','紙屋川':'Kamiya R.','北山':'Kitayama','東山':'Higashiyama','西山':'Nishiyama','比叡山':'Mt. Hiei','嵯峨野':'Sagano','巨椋池':'Ogura Pond','左京':'Sakyo (east)','右京':'Ukyo (west)'};
+const TX=EN=>({hook:EN?'Kyoto':'京都の地層',hook2:EN?'On the grid, the city moves':'碁盤の目の上で、町が動く',sig:EN?'Kyoto ・ Atelier His-tori':'京都の地層 ・ アトリエひす鳥',end:EN?'The west kept Heian-kyo beneath its soil.':'西は、地面の下に平安京を残した。'});
+const JA_STOPS=STOPS.map(s=>[s.era,s.pre,s.num,s.suf,s.title,s.recNote,s.note2,s.small]);
+MOMENTS.forEach(m=>m.ja=m.text); GEO.forEach(g=>g.ja=g.text);
+const JA_HEAD={h1:document.querySelector('.plaque h1').textContent,sub:document.querySelector('.plaque .sub').innerHTML,meta:document.querySelector('.plaque .meta').textContent};
+function applyLang(en){ EN=en; const B=en?EN_BEATS:JA_STOPS;
+  STOPS.forEach((s,i)=>{ const b=B[i]; if(!b) return; [s.era,s.pre,s.num,s.suf,s.title,s.recNote,s.note2,s.small]=b.map(v=>v||(v===''?'':v)); });
+  MOMENTS.forEach(m=>{ m.text=en?(EN_LBL[m.ja]||m.ja):m.ja; m.el.innerHTML='<s></s>'+m.text; });
+  GEO.forEach(g=>{ g.text=en?(EN_LBL[g.ja]||g.ja):g.ja; g.el.textContent=g.text; });
+  document.querySelector('.plaque h1').textContent=en?'Kyoto':JA_HEAD.h1; document.querySelector('.plaque .sub').innerHTML=en?'The grid stayed.<br>The city moved east.<br>The west kept its stories.':JA_HEAD.sub;
+  document.querySelector('.plaque .meta').textContent=en?'794–now ・ North is up ・ Buildings ×4 height ・ Terrain and layout are schematic':JA_HEAD.meta;
+  document.documentElement.lang=en?'en':'ja'; const b=document.getElementById('rLang'); if(b) b.textContent=en?'日本語':'English'; }
+document.getElementById('rLang').onclick=()=>{ if(!recS) applyLang(!EN); };
+if(EN) applyLang(true);
+/* 英語は横に長いので、入らない時は字を小さく・2行に */
+function fitFont(ctx,txt,size,weight,maxW,u,minSize){ let sz=size; ctx.font=`${weight} ${sz*u}px "Zen Old Mincho", serif`; while(sz>minSize&&ctx.measureText(txt).width>maxW){ sz-=1; ctx.font=`${weight} ${sz*u}px "Zen Old Mincho", serif`; } return sz; }
+function wrapWords(ctx,txt,maxW){ const w=txt.split(' '); const out=[]; let ln=''; for(const x of w){ const t=ln?ln+' '+x:x; if(ctx.measureText(t).width>maxW&&ln){ out.push(ln); ln=x; } else ln=t; } if(ln) out.push(ln); return out; }
+function enLine(ctx,txt,size,weight,minSize,x,y,maxW,u,blur){ let sz=fitFont(ctx,txt,size,weight,maxW,u,minSize); if(ctx.measureText(txt).width<=maxW){ glow(ctx,txt,x,y,blur); return 0; } sz=Math.round(size*0.9); ctx.font=`${weight} ${sz*u}px "Zen Old Mincho", serif`; const L=wrapWords(ctx,txt,maxW); L.forEach((l,k)=>glow(ctx,l,x,y+k*sz*1.18*u,blur)); return (L.length-1)*sz*1.18*u; }
+function drawTitleCardEN(ctx,W,Hh,a){ ctx.save(); ctx.globalAlpha=a; ctx.fillStyle='rgba(218,196,140,.3)'; ctx.fillRect(0,0,W,Hh);
+  const vert=rec.mode==='v', k=vert?W/1080:Hh*0.86/1164, cx=W/2, cy=vert?960*k:Hh/2, pw=224*k, ph=1164*k, Y0=cy-ph/2, Y1=cy+ph/2;
+  drawPanel(ctx,cx,cy,pw,ph); ctx.fillStyle='#1f1a14'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  const word='KYOTO', big=150*k, step=178*k, top=Y0+60*k, room=(Y1-110*k)-top; ctx.font=`900 ${big}px "Zen Old Mincho", serif`; let y=top+(room-step*word.length)/2+step/2; for(const ch of word){ ctx.fillText(ch,cx,y); y+=step; }   /* 題箋は KYOTO だけ（社長 10/07） */
+  ctx.fillStyle='#b33a26'; ctx.fillRect(cx-19*k,Y1-95*k,38*k,52*k); ctx.fillStyle='#f7eee0'; ctx.font=`700 ${15*k}px "Zen Old Mincho", serif`; ctx.fillText('ひす',cx,Y1-79*k); ctx.fillText('鳥',cx,Y1-61*k);
+  ctx.fillStyle='#1f1a14'; ctx.font=`700 ${36*k}px "Zen Old Mincho", serif`; glow(ctx,'Atelier His-tori',cx,vert?1608*k:Y1+40*k,14*k); ctx.restore(); }
 function drawOverlay(ctx,W,Hh,t,y,now){
   const u=Math.min(W,Hh)/1080, vert=rec.mode==='v';
   const vig=1-ss(0,0.45,Math.abs(t-BURY));
@@ -1163,36 +1219,36 @@ function drawOverlay(ctx,W,Hh,t,y,now){
     if(m.ks&&!allNames){ const d=Math.min(...m.ks.map(k=>Math.abs(t-k))), a=1-ss(0.2,0.45,d); if(a<0.01) return; const q=projectTo(m.g,W,Hh); if(q) pillAt(m.text,q[0],q[1],a); }
     else pill(m.text,m.p,false,m.g); });
   ctx.font=`700 ${30*u}px "Zen Old Mincho", serif`; ctx.textAlign='center';
-  GEO.forEach(g=>{ if(!g.show(y)) return; const q=projectTo(g.p,W,Hh); if(!q||q[0]<(vert?110:70)||q[0]>W-(vert?110:70)||(vert&&(q[1]<Hh*0.42||q[1]>Hh*0.82))) return; ctx.fillStyle=g.water?'#223f7a':'#1f1a14'; const chs=[...g.text]; chs.forEach((c,k)=>glow(ctx,c,q[0],q[1]+(k-(chs.length-1)/2)*36*u,10*u)); });
+  GEO.forEach(g=>{ if(!g.show(y)) return; const q=projectTo(g.p,W,Hh); if(!q||q[0]<(vert?110:70)||q[0]>W-(vert?110:70)||(vert&&(q[1]<Hh*0.42||q[1]>Hh*0.82))) return; ctx.fillStyle=g.water?'#223f7a':'#1f1a14'; if(EN){ ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; glow(ctx,g.text,q[0],q[1],10*u); ctx.font=`700 ${30*u}px "Zen Old Mincho", serif`; return; } const chs=[...g.text]; chs.forEach((c,k)=>glow(ctx,c,q[0],q[1]+(k-(chs.length-1)/2)*36*u,10*u)); });
   // caption block (upper band)
   const P=yearParts(t), s=P.s, x0=vert?100:88, yTop=vert?Hh*0.13+24:72;
   const hookA=recS&&recS.start?1-ss(2600,3200,now-recS.start):0;
   if(hookA>0.01){ ctx.save(); ctx.globalAlpha=hookA; ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14';
-    ctx.font=`900 ${92*u}px "Zen Old Mincho", serif`; glow(ctx,'京都の地層',x0,yTop+110*u,18*u);
-    ctx.fillStyle='#223f7a'; ctx.font=`900 ${58*u}px "Zen Old Mincho", serif`; glow(ctx,'碁盤の目の上で、町が動く',x0,yTop+230*u,16*u); ctx.restore(); }
+    ctx.font=`900 ${92*u}px "Zen Old Mincho", serif`; glow(ctx,TX(EN).hook,x0,yTop+110*u,18*u);
+    ctx.fillStyle='#223f7a'; ctx.font=`900 ${58*u}px "Zen Old Mincho", serif`; if(EN) fitFont(ctx,TX(EN).hook2,58,900,W-100-x0,u,34); glow(ctx,TX(EN).hook2,x0,yTop+230*u,16*u); ctx.restore(); }
   ctx.save(); ctx.globalAlpha=recS&&recS.start?ss(3300,3900,now-recS.start):1;
   ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14';
-  ctx.fillStyle='#b33a26'; ctx.fillRect(x0,yTop+10*u,14*u,14*u); ctx.fillStyle='#1f1a14'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`; glow(ctx,s.era,x0+28*u,yTop+26*u,12*u);
+  if(s.era){ ctx.fillStyle='#b33a26'; ctx.fillRect(x0,yTop+10*u,14*u,14*u); ctx.fillStyle='#1f1a14'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`; glow(ctx,s.era,x0+28*u,yTop+26*u,12*u); }
   let xx=x0; const by=yTop+180*u;
   if(P.pre){ ctx.font=`700 ${52*u}px "Zen Old Mincho", serif`; glow(ctx,P.pre,xx,by,14*u); xx+=ctx.measureText(P.pre).width+6*u; }
   ctx.font=`900 ${160*u}px "Zen Old Mincho", serif`; glow(ctx,P.num,xx,by,18*u); xx+=ctx.measureText(P.num).width+8*u;
   ctx.font=`700 ${52*u}px "Zen Old Mincho", serif`; glow(ctx,P.suf,xx,by,14*u);
   let yy=by+64*u; if(P.wa){ ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,P.wa.split('').join(' '),x0,yy,12*u); ctx.fillStyle='#1f1a14'; }
   const tA=1;
-  if(tA>0.01){ ctx.save(); ctx.globalAlpha*=tA; yy+=86*u; ctx.font=`900 ${62*u}px "Zen Old Mincho", serif`; glow(ctx,s.title,x0,yy,16*u); ctx.restore(); }
-  if(tA>0.01&&s.recNote){ ctx.save(); ctx.globalAlpha*=tA; yy+=60*u; ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,s.recNote,x0,yy,12*u); ctx.restore(); }
-  if(tA>0.01&&s.note2){ ctx.save(); yy+=54*u; ctx.font=`700 ${36*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#223f7a'; glow(ctx,s.note2,x0,yy,12*u); ctx.restore(); }
-  if(tA>0.01&&s.small){ ctx.save(); yy+=46*u; ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#5a4f40'; const ww=W-100-x0, wd=[...s.small]; let ln='', lines=[]; for(const ch of wd){ if(ctx.measureText(ln+ch).width>ww){ lines.push(ln); ln=ch; } else ln+=ch; } lines.push(ln); lines.forEach((l,k)=>glow(ctx,l,x0,yy+k*34*u,10*u)); yy+=(lines.length-1)*34*u; ctx.restore(); }
+  if(tA>0.01){ ctx.save(); ctx.globalAlpha*=tA; yy+=86*u; ctx.font=`900 ${62*u}px "Zen Old Mincho", serif`; if(EN){ yy+=enLine(ctx,s.title,56,900,40,x0,yy,W-100-x0,u,16*u); } else glow(ctx,s.title,x0,yy,16*u); ctx.restore(); }
+  if(tA>0.01&&s.recNote){ ctx.save(); ctx.globalAlpha*=tA; yy+=60*u; ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; if(EN){ yy+=enLine(ctx,s.recNote,34,700,28,x0,yy,W-100-x0,u,12*u); } else glow(ctx,s.recNote,x0,yy,12*u); ctx.restore(); }
+  if(tA>0.01&&s.note2){ ctx.save(); yy+=54*u; ctx.font=`700 ${36*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#223f7a'; if(EN){ yy+=enLine(ctx,s.note2,32,700,26,x0,yy,W-100-x0,u,12*u); } else glow(ctx,s.note2,x0,yy,12*u); ctx.restore(); }
+  if(tA>0.01&&s.small){ ctx.save(); yy+=46*u; ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#5a4f40'; const ww=W-100-x0, wd=[...s.small]; let ln='', lines=[]; if(EN) lines=wrapWords(ctx,s.small,ww); else { for(const ch of wd){ if(ctx.measureText(ln+ch).width>ww){ lines.push(ln); ln=ch; } else ln+=ch; } lines.push(ln); } lines.forEach((l,k)=>glow(ctx,l,x0,yy+k*34*u,10*u)); yy+=(lines.length-1)*34*u; ctx.restore(); }
   const ev=currentEvent(t,P.at);
   if(ev){ const ey=vert?yy+68*u:Hh-96; ctx.font=`900 ${34*u}px "Zen Old Mincho", serif`; ctx.fillStyle=ev.kind==='fire'?'#b33a26':ev.kind==='bury'?'#7d5a36':'#1f1a14';
     glow(ctx,ev.disp,x0,ey,14*u); const w0=ctx.measureText(ev.disp).width; ctx.fillStyle='#4a3f31'; ctx.font=`700 ${32*u}px "Zen Old Mincho", serif`; glow(ctx,ev.text,x0+w0+18*u,ey,12*u); }
-  if(!vert){ ctx.font=`700 ${24*u}px "Zen Old Mincho", serif`; ctx.textAlign='right'; ctx.fillStyle='#1f1a14'; glow(ctx,'京都の地層 ・ アトリエひす鳥',W-60,Hh-48,10*u); }
-  else { ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,'京都の地層 ・ アトリエひす鳥',x0,yTop-22*u,10*u); }
+  if(!vert){ ctx.font=`700 ${24*u}px "Zen Old Mincho", serif`; ctx.textAlign='right'; ctx.fillStyle='#1f1a14'; glow(ctx,TX(EN).sig,W-60,Hh-48,10*u); }
+  else { ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,TX(EN).sig,x0,yTop-22*u,10*u); }
   ctx.restore();
   if(recS&&recS.start){ const e=now-recS.start;
     // （京都は物差しなし）
-    if(endT0!=null){ const ea=ss(5200,6600,now-endT0)*(recS.phase==='play'?1:1-ss(0,700,now-recS.t0)); if(ea>0.01){ ctx.save(); ctx.globalAlpha=ea; ctx.textAlign='center'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14'; ctx.font=`900 ${46*u}px "Zen Old Mincho", serif`; glow(ctx,'西は、地面の下に平安京を残した。',W/2,vert?Hh*0.43:Hh*0.72,22*u); ctx.restore(); } } }
-  if(recS&&(recS.phase==='outro'||recS.phase==='end')) drawTitleCard(ctx,W,Hh,recS.phase==='end'?1:ss(0,900,now-recS.t0),true);
+    if(endT0!=null){ const ea=ss(5200,6600,now-endT0)*(recS.phase==='play'?1:1-ss(0,700,now-recS.t0)); if(ea>0.01){ ctx.save(); ctx.globalAlpha=ea; ctx.textAlign='center'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14'; ctx.font=`900 ${46*u}px "Zen Old Mincho", serif`; if(EN) fitFont(ctx,TX(EN).end,46,900,W-200,u,30); glow(ctx,TX(EN).end,W/2,vert?Hh*0.43:Hh*0.72,22*u); ctx.restore(); } } }
+  if(recS&&(recS.phase==='outro'||recS.phase==='end')) (EN?drawTitleCardEN:drawTitleCard)(ctx,W,Hh,recS.phase==='end'?1:ss(0,900,now-recS.t0),true);
 }
 
 let bgC=null;
