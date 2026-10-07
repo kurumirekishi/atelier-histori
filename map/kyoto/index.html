@@ -1334,4 +1334,24 @@ if(!reduced) setTimeout(()=>{ if(!playing&&T===0&&!tw&&!rec) startPlay(); },1800
   addEventListener('resize',fit); fit(); setTimeout(fit,500);
 })();
 </script>
+<!-- site: 英語版の切り替え（?lang=en のある模型だけ） -->
+<style>
+html[lang=en] #cDesc,html[lang=en] .card .note,html[lang=en] .card .legend,html[lang=en] .mtoggle,html[lang=en] .ticker,html[lang=en] .keys,html[lang=en] .tools .vl{display:none!important}
+html[lang=en] .node .ne,html[lang=en] .node .ny{visibility:hidden!important}
+.tools a.lang{background:var(--ink,#1f1a14);color:var(--washi,#f5eddb);border:1px solid var(--ink,#1f1a14);padding:6px 11px;font-size:12px;letter-spacing:.05em;text-decoration:none}
+@media (max-width:820px){ .tools a.lang{font-size:11px!important;padding:4px 8px!important} }
+</style>
+<script>
+(function(){
+  var en=new URLSearchParams(location.search).get('lang')==='en'||location.hash==='#en';
+  var back=document.querySelector('.tools a.back'); if(!back) return;
+  var a=document.createElement('a'); a.className='lang';
+  a.href=en?location.pathname:location.pathname+'?lang=en'; a.textContent=en?'日本語':'English';
+  back.parentNode.insertBefore(a,back);
+  if(en){ back.textContent='← Moving History Maps';
+    var T={'名前をすべて':'All names','金雲':'Gold clouds','ゆっくり回す':'Slow spin','鳥瞰':'Bird’s-eye','平安宮へ寄る':'Zoom to palace','真上':'Top view','断面':'Cross-section'};
+    document.querySelectorAll('.tools button').forEach(function(b){ for(var k in T){ var n=[].slice.call(b.childNodes).filter(function(x){return x.nodeType===3&&x.textContent.trim()===k;})[0]; if(n){ n.textContent=T[k]; break; } } });
+  }
+})();
+</script>
 </body></html>
