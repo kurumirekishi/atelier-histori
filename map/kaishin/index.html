@@ -225,7 +225,7 @@
   <button id="rPause">⏸ 一時停止</button>
   <button id="rSave" class="save">● 録画して保存</button>
   <button id="rClose">× 閉じる</button>
-  <span class="msg" id="rMsg">枠の中だけが動画になります。約85秒。</span>
+  <span class="msg" id="rMsg">枠の中だけが動画になります。約90秒。</span>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -255,6 +255,9 @@ const BEATS=[
  {y:10,yr:6000,era:'縄文時代前期',pre:'約',num:'6000',suf:'年前',wa:'',title:'海が、ここまで来ていた',note:'スカイツリーの足もとも、海',note2:'皇居は、海辺の台地の上',cam:'obl',hold:4600,legx:1.6,feat:['okutokyo','kokinu'],
   desc:'氷期の氷がとけて海面が上がり、約7000〜6000年前、海は川がけずった谷にそって陸の奥まで入り込んだ（縄文海進・日本第四紀学会）。墨田区の東京低地は海進で「長らく海面下」（墨田区）。「皇居から西側に台地が、東側に低地」、皇居の中に縄文の貝塚（千代田区）。九十九里平野は「ほとんどが海の底」（農林水産省関東農政局）。',
   under:'海の形は模式。今の地形に同じ高さの水を張ったものではない。'},
+ {y:15,yr:6000,era:'縄文時代早期〜前期・取掛西貝塚',pre:'約',num:'6000',suf:'年前',wa:'',title:'船橋の台地に、取掛西貝塚',note:'東京湾東岸で最古、約1万年前から',note2:'1万年前はシジミ、6千年前はハマグリやカキ',cam:'torikake',hold:6000,feat:['torikake'],
+  desc:'取掛西貝塚（船橋市飯山満町・米ケ崎町、標高約25mの台地）は、縄文早期前葉（約1万年前）と前期前半（約6千年前）の2つの時期の貝塚で、「東京湾東岸部で最古の貝塚」。早期前葉はヤマトシジミ（汽水産）主体、前期前半はハマグリ・ハイガイ・マガキ（内湾干潟産）主体。早期前葉の竪穴住居跡58軒は「縄文時代早期前葉の遺跡では、関東最大規模の集落跡」。2021年に国史跡（船橋市）。',
+  under:'点の位置は台地の上の目安。'},
  {y:20,yr:6000,era:'縄文時代前期・水子貝塚',pre:'約',num:'6000',suf:'年前',wa:'',title:'海辺の台地に、ムラ',note:'水子貝塚（埼玉・富士見市）',note2:'貝塚の下から、家の跡',cam:'mizuko',hold:6500,feat:['mizuko'],
   desc:'水子貝塚は縄文時代前期の環状集落跡。「約50の小貝塚が約160メートル径の環状にならんでいる」。小貝塚の「貝層下からは、いずれも竪穴住居跡が発見」（文化遺産オンライン・富士見市）。丸木舟は約7000年前にはあった（市川市・雷下遺跡、長さ約7m）。',
   under:'ムラ・家・舟の大きさは強調した模式。家の数も模式。'},
@@ -707,7 +710,7 @@ function buildRed(){ const J=0.24;
   RED.far=segLine(fs,6);
   PATCHES.forEach(p=>{ const N=p.N+1, s=2*p.R/p.N, A=p.mesh.geometry.attributes.position; RED.white.push(segLine(contourSegs(N,i=>p.cx-p.R+i*s,j=>p.cz-p.R+j*s,(i,j)=>A.getY(j*N+i),0.02,(x,z)=>Math.max(Math.abs(x-p.cx),Math.abs(z-p.cz))<p.R-8),0.45,0xffffff)); });   // いまの海岸線（白）＝描いた地形の水ぎわ
 }
-function redAlpha(){ return ss(0.6,0.95,T)*(1-ss(6.3,6.8,T)); }
+function redAlpha(){ return ss(0.6,0.95,T)*(1-ss(7.3,7.8,T)); }
 function waterLevel(){ return 0.24*ss(200,5500,curYr()); }   // 海は年の数字と一緒に動く
 /* 元は海だった所（入り江の谷）を、海が引いたあと水色がかった色に */
 const AQC=C('#8fc6da');
@@ -760,8 +763,8 @@ const CANOE2=CANOE.g.clone(); scene.add(CANOE2); const CANOE2P=[[35.700,139.905]
 const LIGHTS=(()=>{ const A=DB.map(d=>[d.x,d.y+0.6,d.z,-sdPoly(d.x,d.z,KANTO)]).sort((a,b)=>b[3]-a[3]); const R=rng(321), Bp=[]; let g=0; while(Bp.length<22&&g++<40000){ const x=-8+R()*45, z=-2+R()*42, f=factors(x,z); const m=-f.sd; if(m<1.5||m>9||f.vk>0.05) continue; Bp.push([x,heightFrom(f)+0.6,z,m]); } [[35.62402,140.16538],[35.73751,139.96788]].forEach(q=>{ const [x,z]=LL(...q); const f=factors(x,z); Bp.push([x,heightFrom(f)+0.9,z,-f.sd]); }); Bp.sort((a,b)=>b[3]-a[3]);
   const L=ptsLayer(A.length+Bp.length,TEXGLOW,38,true); L.p.renderOrder=8; return {A,B:Bp,L}; })();
 function updateLights(tt){ const P=LIGHTS.L.pos.array, Cc=LIGHTS.L.col.array, nA=LIGHTS.A.length, nB=LIGHTS.B.length; const near=1-ss(150,320,orbit.dist);
-  LIGHTS.A.forEach((p,k)=>{ const t0=2.08+0.55*k/nA, a=(T<1.02?ss(0.4,0.9,p1):1)*(T>=0.98?1:0)*(1-ss(t0,t0+0.12,T)); const fl=0.8+0.2*Math.sin(tt*6+k); P.set([p[0],a>0.01?p[1]:-9999,p[2]],k*3); Cc.set([a*fl*near*0.9,a*fl*near*0.62,a*fl*near*0.3],k*3); });
-  LIGHTS.B.forEach((p,k)=>{ const t0=2.3+0.6*k/nB, a=ss(t0,t0+0.1,T)*(1-ss(3.35,3.75,T)); const fl=0.8+0.2*Math.sin(tt*6+k*1.3); P.set([p[0],a>0.01?p[1]:-9999,p[2]],(nA+k)*3); Cc.set([a*fl*near*0.9,a*fl*near*0.62,a*fl*near*0.3],(nA+k)*3); });
+  LIGHTS.A.forEach((p,k)=>{ const t0=3.08+0.55*k/nA, a=(T<1.02?ss(0.4,0.9,p1):1)*(T>=0.98?1:0)*(1-ss(t0,t0+0.12,T)); const fl=0.8+0.2*Math.sin(tt*6+k); P.set([p[0],a>0.01?p[1]:-9999,p[2]],k*3); Cc.set([a*fl*near*0.9,a*fl*near*0.62,a*fl*near*0.3],k*3); });
+  LIGHTS.B.forEach((p,k)=>{ const t0=3.3+0.6*k/nB, a=ss(t0,t0+0.1,T)*(1-ss(4.35,4.75,T)); const fl=0.8+0.2*Math.sin(tt*6+k*1.3); P.set([p[0],a>0.01?p[1]:-9999,p[2]],(nA+k)*3); Cc.set([a*fl*near*0.9,a*fl*near*0.62,a*fl*near*0.3],(nA+k)*3); });
   LIGHTS.L.pos.needsUpdate=LIGHTS.L.col.needsUpdate=true; }
 /* 明治: 汽車（横浜→東京）。モースは汽車の窓から大森の貝層を見つけた */
 const RAIL=[[35.466,139.622],[35.531,139.697],[35.561,139.718],[35.588,139.7335],[35.609,139.7395],[35.628,139.742],[35.666,139.758]]   /* 線路は模式。大森貝塚（遺跡庭園）は線路の西側 */.map(q=>{ const [x,z]=LL(...q); return [x,z]; });
@@ -772,7 +775,7 @@ const RAILLINE=(()=>{ const pts=[]; for(let i=0;i<RAIL.length-1;i++){ const [ax,
   const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:0x3a3028,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2})); m.visible=false; scene.add(m); return {m}; })();   /* 線路は地面に沿って敷く */
 const TRAIN=(()=>{ const g=new THREE.Group(); const mk=(c,len)=>new THREE.Mesh(new THREE.BoxGeometry(len,0.32,0.34),new THREE.MeshStandardMaterial({color:c,roughness:0.7})); const cars=[mk(0x1c1a1a,0.75),mk(0x6b3f26,0.65),mk(0x6b3f26,0.65)]; cars.forEach(c=>g.add(c)); const st=new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(new Float32Array(8*3),3)),new THREE.PointsMaterial({map:TEXSMOKE,color:0xe8e4dc,size:0.9,transparent:true,opacity:0.8,depthWrite:false})); st.frustumCulled=false; scene.add(st); g.visible=false; scene.add(g); return {g,cars,st}; })();
 function railAt(s){ let tot=0; const seg=[]; for(let i=0;i<RAIL.length-1;i++){ const L=Math.hypot(RAIL[i+1][0]-RAIL[i][0],RAIL[i+1][1]-RAIL[i][1]); seg.push(L); tot+=L; } let d=clamp(s,0,1)*tot; for(let i=0;i<seg.length;i++){ if(d<=seg[i]||i===seg.length-1){ const w=d/seg[i]; return [RAIL[i][0]+(RAIL[i+1][0]-RAIL[i][0])*w,RAIL[i][1]+(RAIL[i+1][1]-RAIL[i][1])*w,Math.atan2(RAIL[i+1][1]-RAIL[i][1],RAIL[i+1][0]-RAIL[i][0])]; } d-=seg[i]; } return [0,0,0]; }
-function moveTrain(tt){ const on=T>4.6&&T<5.4, a=ss(4.6,4.9,T)*(1-ss(5.15,5.4,T)); RAILLINE.m.material.opacity=0.85*a; RAILLINE.m.visible=a>0.01; TRAIN.g.visible=on; TRAIN.st.visible=on;
+function moveTrain(tt){ const on=T>5.6&&T<6.4, a=ss(5.6,5.9,T)*(1-ss(6.15,6.4,T)); RAILLINE.m.material.opacity=0.85*a; RAILLINE.m.visible=a>0.01; TRAIN.g.visible=on; TRAIN.st.visible=on;
   if(!on) return; const s0=0.32+0.42*((tt/9)%1);   /* 大森のあたりを走る */ const A=TRAIN.st.geometry.attributes.position.array; TRAIN.cars.forEach((c,k)=>{ const [x,z,an]=railAt(s0-k*0.012); const gy=Math.max(groundAt(x,z),0.3); c.position.set(x,gy+0.21,z); c.rotation.y=-an; if(k===0){ for(let q=0;q<8;q++){ const ph=((tt*0.8+q/8)%1); A.set([x-Math.cos(an)*ph*0.6,gy+0.5+ph*1.2,z-Math.sin(an)*ph*0.6],q*3); } } }); TRAIN.st.geometry.attributes.position.needsUpdate=true; }
 // 入り江の奥から土で埋まっていく（海が引くのを、谷の奥→海の方へ見せる）
 let FILL=null, lastFT=-1;
@@ -780,7 +783,7 @@ function fillThreshold(yr){ if(yr>5940) return 999; const K=[[0,-60],[1500,0],[4
 function updateFill(){ if(!terrainDone) return; if(!FILL){ FILL=[]; for(let i=0;i<NV;i++){ if(F[i].vk>0.02&&!F[i].lake&&H[i]<PLATEAU+0.9&&H[i]>-0.02){ const ph=Math.max(H[i],plateauH(F[i])); if(ph-H[i]<0.02) continue; const c=vcolor(i,0,ph).slice(); FILL.push([i,H[i],-sdPoly(PX[i],PZ[i],KANTO),ph,c]); } } }
   const FT=fillThreshold(curYr()); if(Math.abs(FT-lastFT)<0.15) return; lastFT=FT; const pos=tgeo.attributes.position.array;
   const col=tgeo.attributes.color.array; FILL.forEach(([i,h0,m,ph,c])=>{ const s=FT>900?0:ss(FT,FT+5,m); pos[i*3+1]=h0+(ph-h0)*s; for(let k=0;k<3;k++) col[i*3+k]=BC[i*3+k]+(c[k]-BC[i*3+k])*s; }); tgeo.attributes.position.needsUpdate=true; tgeo.attributes.color.needsUpdate=true; tgeo.computeVertexNormals(); }
-let p2=0,s2T0=null,p3=0,s3T0=null,p4=0,s4T0=null,p5=0,s5T0=null,pE=0,sET0=null;
+let pT=0,sTT0=null,p2=0,s2T0=null,p3=0,s3T0=null,p4=0,s4T0=null,p5=0,s5T0=null,pE=0,sET0=null;
 function drawMarks(ctx,W,Hh,u,vert){ const a0=1-ss(600,1100,orbit.dist); if(a0<0.02) return; ctx.save(); ctx.textBaseline='middle'; ctx.font=`700 ${28*u}px "Zen Old Mincho", serif`;
   if(CANOE.g.visible&&orbit.dist<80){ const q=projectTo(new THREE.Vector3(CANOE.g.position.x,CANOE.g.position.y+0.9,CANOE.g.position.z),W,Hh); if(q){ const t='丸木舟', tw=ctx.measureText(t).width, bw=tw+24*u, bh=40*u; ctx.globalAlpha=0.95; ctx.fillStyle='rgba(255,252,244,0.92)'; ctx.fillRect(q[0]-bw/2,q[1]-bh-6*u,bw,bh); ctx.fillStyle='#1f1a14'; ctx.textAlign='center'; ctx.fillText(t,q[0],q[1]-bh/2-6*u+1); } }
   MARKS.forEach(m=>{ if(m.k<0.05||!m.g.visible) return; const q=projectTo(m.top,W,Hh); if(!q) return; if(vert&&(q[1]<Hh*0.36||q[1]>Hh*0.9)) return; const tw=ctx.measureText(m.n).width, pad=10*u, bw=tw+pad*2+14*u, bh=40*u;
@@ -792,7 +795,7 @@ function updateKaishin(now){
   const rs=typeof recS!=='undefined'&&recS&&recS.start?recS.start:playT0;
   let p; [p,hookT0]=stopAnim(0,now,hookT0,4500); if(rs) p=clamp((now-rs)/4500,0,1); introP=T<0.02?p:1;
   if(T<0.02){ const c=stopCam(0); orbit.dist=orbit.tDist=c.dist*(1-0.1*ss(0,1,introP)); }   // 冒頭も止まらない（ゆっくり寄る）   // 冒頭の解説: 日本地図で海が入り、赤い線が出る
-  [p1,s1T0]=stopAnim(1,now,s1T0,3600); [p2,s2T0]=stopAnim(2,now,s2T0,3000); [p3,s3T0]=stopAnim(3,now,s3T0,3000); [p4,s4T0]=stopAnim(4,now,s4T0,4500); [p5,s5T0]=stopAnim(5,now,s5T0,5000); [pE,sET0]=stopAnim(NS-1,now,sET0,7000);                                                      // 関東（7000〜6000年前）: 貝塚の点が順に灯る
+  [p1,s1T0]=stopAnim(1,now,s1T0,3600); [pT,sTT0]=stopAnim(2,now,sTT0,3000); [p2,s2T0]=stopAnim(3,now,s2T0,3000); [p3,s3T0]=stopAnim(4,now,s3T0,3000); [p4,s4T0]=stopAnim(5,now,s4T0,4500); [p5,s5T0]=stopAnim(6,now,s5T0,5000); [pE,sET0]=stopAnim(NS-1,now,sET0,7000);                                                      // 関東（7000〜6000年前）: 貝塚の点が順に灯る
   if(terrainDone&&!RED.far) buildRed();
   if(playing||rec){ orbit.auto=false; orbit.theta=orbit.tTheta=0; }   // 再生中・収録中は、いつも北が上（ぐるっと回らない）
   if(T<NS-1-0.001&&Math.abs(T-Math.round(T))>0.001){ const i=Math.floor(T), u=T-i, A=stopCam(i), Bc=stopCam(i+1); if(i===0) A.dist*=0.9;   // 冒頭でゆっくり寄った分から続ける（引き戻さない）   // 遠い場所への移動は、いったん高く上がって弧を描く
@@ -805,13 +808,13 @@ function updateKaishin(now){
   { const yr=curYr(), tt=now/1000;   // 目印・埋め立て地・ムラ・舟
     LANDFILL.material.opacity=1-ss(20,80,yr); LANDFILL.visible=LANDFILL.material.opacity>0.01; updateCity(1-ss(5,120,yr));
     MARKS.forEach(m=>{ m.k=T<0.02?ss(0.06+m.i*0.06,0.16+m.i*0.06,introP):1; m.ghost=1-0.45*ss(100,1500,yr); m.g.scale.setScalar(Math.max(1e-3,m.k)); m.mats.forEach(q=>q.opacity=m.ghost); m.g.visible=m.k>0.01&&orbit.dist>62;   /* 寄った場面では今の目印を出さない */ if(m.n==='ディズニーランド') m.g.position.y=LANDFILL.visible?0.3:waterLevel()+0.02; });
-    const kM=k=>T<1.98?0:T<2.02?ss(0.05+k*0.06,0.15+k*0.06,p2):1-ss(2.12,2.45,T); setInst(V_MIZUKO.hm,V_MIZUKO.pos,kM); setInst(V_MIZUKO.mm,V_MIZUKO.pos,k=>T<2.1?0:ss(2.15,2.5,T)*(1-0.5*ss(6.2,6.8,T)));
-    vsmoke(V_MIZUKO,T<1.98?0:T<2.02?ss(0.3,0.7,p2):1-ss(2.1,2.3,T),tt);
-    const kE=k=>T<2.98?0:T<3.02?ss(0.05+k*0.012,0.2+k*0.012,p3):1-ss(3.35,3.75,T); setInst(V_KASORI.hm,V_KASORI.pos,kE); setInst(V_UBA.hm,V_UBA.pos,kE);
-    const sE=T<2.98?0:T<3.02?ss(0.3,0.7,p3):1-ss(3.1,3.3,T); vsmoke(V_KASORI,sE,tt); vsmoke(V_UBA,sE,tt); V_KASORI.mm.visible=V_UBA.mm.visible=false;
-    const rg=T<2.98?0:T<3.02?0.45*ss(0.35,1,p3):0.45+0.55*ss(3.05,3.75,T), up=T<3.98?0:T<4.02?ss(0.05,0.6,p4):1; [RING_K,RING_U].forEach(r=>{ r.scale.set(Math.max(1e-3,rg),Math.max(1e-3,rg*(1+1.6*up)),Math.max(1e-3,rg)); r.visible=rg>0.01; }); ringShells();   // 加曽利の場面で、貝塚の輪がぐっと立ち上がる
-    { const a=T<2.98?0:T<3.02?ss(0.2,0.6,p3):1-ss(3.08,3.3,T), A=NAKAZATO.sm.geometry.attributes.position.array; NAKAZATO.pos.forEach((p,k)=>{ for(let q=0;q<3;q++){ const ph=((tt*0.5+k*0.29+q/3)%1); A.set([p[0]+Math.sin(ph*6+k)*0.15,p[1]+ph*1.6,p[2]],(k*3+q)*3); } }); NAKAZATO.sm.geometry.attributes.position.needsUpdate=true; NAKAZATO.sm.material.opacity=0.7*a; NAKAZATO.sm.visible=a>0.01; }
-    moveCanoe(CANOE.g,CANOE.P,T>0.95&&T<2.45,tt,10); moveCanoe(CANOE2,CANOE2P,T>2.55&&T<3.5,tt+3,9);   // 丸木舟が入り江・湾を行き来する
+    const kM=k=>T<2.98?0:T<3.02?ss(0.05+k*0.06,0.15+k*0.06,p2):1-ss(3.12,3.45,T); setInst(V_MIZUKO.hm,V_MIZUKO.pos,kM); setInst(V_MIZUKO.mm,V_MIZUKO.pos,k=>T<3.1?0:ss(3.15,3.5,T)*(1-0.5*ss(7.2,7.8,T)));
+    vsmoke(V_MIZUKO,T<2.98?0:T<3.02?ss(0.3,0.7,p2):1-ss(3.1,3.3,T),tt);
+    const kE=k=>T<3.98?0:T<4.02?ss(0.05+k*0.012,0.2+k*0.012,p3):1-ss(4.35,4.75,T); setInst(V_KASORI.hm,V_KASORI.pos,kE); setInst(V_UBA.hm,V_UBA.pos,kE);
+    const sE=T<3.98?0:T<4.02?ss(0.3,0.7,p3):1-ss(4.1,4.3,T); vsmoke(V_KASORI,sE,tt); vsmoke(V_UBA,sE,tt); V_KASORI.mm.visible=V_UBA.mm.visible=false;
+    const rg=T<3.98?0:T<4.02?0.45*ss(0.35,1,p3):0.45+0.55*ss(4.05,4.75,T), up=T<4.98?0:T<5.02?ss(0.05,0.6,p4):1; [RING_K,RING_U].forEach(r=>{ r.scale.set(Math.max(1e-3,rg),Math.max(1e-3,rg*(1+1.6*up)),Math.max(1e-3,rg)); r.visible=rg>0.01; }); ringShells();   // 加曽利の場面で、貝塚の輪がぐっと立ち上がる
+    { const a=T<3.98?0:T<4.02?ss(0.2,0.6,p3):1-ss(4.08,4.3,T), A=NAKAZATO.sm.geometry.attributes.position.array; NAKAZATO.pos.forEach((p,k)=>{ for(let q=0;q<3;q++){ const ph=((tt*0.5+k*0.29+q/3)%1); A.set([p[0]+Math.sin(ph*6+k)*0.15,p[1]+ph*1.6,p[2]],(k*3+q)*3); } }); NAKAZATO.sm.geometry.attributes.position.needsUpdate=true; NAKAZATO.sm.material.opacity=0.7*a; NAKAZATO.sm.visible=a>0.01; }
+    moveCanoe(CANOE.g,CANOE.P,T>0.95&&T<3.45,tt,10); moveCanoe(CANOE2,CANOE2P,T>3.55&&T<4.5,tt+3,9);   // 丸木舟が入り江・湾を行き来する
     updateLights(tt); moveTrain(tt);
   }
   { const sc=Math.max(1,orbit.dist/230), rx=1000/sc, ry=2000/sc, R0=waterTex.repeat;   // 波の模様は画面上でいつも同じ大きさ（遠景で細かくなってチカチカしないように）
@@ -822,7 +825,7 @@ function updateKaishin(now){
   TRACE.m.visible=false;
   if(RED.far){ const ra=redAlpha(), nearA=1-ss(2600,3600,orbit.dist), farA=ss(1000,1800,orbit.dist); RED.near.forEach(r=>{ r.set(0.42*wsc); r.m.material.opacity=0.95*ra*nearA; r.m.visible=r.m.material.opacity>0.01; }); RED.far.set(0.4*wsc); RED.far.m.material.opacity=0.95*ra*farA; RED.far.m.visible=RED.far.m.material.opacity>0.01;
     RED.white.forEach(r=>{ r.set(0.45*wsc); r.m.material.opacity=0.85*(1-ss(600,1500,orbit.dist)); r.m.visible=r.m.material.opacity>0.01; }); }
-  NIGHT=ss(6.15,6.9,T); ENDK=NIGHT;
+  NIGHT=ss(7.15,7.9,T); ENDK=NIGHT;
   const tt=now/1000, P=PDOT.pos.array, Cc=PDOT.col.array, PG=PGLOW.pos.array, CG=PGLOW.col.array;
   const farV=orbit.dist>1500;
   const PS=PSPK.pos.array, CS=PSPK.col.array;
@@ -830,10 +833,10 @@ function updateKaishin(now){
   DOTS.forEach((d,i)=>{ let k=0;
     if(d.k==='b'){ k=T<0.98?0:T<1.02?ss(0.1+d.o*0.02,0.18+d.o*0.02,p1):1; }   // 前期の貝塚（6000年前の海辺）
     else if(d.k==='k'){ k=0; }
-    else if(d.k==='o'){ k=ss(4.55,4.95,T)*(1-ss(6.3,6.8,T)); }   // 大森貝塚（明治に掘り出された）
-    else { k=ss(6.45,6.9,T); }   // 列島の貝塚は最後の夜景で
+    else if(d.k==='o'){ k=ss(5.55,5.95,T)*(1-ss(7.3,7.8,T)); }   // 大森貝塚（明治に掘り出された）
+    else { k=ss(7.45,7.9,T); }   // 列島の貝塚は最後の夜景で
     const tw=farV?0.75+0.25*Math.sin(tt*2.3+i*1.7):1; put(i,d.x,d.y+0.5,d.z,k,k*(farV?0.3+0.1*NIGHT:0.35+0.65*NIGHT)*tw,true,k*(0.75+0.25*tw)); });
-  CL.forEach((c,j)=>{ const gi=GORDER.indexOf(c.g), t0=0.06+gi*0.11, pulse=gi<0?0:Math.exp(-Math.pow((pE-t0-0.05)/0.05,2)), k=(gi<0?0.75*ss(6.4,6.9,T):(T<NS-1.02?0:ss(t0,t0+0.06,pE))*(1+1.6*pulse))*ss(1300,1700,orbit.dist),   // 列島の内湾が1つずつ光る   // 夜景用の模式の光は、引きの画面だけ
+  CL.forEach((c,j)=>{ const gi=GORDER.indexOf(c.g), t0=0.06+gi*0.11, pulse=gi<0?0:Math.exp(-Math.pow((pE-t0-0.05)/0.05,2)), k=(gi<0?0.75*ss(7.4,7.9,T):(T<NS-1.02?0:ss(t0,t0+0.06,pE))*(1+1.6*pulse))*ss(1300,1700,orbit.dist),   // 列島の内湾が1つずつ光る   // 夜景用の模式の光は、引きの画面だけ
     tw=0.6+0.4*Math.sin(tt*(1.5+(j%7)*0.3)+c.tw); put(NSRC+j,c.x,c.y,c.z,k,k*(0.16+0.12*NIGHT)*tw,false,k*(0.45+0.55*tw)); });
   PDOT.pos.needsUpdate=PDOT.col.needsUpdate=PGLOW.pos.needsUpdate=PGLOW.col.needsUpdate=PSPK.pos.needsUpdate=PSPK.col.needsUpdate=true;
   PDOT.m.size=34; PGLOW.m.size=farV?20+6*NIGHT:60; const gb=farV?THREE.NormalBlending:THREE.AdditiveBlending; if(PGLOW.m.blending!==gb){ PGLOW.m.blending=gb; PGLOW.m.needsUpdate=true; } PGLOW.m.opacity=farV?0.16+0.34*NIGHT:1; PSPK.m.size=6+1.5*NIGHT; waterMat.opacity=0.95+0.05*NIGHT;
@@ -848,6 +851,7 @@ function awayK(){ return 1; }
 /* 拍ごとのカメラ（北が上） */
 const CAMS={
   obl:()=>[6,0.3,-22,195,1.12],
+  torikake:()=>{ const [x,z]=LL(35.716,140.012); return [x,0.3,z-9,42,1.08]; },
   mizuko:()=>{ const [x,z]=LL(35.832,139.562); return [x,0.3,z-7,28,1.1]; },
   east:()=>[-7,0.3,-4,100,1.06],
   kasori:()=>{ const [x,z]=LL(35.624,140.165); return [x,0.3,z-6,32,0.86]; },
@@ -923,6 +927,7 @@ const POI=[
  {id:'nakazato',n:'中里貝塚',p:LL(35.7454,139.7530),h:1.8,y0:30},
  {id:'oomori',n:'大森貝塚（大森駅のそば）',p:LL(35.59571,139.73102),h:1.4,y0:45},
  {id:'yayoi',n:'弥生町のあたり（文京区）',p:LL(35.7165,139.7605),h:1.2,y0:45},
+ {id:'torikake',n:'取掛西貝塚',p:[DN('取掛西貝塚').x,DN('取掛西貝塚').z],h:1.4,y0:15},
  {id:'mizuko',n:'水子貝塚',p:LL(35.8230,139.5400),h:1.6,y0:20},
  {id:'okutokyo',n:'奥東京湾',p:LL(35.86,139.80),h:0.4,y0:30},
  {id:'kokinu',n:'古鬼怒湾',p:LL(35.93,140.36),h:0.4,y0:30},
@@ -1158,7 +1163,7 @@ function drawOverlay(ctx,W,Hh,t,y,now){
   ctx.restore();
   if(recS&&recS.start){ const e=now-recS.start;
     // 凡例（冒頭だけ・下寄せ）
-    { const la=ss(0.7,0.98,t)*(1-ss(2.15,2.5,t)); if(la>0.01){ ctx.save(); ctx.globalAlpha=la; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#1f1a14'; const ly=vert?Hh*0.865:Hh-90; glow(ctx,'貝のマーク＝貝塚　赤い線＝縄文の海のふち',W/2,ly,14*u); glow(ctx,'白い線＝いまの海岸線　● いまの目印',W/2,ly+(vert?52:44)*u,14*u); ctx.restore(); } }
+    { const la=ss(0.7,0.98,t)*(1-ss(3.15,3.5,t)); if(la>0.01){ ctx.save(); ctx.globalAlpha=la; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#1f1a14'; const ly=vert?Hh*0.865:Hh-90; glow(ctx,'貝のマーク＝貝塚　赤い線＝縄文の海のふち',W/2,ly,14*u); glow(ctx,'白い線＝いまの海岸線　● いまの目印',W/2,ly+(vert?52:44)*u,14*u); ctx.restore(); } }
     if(endT0!=null){ const ea=ss(5200,6600,now-endT0)*(recS.phase==='play'?1:1-ss(0,700,now-recS.t0)); if(ea>0.01){ ctx.save(); ctx.globalAlpha=ea; ctx.textAlign='center'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14'; ctx.font=`900 ${46*u}px "Zen Old Mincho", serif`; glow(ctx,'海が動くと、ムラも動いた。',W/2,vert?Hh*0.43:Hh*0.72,22*u); ctx.restore(); } } }
   if(recS&&(recS.phase==='outro'||recS.phase==='end')) drawTitleCard(ctx,W,Hh,recS.phase==='end'?1:ss(0,900,now-recS.t0),true);
 }
