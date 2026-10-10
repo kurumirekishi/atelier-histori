@@ -1349,7 +1349,7 @@ html[lang=en] .node .ne,html[lang=en] .node .ny{visibility:hidden!important}
   a.href=en?location.pathname:location.pathname+'?lang=en'; a.textContent=en?'日本語':'English';
   back.parentNode.insertBefore(a,back);
   if(en){ back.textContent='← Moving History Maps';
-    var T={'名前をすべて':'All names','金雲':'Gold clouds','ゆっくり回す':'Slow spin','鳥瞰':'Bird’s-eye','平安宮へ寄る':'Zoom to palace','真上':'Top view','断面':'Cross-section'};
+    var T={'金雲':'Gold clouds','ゆっくり回す':'Slow spin','鳥瞰':'Bird’s-eye','平安宮へ寄る':'Zoom to palace','平城宮へ寄る':'Zoom to palace','城へ寄る':'Zoom to castle','三内丸山へ':'Zoom to Sannai-Maruyama','畿内へ寄る':'Zoom to Kinai','百舌鳥へ寄る':'Zoom to Mozu','関東へ寄る':'Zoom to Kanto','大宰府へ寄る':'Zoom to Dazaifu','厳島へ寄る':'Zoom to Itsukushima','今の海岸線':'Today’s coastline','海を透かす':'See-through sea','地下を透かす':'See underground','名前をすべて':'All names','真上':'Top view','断面':'Cross-section'};
     document.querySelectorAll('.tools button').forEach(function(b){ for(var k in T){ var n=[].slice.call(b.childNodes).filter(function(x){return x.nodeType===3&&x.textContent.trim()===k;})[0]; if(n){ n.textContent=T[k]; break; } } });
   }
 })();

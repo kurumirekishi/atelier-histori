@@ -223,6 +223,7 @@
   <button id="rH">横 16:9（X）</button>
   <button id="rPlay">▶ 再生して見る</button>
   <button id="rSave" class="save">● 録画して保存</button>
+  <button id="rLang">English</button>
   <button id="rClose">× 閉じる</button>
   <span class="msg" id="rMsg">枠の中だけが動画になります。約75秒。</span>
 </div>
@@ -231,6 +232,7 @@
 <script>
 (function(){
 'use strict';
+let EN=new URLSearchParams(location.search).get('lang')==='en'||location.hash==='#en';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ============ utilities ============ */
@@ -996,7 +998,7 @@ function startRecorder(){
   const chunks=[]; recorder=new MediaRecorder(comp.captureStream(30),{mimeType:mime,videoBitsPerSecond:14e6});
   recorder.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
   recorder.onstop=async()=>{ const blob=new Blob(chunks,{type:mime}); const ext=mime.includes('mp4')?'mp4':'webm';
-    const filename='奈良　都は田んぼに、寺は町に_'+(rec&&rec.mode==='h'?'横':'縦')+'.'+ext;
+    const filename=(EN?'Nara_EN_':'奈良　都は田んぼに、寺は町に_')+(rec&&rec.mode==='h'?'横':'縦')+'.'+ext;
     const dl=window.claude&&window.claude.use?await window.claude.use('downloads').catch(()=>null):null;
     if(dl){ rMsg.textContent='保存の確認が出ます'; try{ await dl.save({filename,data:blob}); rMsg.textContent=ext+'を保存しました'; }
       catch(e){ rMsg.textContent=e&&e.code==='declined'?'保存をやめました。もう一度「録画して保存」でやり直せます':'この画面では保存できませんでした。画面収録（⌘+Shift+5）で枠を録ってください'; } return; }
@@ -1052,6 +1054,55 @@ function drawKeyLine(ctx,x,y,u,a){ if(a<0.01) return; ctx.save(); ctx.globalAlph
   const c1=52*u+Math.max(...KEYLINE.map(r=>ctx.measureText(r[0][1]).width))+30*u;
   KEYLINE.forEach((row,j)=>{ const cy=y+j*50*u; row.forEach(([k,txt],i)=>{ const xx=x+(i?c1:0); keyIcon(ctx,k,xx+22*u,cy,52*u); glow(ctx,txt,xx+52*u,cy+1,16*u); }); });
   ctx.restore(); }
+
+/* ===== English（SNS絵所の英訳 2026-10-10）。動画に映る字幕・名札・冒頭・締め・題箋だけ ===== */
+const EN_BEATS=[
+ ['','','Jomon','& Yayoi','Before the capital','Jomon and Yayoi pottery lies beneath the city','',''],
+ ['Kofun period','','Late 4th','–5th c.','A row of giant tombs on the northern hills','The Saki tomb group: eight keyhole tombs over 200 m long','',''],
+ ['','','710','','The palace was built by cutting into tombs','Part of Ichiniwa Kofun and Shinmeino Kofun were leveled','710: the capital moves to Heijo-kyo; temples like Kofukuji follow from Asuka',''],
+ ['Early Nara period','','710s','','Prince Nagaya’s mansion, just southeast of the palace','About 70,000 m²','Wooden tags record lavish meals — and dogs, horses and cranes',''],
+ ['','','768','','Temples and a shrine line the east','752: the Great Buddha is dedicated ・ 768: Kasuga Taisha Shrine','718: Asuka-dera moves here as Gangoji',''],
+ ['','','784','','The capital leaves','In 784, the capital moves to Nagaoka-kyo','',''],
+ ['Early Heian period','','9th','c.','The capital became rice fields. The temples stayed.','Nara lives on as a town of temples and shrines','',''],
+ ['','','Heian','period','Towns grow at the temple gates','Neighborhoods form before Todaiji and Kofukuji','Later called “Nanto,” the Southern Capital',''],
+ ['','','1180','','Nara burns','Todaiji and Kofukuji burn; most of the town is damaged','',''],
+ ['','','1195','','The temples rise again, and the town revives','The Great Buddha Hall is rebuilt with donations gathered by the monk Chogen','',''],
+ ['','','1567','','The Great Buddha Hall burns','In the midst of war','',''],
+ ['','c. ','1603','','A temple ground becomes a town','Houses fill Gangoji’s old grounds: “Naramachi”','Early 1500s: said to be 200 neighborhoods, 25,000 people',''],
+ ['','','1709','','Today’s Great Buddha Hall','Rebuilt at about 60% of its former width','',''],
+ ['','Early ','Meiji','','Kofukuji loses its land','In the anti-Buddhist movement, its grounds were taken by the state','There was even a rumor its five-story pagoda would be sold',''],
+ ['','','1880','','A temple garden becomes a park','Nara Park began on Kofukuji’s former grounds','',''],
+ ['','','1900','–2010','The palace returns from under the rice fields','1900: the hall’s site is identified → 2010: the Daigokuden is rebuilt','A train line and road still cross the palace site',''],
+ ['Today','','Now','','Naramachi and Nara Park','“Historic Monuments of Ancient Nara”: 8 World Heritage sites','',''],
+];
+const EN_LBL={'五社神古墳':'Gosashi Kofun','佐紀石塚山古墳':'Saki-Ishizukayama Kofun','ウワナベ古墳':'Uwanabe Kofun','市庭古墳':'Ichiniwa Kofun','神明野古墳（内裏の下）':'Shinmeino Kofun (under the palace)',
+ '興福寺':'Kofukuji','長屋王の屋敷':'Prince Nagaya’s mansion','元興寺':'Gangoji','東大寺 大仏殿':'Todaiji Great Buddha Hall','春日大社':'Kasuga Taisha','薬師寺':'Yakushiji','奈良町':'Naramachi','奈良公園':'Nara Park',
+ '朱雀門':'Suzakumon Gate','第一次大極殿':'Daigokuden (Great Audience Hall)','近鉄の線路':'Kintetsu railway','道路':'Road','春日山':'Mt. Kasuga','平城山':'Narayama hills','外京':'Gekyo (eastern extension)','平城宮':'Heijo Palace'};
+const TX=EN=>({hook:EN?'Nara':'奈良',hook2:EN?'The capital became fields, the temples became a town':'都は田んぼに、寺は町に',sig:EN?'Nara ・ Atelier His-tori':'奈良　都は田んぼに、寺は町に ・ アトリエひす鳥',end1:EN?'Temple grounds and town,':'寺の境内と町が、',end2:EN?'blended into one, still go on.':'とけあって続いている。'});
+const EN_LEGEND=[['#4d7a45','Kofun tombs (×1.6)'],['#cdb88c','City blocks (710–784, schematic)'],['#c9d49a','Fields'],['#ede4d0','Temple towns (schematic)'],['#86b25e','Nara Park (1880–)'],['#3a3530','Railway (1914–) & roads']];
+const JA_LEGEND=$('legend').innerHTML;
+const JA_STOPS=STOPS.map(s=>[s.era,s.pre,s.num,s.suf,s.title,s.recNote,s.note2,s.small]);
+MOMENTS.forEach(m=>m.ja=m.text); GEO.forEach(g=>g.ja=g.text);
+const JA_HEAD={h1:document.querySelector('.plaque h1').textContent,sub:document.querySelector('.plaque .sub').innerHTML,meta:document.querySelector('.plaque .meta').textContent};
+function applyLang(en){ EN=en; const B=en?EN_BEATS:JA_STOPS;
+  STOPS.forEach((s,i)=>{ const b=B[i]; if(!b) return; [s.era,s.pre,s.num,s.suf,s.title,s.recNote,s.note2,s.small]=b.map(v=>v||(v===''?'':v)); });
+  MOMENTS.forEach(m=>{ m.text=en?(EN_LBL[m.ja]||m.ja):m.ja; m.el.innerHTML='<s></s>'+m.text; });
+  GEO.forEach(g=>{ g.text=en?(EN_LBL[g.ja]||g.ja):g.ja; g.el.textContent=g.text; });
+  document.querySelector('.plaque h1').textContent=en?'Nara':JA_HEAD.h1; document.querySelector('.plaque .sub').innerHTML=en?'The capital became fields.<br>The temples stayed,<br>and towns grew around them.':JA_HEAD.sub; $('legend').innerHTML=en?EN_LEGEND.map(([c,n])=>`<li><s style="background:${c}"></s>${n}</li>`).join(''):JA_LEGEND;
+  document.querySelector('.plaque .meta').textContent=en?'Jomon–now ・ Heijo-kyo and its eastern extension ・ Buildings ×4 height ・ Terrain and layout are schematic':JA_HEAD.meta;
+  document.documentElement.lang=en?'en':'ja'; const b=document.getElementById('rLang'); if(b) b.textContent=en?'日本語':'English'; }
+document.getElementById('rLang').onclick=()=>{ if(!recS) applyLang(!EN); };
+if(EN) applyLang(true);
+/* 英語は横に長いので、入らない時は字を小さく・2行に */
+function fitFont(ctx,txt,size,weight,maxW,u,minSize){ let sz=size; ctx.font=`${weight} ${sz*u}px "Zen Old Mincho", serif`; while(sz>minSize&&ctx.measureText(txt).width>maxW){ sz-=1; ctx.font=`${weight} ${sz*u}px "Zen Old Mincho", serif`; } return sz; }
+function wrapWords(ctx,txt,maxW){ const w=txt.split(' '); const out=[]; let ln=''; for(const x of w){ const t=ln?ln+' '+x:x; if(ctx.measureText(t).width>maxW&&ln){ out.push(ln); ln=x; } else ln=t; } if(ln) out.push(ln); return out; }
+function enLine(ctx,txt,size,weight,minSize,x,y,maxW,u,blur){ let sz=fitFont(ctx,txt,size,weight,maxW,u,minSize); if(ctx.measureText(txt).width<=maxW){ glow(ctx,txt,x,y,blur); return 0; } sz=Math.round(size*0.9); ctx.font=`${weight} ${sz*u}px "Zen Old Mincho", serif`; const L=wrapWords(ctx,txt,maxW); L.forEach((l,k)=>glow(ctx,l,x,y+k*sz*1.18*u,blur)); return (L.length-1)*sz*1.18*u; }
+function drawTitleCardEN(ctx,W,Hh,a){ ctx.save(); ctx.globalAlpha=a; ctx.fillStyle='rgba(218,196,140,.3)'; ctx.fillRect(0,0,W,Hh);
+  const vert=rec.mode==='v', k=vert?W/1080:Hh*0.86/1164, cx=W/2, cy=vert?960*k:Hh/2, pw=224*k, ph=1164*k, Y0=cy-ph/2, Y1=cy+ph/2;
+  drawPanel(ctx,cx,cy,pw,ph); ctx.fillStyle='#1f1a14'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  const word='NARA', big=150*k, step=178*k, top=Y0+60*k, room=(Y1-110*k)-top; ctx.font=`900 ${big}px "Zen Old Mincho", serif`; let y=top+(room-step*word.length)/2+step/2; for(const ch of word){ ctx.fillText(ch,cx,y); y+=step; }   /* 題箋は NARA だけ（京都の英語版と同じ型・社長 10/07「KYOTOだけでもいいかも」） */
+  ctx.fillStyle='#b33a26'; ctx.fillRect(cx-19*k,Y1-95*k,38*k,52*k); ctx.fillStyle='#f7eee0'; ctx.font=`700 ${15*k}px "Zen Old Mincho", serif`; ctx.fillText('ひす',cx,Y1-79*k); ctx.fillText('鳥',cx,Y1-61*k);
+  ctx.fillStyle='#1f1a14'; ctx.font=`700 ${36*k}px "Zen Old Mincho", serif`; glow(ctx,'Atelier His-tori',cx,vert?1608*k:Y1+40*k,14*k); ctx.restore(); }
 function drawOverlay(ctx,W,Hh,t,y,now){
   const u=Math.min(W,Hh)/1080, vert=rec.mode==='v';
   const vig=1-ss(0,0.45,Math.abs(t-BURY));
@@ -1072,35 +1123,35 @@ function drawOverlay(ctx,W,Hh,t,y,now){
     if(m.ks&&!allNames){ const d=Math.min(...m.ks.map(k=>Math.abs(t-k))), a=1-ss(0.2,0.45,d); if(a<0.01) return; const q=projectTo(m.g,W,Hh); if(q) pillAt(m.text,q[0],q[1],a); }
     else pill(m.text,m.p,false,m.g); });
   ctx.font=`700 ${30*u}px "Zen Old Mincho", serif`; ctx.textAlign='center';
-  GEO.forEach(g=>{ if(!g.show(y)) return; const q=projectTo(g.p,W,Hh); if(!q) return; ctx.fillStyle=g.water?'#223f7a':'#1f1a14'; const chs=[...g.text]; chs.forEach((c,k)=>glow(ctx,c,q[0],q[1]+(k-(chs.length-1)/2)*36*u,10*u)); });
+  GEO.forEach(g=>{ if(!g.show(y)) return; const q=projectTo(g.p,W,Hh); if(!q) return; ctx.fillStyle=g.water?'#223f7a':'#1f1a14'; if(EN){ ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; glow(ctx,g.text,q[0],q[1],10*u); ctx.font=`700 ${30*u}px "Zen Old Mincho", serif`; return; } const chs=[...g.text]; chs.forEach((c,k)=>glow(ctx,c,q[0],q[1]+(k-(chs.length-1)/2)*36*u,10*u)); });
   // caption block (upper band)
   const P=yearParts(t), s=P.s, x0=vert?100:88, yTop=vert?Hh*0.13+24:72;
   const hookA=recS&&recS.start?1-ss(2600,3200,now-recS.start):0;
   if(hookA>0.01){ ctx.save(); ctx.globalAlpha=hookA; ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14';
-    ctx.font=`900 ${92*u}px "Zen Old Mincho", serif`; glow(ctx,'奈良',x0,yTop+110*u,18*u);
-    ctx.fillStyle='#223f7a'; ctx.font=`900 ${58*u}px "Zen Old Mincho", serif`; glow(ctx,'都は田んぼに、寺は町に',x0,yTop+230*u,16*u); ctx.restore(); }
+    ctx.font=`900 ${92*u}px "Zen Old Mincho", serif`; glow(ctx,TX(EN).hook,x0,yTop+110*u,18*u);
+    ctx.fillStyle='#223f7a'; ctx.font=`900 ${58*u}px "Zen Old Mincho", serif`; if(EN) fitFont(ctx,TX(EN).hook2,58,900,W-100-x0,u,30); glow(ctx,TX(EN).hook2,x0,yTop+230*u,16*u); ctx.restore(); }
   ctx.save(); ctx.globalAlpha=recS&&recS.start?ss(3300,3900,now-recS.start):1;
   ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14';
-  ctx.fillStyle='#b33a26'; ctx.fillRect(x0,yTop+10*u,14*u,14*u); ctx.fillStyle='#1f1a14'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`; glow(ctx,s.era,x0+28*u,yTop+26*u,12*u);
+  if(s.era){ ctx.fillStyle='#b33a26'; ctx.fillRect(x0,yTop+10*u,14*u,14*u); ctx.fillStyle='#1f1a14'; ctx.font=`700 ${34*u}px "Zen Old Mincho", serif`; glow(ctx,s.era,x0+28*u,yTop+26*u,12*u); }
   let xx=x0; const by=yTop+180*u;
   if(P.pre){ ctx.font=`700 ${52*u}px "Zen Old Mincho", serif`; glow(ctx,P.pre,xx,by,14*u); xx+=ctx.measureText(P.pre).width+6*u; }
   ctx.font=`900 ${160*u}px "Zen Old Mincho", serif`; glow(ctx,P.num,xx,by,18*u); xx+=ctx.measureText(P.num).width+8*u;
   ctx.font=`700 ${52*u}px "Zen Old Mincho", serif`; glow(ctx,P.suf,xx,by,14*u);
   let yy=by+64*u; if(P.wa){ ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,P.wa.split('').join(' '),x0,yy,12*u); ctx.fillStyle='#1f1a14'; }
   const tA=1;
-  if(tA>0.01){ ctx.save(); ctx.globalAlpha*=tA; yy+=86*u; ctx.font=`900 ${62*u}px "Zen Old Mincho", serif`; glow(ctx,s.title,x0,yy,16*u); ctx.restore(); }
-  if(tA>0.01&&s.recNote){ ctx.save(); ctx.globalAlpha*=tA; yy+=60*u; ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,s.recNote,x0,yy,12*u); ctx.restore(); }
-  if(tA>0.01&&s.note2){ ctx.save(); yy+=54*u; ctx.font=`700 ${36*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#223f7a'; glow(ctx,s.note2,x0,yy,12*u); ctx.restore(); }
+  if(tA>0.01){ ctx.save(); ctx.globalAlpha*=tA; yy+=86*u; ctx.font=`900 ${62*u}px "Zen Old Mincho", serif`; if(EN){ yy+=enLine(ctx,s.title,56,900,40,x0,yy,W-100-x0,u,16*u); } else glow(ctx,s.title,x0,yy,16*u); ctx.restore(); }
+  if(tA>0.01&&s.recNote){ ctx.save(); ctx.globalAlpha*=tA; yy+=60*u; ctx.font=`700 ${38*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; if(EN){ yy+=enLine(ctx,s.recNote,34,700,28,x0,yy,W-100-x0,u,12*u); } else glow(ctx,s.recNote,x0,yy,12*u); ctx.restore(); }
+  if(tA>0.01&&s.note2){ ctx.save(); yy+=54*u; ctx.font=`700 ${36*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#223f7a'; if(EN){ yy+=enLine(ctx,s.note2,32,700,26,x0,yy,W-100-x0,u,12*u); } else glow(ctx,s.note2,x0,yy,12*u); ctx.restore(); }
   const ev=currentEvent(t,P.at);
   if(ev){ const ey=vert?yy+68*u:Hh-96; ctx.font=`900 ${34*u}px "Zen Old Mincho", serif`; ctx.fillStyle=ev.kind==='fire'?'#b33a26':ev.kind==='bury'?'#7d5a36':'#1f1a14';
     glow(ctx,ev.disp,x0,ey,14*u); const w0=ctx.measureText(ev.disp).width; ctx.fillStyle='#4a3f31'; ctx.font=`700 ${32*u}px "Zen Old Mincho", serif`; glow(ctx,ev.text,x0+w0+18*u,ey,12*u); }
-  if(!vert){ ctx.font=`700 ${24*u}px "Zen Old Mincho", serif`; ctx.textAlign='right'; ctx.fillStyle='#1f1a14'; glow(ctx,'奈良　都は田んぼに、寺は町に ・ アトリエひす鳥',W-60,Hh-48,10*u); }
-  else { ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,'奈良　都は田んぼに、寺は町に ・ アトリエひす鳥',x0,yTop-22*u,10*u); }
+  if(!vert){ ctx.font=`700 ${24*u}px "Zen Old Mincho", serif`; ctx.textAlign='right'; ctx.fillStyle='#1f1a14'; glow(ctx,TX(EN).sig,W-60,Hh-48,10*u); }
+  else { ctx.font=`700 ${26*u}px "Zen Old Mincho", serif`; ctx.fillStyle='#4a3f31'; glow(ctx,TX(EN).sig,x0,yTop-22*u,10*u); }
   ctx.restore();
   if(recS&&recS.start){ const e=now-recS.start;
     // （平城京は物差しなし）
-    if(endT0!=null){ const ea=ss(5200,6600,now-endT0)*(recS.phase==='play'?1:1-ss(0,700,now-recS.t0)); if(ea>0.01){ ctx.save(); ctx.globalAlpha=ea; ctx.textAlign='center'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14'; ctx.font=`900 ${58*u}px "Zen Old Mincho", serif`; glow(ctx,'寺の境内と町が、',W/2,vert?Hh*0.405:Hh*0.72,22*u); glow(ctx,'とけあって続いている。',W/2,vert?Hh*0.405+76*u:Hh*0.72+76*u,22*u); ctx.restore(); } } }
-  if(recS&&(recS.phase==='outro'||recS.phase==='end')) drawTitleCard(ctx,W,Hh,recS.phase==='end'?1:ss(0,900,now-recS.t0),true);
+    if(endT0!=null){ const ea=ss(5200,6600,now-endT0)*(recS.phase==='play'?1:1-ss(0,700,now-recS.t0)); if(ea>0.01){ ctx.save(); ctx.globalAlpha=ea; ctx.textAlign='center'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#1f1a14'; ctx.font=`900 ${58*u}px "Zen Old Mincho", serif`; if(EN) ctx.font=`900 ${50*u}px "Zen Old Mincho", serif`; glow(ctx,TX(EN).end1,W/2,vert?Hh*0.405:Hh*0.72,22*u); glow(ctx,TX(EN).end2,W/2,vert?Hh*0.405+76*u:Hh*0.72+76*u,22*u); ctx.restore(); } } }
+  if(recS&&(recS.phase==='outro'||recS.phase==='end')) (EN?drawTitleCardEN:drawTitleCard)(ctx,W,Hh,recS.phase==='end'?1:ss(0,900,now-recS.t0),true);
 }
 
 let bgC=null;
@@ -1180,6 +1231,26 @@ if(!reduced) setTimeout(()=>{ if(!playing&&T===0&&!tw&&!rec) startPlay(); },1800
   card.insertBefore(b,card.firstChild);
   function fit(){ if(tl) document.documentElement.style.setProperty('--tlh',tl.offsetHeight+'px'); }
   addEventListener('resize',fit); fit(); setTimeout(fit,500);
+})();
+</script>
+<!-- site: 英語版の切り替え（?lang=en のある模型だけ） -->
+<style>
+html[lang=en] #cDesc,html[lang=en] .card .note,html[lang=en] .card .legend,html[lang=en] .mtoggle,html[lang=en] .ticker,html[lang=en] .keys,html[lang=en] .tools .vl{display:none!important}
+html[lang=en] .node .ne,html[lang=en] .node .ny{visibility:hidden!important}
+.tools a.lang{background:var(--ink,#1f1a14);color:var(--washi,#f5eddb);border:1px solid var(--ink,#1f1a14);padding:6px 11px;font-size:12px;letter-spacing:.05em;text-decoration:none}
+@media (max-width:820px){ .tools a.lang{font-size:11px!important;padding:4px 8px!important} }
+</style>
+<script>
+(function(){
+  var en=new URLSearchParams(location.search).get('lang')==='en'||location.hash==='#en';
+  var back=document.querySelector('.tools a.back'); if(!back) return;
+  var a=document.createElement('a'); a.className='lang';
+  a.href=en?location.pathname:location.pathname+'?lang=en'; a.textContent=en?'日本語':'English';
+  back.parentNode.insertBefore(a,back);
+  if(en){ back.textContent='← Moving History Maps';
+    var T={'金雲':'Gold clouds','ゆっくり回す':'Slow spin','鳥瞰':'Bird’s-eye','平安宮へ寄る':'Zoom to palace','平城宮へ寄る':'Zoom to palace','城へ寄る':'Zoom to castle','三内丸山へ':'Zoom to Sannai-Maruyama','畿内へ寄る':'Zoom to Kinai','百舌鳥へ寄る':'Zoom to Mozu','関東へ寄る':'Zoom to Kanto','大宰府へ寄る':'Zoom to Dazaifu','厳島へ寄る':'Zoom to Itsukushima','今の海岸線':'Today’s coastline','海を透かす':'See-through sea','地下を透かす':'See underground','名前をすべて':'All names','真上':'Top view','断面':'Cross-section'};
+    document.querySelectorAll('.tools button').forEach(function(b){ for(var k in T){ var n=[].slice.call(b.childNodes).filter(function(x){return x.nodeType===3&&x.textContent.trim()===k;})[0]; if(n){ n.textContent=T[k]; break; } } });
+  }
 })();
 </script>
 </body></html>
