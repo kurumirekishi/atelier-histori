@@ -338,7 +338,7 @@ const FUKASAWA=[[35.337,139.505],[35.332,139.520],[35.324,139.522],[35.318,139.5
 const BAYP=[[35.3270,139.5565],[35.3252,139.5488],[35.3236,139.5452],[35.3215,139.5420],[35.3198,139.5390],[35.3195,139.5345],[35.3150,139.5335],[35.3095,139.5332],[35.3058,139.5360],[35.3060,139.5462],[35.3046,139.5562],[35.3075,139.5602],[35.3122,139.5633],[35.3168,139.5668],[35.3188,139.5700],[35.3215,139.5680],[35.3228,139.5652],[35.3275,139.5698],[35.3292,139.5718],[35.3286,139.5648]].map(p=>LL(...p));
 /* 川（模式）: 滑川は十二所から西へ、平地のまん中を南へ海へ。北は柏尾川 */
 const RIVERS=[
- {n:'滑川',w:0.9,pts:[[35.3260,139.5880],[35.3225,139.5790],[35.3195,139.5720],[35.3190,139.5660],[35.3175,139.5600],[35.3150,139.5560],[35.3115,139.5530],[35.3075,139.5510],[35.3060,139.5508]]},
+ {n:'滑川',w:0.9,pts:[[35.3260,139.5880],[35.3225,139.5790],[35.3195,139.5720],[35.3190,139.5660],[35.3200,139.5595],[35.3202,139.5570],[35.3193,139.5552],[35.3175,139.5538],[35.3162,139.5521],[35.3148,139.5503],[35.3122,139.5506],[35.3115,139.5494],[35.3091,139.5459],[35.3076,139.5447]]},   /* 10/18 下流を実際の流れに（OSM・絵所経由のコメント「本八幡は滑川の右手」）。元八幡は川の東＝材木座側 */
  {n:'柏尾川',w:1.1,pts:[[35.372,139.548],[35.362,139.540],[35.353,139.533],[35.345,139.525],[35.339,139.512],[35.336,139.495],[35.334,139.480]]},
 ].map(r=>Object.assign(r,{P:r.pts.map(p=>LL(...p))}));
 function riverDist(x,z){ let d=1e9; for(const r of RIVERS){ d=Math.min(d,distPoly(x,z,r.P)-r.w*0.5); } return d; }
@@ -361,7 +361,7 @@ function factors(x,z){ const e=elev(x,z); return {sd:-10,e,m:1,lakeB:1,nz:fbm(x*
 function heightFrom(f){ return f.e; }
 const heightAt=(x,z)=>heightFrom(factors(x,z));
 const onChannel=()=>false;
-const TP={hachiman:P_(35.3259,139.5565),yuiwaka:P_(35.3134,139.5516),okura:P_(35.3244,139.5601),gosho:P_(35.3208,139.5532),gunga:P_(35.3189,139.5480),wakae:P_(35.3030,139.5540),
+const TP={hachiman:P_(35.3259,139.5565),yuiwaka:P_(35.3134,139.5516),okura:P_(35.3244,139.5601),gosho:P_(35.3214,139.5552),gunga:P_(35.3189,139.5480),wakae:P_(35.3030,139.5540),
   yofukuji:P_(35.3291,139.5711),egara:P_(35.3255,139.5630),toshoin:P_(35.3616,139.5082),tokiwa:P_(35.3231,139.5315),
   asaina:P_(35.3262,139.5860),nagoe:P_(35.3080,139.5670),gokurakuji:P_(35.3092,139.5315),daibutsukiri:P_(35.3205,139.5300),kewaizaka:P_(35.3290,139.5450),kamegayatsu:P_(35.3300,139.5495),kobukuro:P_(35.3305,139.5545),
   daibutsu:P_(35.3167,139.5358),kenchoji:P_(35.3322,139.5554),engakuji:P_(35.3373,139.5476),kubo:P_(35.3179,139.5696),tamanawa:P_(35.3553,139.5101),koshigoe:P_(35.3082,139.4945),
@@ -652,7 +652,7 @@ const goshoE=new Era(Object.assign({born:1180,died:1334,death:'fade'},TG));
 const D_GOSHO=disc(BAKU_C,2.8);
 const GOSHO_B=[TP.okura,TP.gosho].map(([x,z])=>{ const E=new Era(Object.assign({born:-1e9},TG)); wallRect(E,{x0:x-1.4,x1:x+1.4,z0:z-1.1,z1:z+1.1},'#e4dbc6',0.12); hall(E,x,z-0.2,1.2,0.6,0.6,{col:'#6e5236',roof:'#3f3a34'}); hall(E,x+0.8,z+0.5,0.5,0.4,0.45,{col:'#6e5236',roof:'#3f3a34'}); E.roots.forEach(r=>r.visible=false); return E; });
 /* 若宮大路（八幡宮から海まで一直線・段葛は八幡宮側を太く） */
-const WAKA_P=[P_(35.3245,139.5557),P_(35.3205,139.5541),P_(35.3165,139.5525),P_(35.3125,139.5507),P_(35.3082,139.5486),P_(35.3066,139.5478)];
+const WAKA_P=[P_(35.3245,139.5557),P_(35.3205,139.5529),P_(35.3166,139.5505),P_(35.3136,139.5488),P_(35.3112,139.5472),P_(35.3093,139.5454),P_(35.3083,139.5446)];   /* 10/18 実際の道筋に（OSM）。滑川を直したら交差したため */
 const WAKA=ribbon(WAKA_P,glowMat(BAKU_C),0.16); WAKA.set(0.35); WAKA.g.setDrawRange(0,0);
 const DANKA=ribbon([WAKA_P[0],WAKA_P[1]],glowMat(BAKU_C),0.2); DANKA.set(0.6); DANKA.g.setDrawRange(0,0);
 /* 永福寺（1192〜1405） */
@@ -920,7 +920,7 @@ const MOMENTS=POI.map(k=>{ const ts=tOf(k.y0), y=heightAt(k.p[0],k.p[1])+k.h; re
  .map(m=>{ const el=document.createElement('div'); el.className='lbl off'; el.innerHTML='<s></s>'+m.text; document.body.appendChild(el); return Object.assign(m,{el,ln:null}); });
 const wide=()=>orbit.dist>125;
 const GEO=[
- {text:'相模湾',ll:[35.293,139.535],water:true},{text:'由比ヶ浜',ll:[35.3045,139.5440],water:true},{text:'滑川',ll:[35.3132,139.5566],water:true},{text:'稲村ヶ崎',ll:[35.2985,139.5245]},{text:'北鎌倉',ll:[35.3465,139.5418],show:y=>!(y>1600&&y<1800)},
+ {text:'相模湾',ll:[35.293,139.535],water:true},{text:'由比ヶ浜',ll:[35.3045,139.5440],water:true},{text:'滑川',ll:[35.3165,139.5548],water:true},{text:'稲村ヶ崎',ll:[35.2985,139.5245]},{text:'北鎌倉',ll:[35.3465,139.5418],show:y=>!(y>1600&&y<1800)},
 ].map(g=>{ const [x,z]=LL(...g.ll); const el=document.createElement('div'); el.className='geo off'+(g.water?' water':''); el.textContent=g.text; document.body.appendChild(el);
   const sh=g.show; return Object.assign(g,{el,show:y=>wide()&&(!sh||sh(y)),p:new THREE.Vector3(x,heightAt(x,z)+1.2,z)}); });
 const V=new THREE.Vector3();
