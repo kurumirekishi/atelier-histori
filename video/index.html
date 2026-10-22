@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>映像の棚｜Atelier ひす鳥</title>
+<meta name="description" content="Atelier ひす鳥の映像の見本棚。3DCGの歴史映像（赤備え・埴輪）、動く歴史地図、ミュージックビデオ。頼んだら、こういうものが届きます。">
+<meta property="og:title" content="映像の棚｜Atelier ひす鳥">
+<meta property="og:description" content="3DCGの歴史映像、動く歴史地図、ミュージックビデオ。頼んだら、こういうものが届きます。">
+<meta property="og:image" content="https://his-tori.com/video/media/akazonae.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --vermilion:#DD4A2B; --coral:#EF8760; --blush:#F9E9DF; --cream:#FBF5EE;
+  --lav:#DFD9EF; --lav-soft:#EEEAF6; --peri:#8E8BC9; --peri-deep:#5E5A9E; --swallow:#2E86C8;
+  --ink:#3B3450; --ink-soft:#7A7490;
+  --en:'Cormorant Garamond',serif; --mincho:'Shippori Mincho',serif; --gothic:'Zen Kaku Gothic New',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--gothic);color:var(--ink);background:var(--cream);line-height:2;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+.wrap{width:min(1040px,100% - 32px);margin:0 auto}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;gap:12px}
+.brand{font-family:var(--mincho);font-weight:600;letter-spacing:.1em}
+.brand span{font-family:var(--en);color:var(--vermilion);margin-right:.4em}
+.nlinks{display:flex;gap:18px;font-size:.8rem;letter-spacing:.12em;color:var(--ink-soft)}
+.nlinks a:hover{color:var(--ink)}
+
+header{padding:40px 0 56px;text-align:center;background:linear-gradient(180deg,var(--blush),var(--cream))}
+.h-en{font-family:var(--en);font-size:2.2rem;font-weight:600;letter-spacing:.16em;color:var(--peri-deep)}
+h1{font-family:var(--mincho);font-weight:600;font-size:1rem;letter-spacing:.3em;color:var(--ink-soft);margin-top:4px}
+.line{width:88px;height:2px;margin:18px auto 0;background:linear-gradient(90deg,var(--vermilion),var(--peri));border-radius:2px}
+.lead{font-family:var(--mincho);font-size:clamp(1.15rem,2.6vw,1.45rem);letter-spacing:.08em;line-height:1.9;margin-top:28px}
+.sub{color:var(--ink-soft);font-size:.9rem;margin-top:10px}
+
+section{padding:48px 0 32px}
+.sh{display:flex;align-items:baseline;gap:14px;border-bottom:.5px solid rgba(59,52,80,.18);padding-bottom:10px;margin-bottom:22px;flex-wrap:wrap}
+.sh .en{font-family:var(--en);font-size:.9rem;letter-spacing:.28em;color:var(--vermilion);text-transform:uppercase}
+.sh h2{font-family:var(--mincho);font-weight:600;font-size:1.3rem;letter-spacing:.14em}
+.sh .note{font-size:.8rem;color:var(--ink-soft);margin-left:auto}
+.intro{color:var(--ink-soft);font-size:.9rem;margin:-8px 0 20px}
+
+.grid{display:grid;gap:22px;align-items:start}
+.g-cg{grid-template-columns:2fr 1fr}
+.g-tate{grid-template-columns:repeat(3,1fr)}
+.g-mv{grid-template-columns:repeat(3,1fr)}
+.item{background:#fff;border:.5px solid rgba(59,52,80,.12);padding:12px 12px 16px}
+.media{position:relative;background:#1e1b26;overflow:hidden}
+.media.h{aspect-ratio:16/9}
+.media.v{aspect-ratio:9/16}
+.media video,.media img,.media iframe{width:100%;height:100%;object-fit:cover;border:0}
+.yt{cursor:pointer}
+.yt .pl{position:absolute;inset:0;display:grid;place-items:center}
+.yt .pl span{width:62px;height:62px;border-radius:50%;background:rgba(221,74,43,.9);display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.yt .pl span::after{content:"";border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}
+.cap{padding:12px 4px 0}
+.badge{display:inline-block;font-size:.68rem;letter-spacing:.12em;color:#fff;background:var(--peri);padding:1px 10px;border-radius:10px}
+.badge.prize{background:var(--vermilion)}
+.cap h3{font-family:var(--mincho);font-weight:600;font-size:1.05rem;letter-spacing:.08em;margin-top:6px;line-height:1.6}
+.cap p{font-size:.84rem;color:var(--ink-soft);line-height:1.85;margin-top:4px}
+.cap .how{font-size:.74rem;color:var(--peri-deep);letter-spacing:.06em;margin-top:6px}
+.more{display:inline-block;margin-top:18px;font-size:.85rem;letter-spacing:.1em;color:var(--swallow);border-bottom:1px solid var(--swallow)}
+
+.cta{margin:40px auto 60px;text-align:center;background:#fff;border:.5px solid rgba(59,52,80,.14);padding:34px 22px}
+.cta h2{font-family:var(--mincho);font-weight:600;font-size:1.25rem;letter-spacing:.12em}
+.cta p{color:var(--ink-soft);margin:10px 0 20px;font-size:.9rem}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;font-family:var(--mincho);letter-spacing:.16em;font-size:.88rem;padding:12px 32px;border-radius:32px}
+.btn-blue{background:var(--swallow);color:#fff}
+.btn-line{border:1px solid rgba(59,52,80,.35)}
+.btn:hover{opacity:.82}
+footer{text-align:center;padding:10px 0 40px;font-size:.75rem;letter-spacing:.14em;color:var(--ink-soft)}
+
+@media (max-width:760px){
+  .g-cg{grid-template-columns:1fr}
+  .g-tate{grid-template-columns:repeat(2,1fr)}
+  .g-mv{grid-template-columns:1fr}
+  .nlinks{gap:12px;font-size:.72rem}
+  nav{padding:12px 14px}
+  .sh .note{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="../"><span>Atelier</span>ひす鳥</a>
+  <div class="nlinks">
+    <a href="../map/">歴史地図</a>
+    <a href="../#price">料金</a>
+    <a href="../#contact">ご相談</a>
+  </div>
+</nav>
+
+<header>
+  <div class="h-en">Showreel</div>
+  <h1>映像の棚</h1>
+  <div class="line"></div>
+  <p class="lead">頼んだら、こういうものが届きます。</p>
+  <p class="sub">3DCGの歴史映像、動く歴史地図、ミュージックビデオ。</p>
+</header>
+
+<main class="wrap">
+
+<section id="cg">
+  <div class="sh"><span class="en">History in 3D</span><h2>歴史の映像</h2><span class="note">3DCG（Blender）でつくる、歴史のもの</span></div>
+  <div class="grid g-cg">
+    <div class="item">
+      <div class="media h"><video src="media/akazonae.mp4" poster="media/akazonae.jpg" controls playsinline preload="none"></video></div>
+      <div class="cap">
+        <span class="badge">3DCG＋AI動画｜35秒</span>
+        <h3>赤備え</h3>
+        <p>朱漆の具足が一枚ずつ組み上がり、空っぽの鎧が走り出す。霧の向こうに、赤備えの軍団。「赤は、受け継がれる。」</p>
+        <p class="how">Blenderで鎧をつくり、AI動画（Seedance）で動かす</p>
+      </div>
+    </div>
+    <div class="item">
+      <div class="media v"><video src="media/haniwa.mp4" poster="media/haniwa.jpg" controls playsinline preload="none"></video></div>
+      <div class="cap">
+        <span class="badge">3DCG｜16秒</span>
+        <h3>机の上の古墳</h3>
+        <p>前方後円墳に円筒埴輪がならび、踊る埴輪と馬がコマ撮りのように跳ねる。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="map">
+  <div class="sh"><span class="en">Moving History Maps</span><h2>動く歴史地図</h2><span class="note">インスタで公開中のシリーズ（縦動画）</span></div>
+  <p class="intro">その土地で、何が建ち、燃え、埋められてきたか。時代をたどって動く3D模型を、動画にしています。</p>
+  <div class="grid g-tate">
+    <div class="item">
+      <div class="media v"><video src="media/kyoto.mp4" poster="media/kyoto.jpg" controls playsinline preload="none"></video></div>
+      <div class="cap">
+        <span class="badge">動く歴史地図｜約2分</span>
+        <h3>京都の地層（ゆっくり版）</h3>
+        <p>碁盤の目の上で、町が動く。左京と右京、都の西の外まで。</p>
+      </div>
+    </div>
+    <div class="item">
+      <div class="media v"><video src="media/kamakura.mp4" poster="media/kamakura.jpg" controls playsinline preload="none"></video></div>
+      <div class="cap">
+        <span class="badge">動く歴史地図｜約2分</span>
+        <h3>鎌倉</h3>
+        <p>海の底だった三角の平地に、八幡宮から海まで一直線の道。</p>
+      </div>
+    </div>
+  </div>
+  <a class="more" href="../map/">模型を自分で動かしてみる（16本）→</a>
+</section>
+
+<section id="mv">
+  <div class="sh"><span class="en">Music Video</span><h2>ミュージックビデオ</h2><span class="note">企画・作詞作曲・映像まで一貫制作</span></div>
+  <div class="grid g-mv">
+    <div class="item">
+      <div class="media h yt" data-id="rqw45fghx-0"><img src="https://i.ytimg.com/vi/rqw45fghx-0/maxresdefault.jpg" alt="ROTON IN THE SUMMER - 夏が逝く -" loading="lazy"><div class="pl"><span></span></div></div>
+      <div class="cap">
+        <span class="badge prize">CryptoNinja×AI動画コンテスト2026夏 2位</span>
+        <h3>ROTON IN THE SUMMER ― 夏が逝く ―</h3>
+        <p>CryptoNinjaのロトンと過ごす、夏の終わりの物語。</p>
+      </div>
+    </div>
+    <div class="item">
+      <div class="media h yt" data-id="9ZjYKuLUReQ"><img src="https://i.ytimg.com/vi/9ZjYKuLUReQ/hqdefault.jpg" alt="Ethereum - The Eternal Chain" loading="lazy"><div class="pl"><span></span></div></div>
+      <div class="cap">
+        <span class="badge prize">AI魔法コンテスト 審査員特別賞</span>
+        <h3>Ethereum - The Eternal Chain</h3>
+        <p>「記憶の鎖」をテーマに、神話的な世界観の物語を創作しました。</p>
+      </div>
+    </div>
+    <div class="item">
+      <div class="media h yt" data-id="X_hTcdYXO-8"><img src="https://i.ytimg.com/vi/X_hTcdYXO-8/hqdefault.jpg" alt="GOLD" loading="lazy"><div class="pl"><span></span></div></div>
+      <div class="cap">
+        <span class="badge">Music Video</span>
+        <h3>GOLD</h3>
+        <p>金の歴史をテーマに、人間の狂気と無常を表現した作品です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta">
+  <h2>こういう映像、つくれます</h2>
+  <p>展示や観光、授業や発信のための映像を、史料を確かめながら制作します。<br>単発の動画から、まるっとサポートまで。</p>
+  <div class="btns">
+    <a class="btn btn-blue" href="../#contact">制作のご相談</a>
+    <a class="btn btn-line" href="../#price">料金の目安</a>
+  </div>
+</div>
+</main>
+
+<footer><a href="../">← Atelier ひす鳥　his-tori.com</a></footer>
+
+<script>
+document.querySelectorAll('.yt').forEach(function(el){
+  el.addEventListener('click',function(){
+    var f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+el.dataset.id+'?autoplay=1&rel=0&playsinline=1';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true; f.title='動画';
+    el.innerHTML=''; el.appendChild(f);
+  },{once:true});
+});
+// ひとつ再生したら、ほかの動画は止める
+document.querySelectorAll('video').forEach(function(v){ v.addEventListener('play',function(){ document.querySelectorAll('video').forEach(function(o){ if(o!==v) o.pause(); }); }); });
+</script>
+</body>
+</html>

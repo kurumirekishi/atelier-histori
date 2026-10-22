@@ -42,7 +42,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .nav-links{display:flex;gap:24px;align-items:center;font-size:0.8rem;letter-spacing:0.12em;color:var(--ink-soft);}
 .nav-links a{white-space:nowrap;}
 .nav-cta{border:1px solid var(--swallow);color:var(--swallow);padding:7px 20px;border-radius:24px;}
-@media(max-width:820px){nav{padding:12px 14px;}.nav-brand{font-size:0.9rem;}.nav-links{gap:12px;font-size:0.7rem;}.nav-links a:not(.nav-cta):nth-child(n+2):nth-child(-n+4){display:none;}.nav-cta{padding:6px 13px;}}
+@media(max-width:820px){nav{padding:12px 14px;}.nav-brand{font-size:0.9rem;}.nav-links{gap:12px;font-size:0.7rem;}.nav-links a:not(.nav-cta):nth-child(n+3):nth-child(-n+6){display:none;}.nav-cta{padding:6px 13px;}}
 
 /* ---------- hero ---------- */
 .hero{min-height:94svh;position:relative;display:flex;align-items:center;overflow:hidden;background:url('assets/dawn_hero.jpg') center/cover no-repeat;}
@@ -62,6 +62,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .btn:hover{opacity:0.82;}
 @media(max-width:820px){.hero{align-items:flex-end;}.hero-inner{margin:0 auto;padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,transparent,rgba(251,245,238,0.75) 30%);}.hero-btns{justify-content:center;}.hero h1{font-size:1.55rem;letter-spacing:0.06em;}}
 
+/* ---------- showreel band ---------- */
+.reel{background:#2a2536;color:#F3EEF8;padding:56px 6vw 50px;}
+.reel-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:22px;}
+.reel-en{font-family:var(--en);font-size:1.6rem;font-weight:600;letter-spacing:0.16em;color:#C9C4F0;}
+.reel-ja{font-family:var(--mincho);font-size:0.9rem;letter-spacing:0.3em;}
+.reel-lead{font-family:var(--mincho);font-size:0.95rem;letter-spacing:0.08em;color:#E8C9BC;margin-left:auto;}
+.reel-row{display:flex;gap:12px;height:220px;}
+.r-item{position:relative;overflow:hidden;border-radius:4px;flex:none;}
+.r-item.wide{flex:1 1 0;}
+.r-item.tall{width:124px;}
+.r-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.reel-row:hover .r-item img{transform:scale(1.04);}
+.r-item em{position:absolute;left:8px;bottom:8px;font-style:normal;font-size:0.68rem;letter-spacing:0.1em;background:rgba(20,16,28,0.7);padding:1px 8px;border-radius:8px;}
+.reel-more{display:inline-block;margin-top:18px;font-family:var(--mincho);letter-spacing:0.14em;font-size:0.88rem;border-bottom:1px solid #C9C4F0;color:#F3EEF8;}
+@media(max-width:820px){.reel-row{height:170px;overflow-x:auto;}.r-item.wide{flex:none;width:300px;}.r-item.tall{width:96px;}.reel-lead{margin-left:0;width:100%;}}
 /* ---------- stats ---------- */
 .stats{background:linear-gradient(90deg,var(--vermilion),var(--coral) 35%,var(--peri));padding:2px 0;}
 .stats-in{background:var(--cream);display:flex;flex-wrap:wrap;justify-content:center;gap:6px 54px;padding:26px 24px;}
@@ -146,7 +161,11 @@ section{padding:92px 8vw;}
 .p-row:last-child{border-bottom:none;}
 .p-row .what{color:var(--ink);}
 .p-row .what small{display:block;font-size:0.72rem;color:var(--ink-soft);}
-.p-row .cost{font-family:var(--en);font-size:1rem;color:var(--vermilion);white-space:nowrap;letter-spacing:0.04em;}
+.p-row .cost{font-family:var(--en);font-size:1rem;color:var(--vermilion);white-space:nowrap;letter-spacing:0.04em;text-align:right;}
+.p-row .cost .term{display:block;font-family:var(--gothic);font-size:0.68rem;color:var(--ink-soft);letter-spacing:0.08em;}
+.p-row .what small{line-height:1.8;margin-top:2px;}
+.p-row.wrap{flex-wrap:wrap;}
+.p-desc{flex-basis:100%;font-size:0.76rem;color:var(--ink-soft);line-height:1.85;margin-top:-2px;}
 .p-row .cost.soft{font-family:var(--gothic);font-size:0.8rem;color:var(--vermilion);}
 .price-note{text-align:center;margin-top:26px;font-size:0.78rem;line-height:2.2;letter-spacing:0.08em;color:var(--ink-soft);}
 
@@ -213,6 +232,7 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
   <a class="nav-brand" href="#top"><span class="en">Atelier</span>ひす鳥</a>
   <div class="nav-links">
     <a href="map/">歴史地図</a>
+    <a href="video/">映像</a>
     <a href="#works">作品</a>
     <a href="#record">実績</a>
     <a href="#price">料金</a>
@@ -267,6 +287,19 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
     <div class="step"><span class="no">02</span><h3>ご提案</h3><p>目的と想いを伺って、方向性・スケジュール・お見積もりをご提案します。</p></div>
     <div class="step"><span class="no">03</span><h3>制作</h3><p>途中経過を共有しながら制作します。修正のご相談もこの段階で気軽に。</p></div>
     <div class="step"><span class="no">04</span><h3>お届け</h3><p>納品してお渡し。公開後の小さな手直しまで伴走します。</p></div>
+  </div>
+</section>
+
+<section class="reel" id="reel">
+  <div class="wrap rv">
+    <div class="reel-head"><span class="reel-en">Showreel</span><span class="reel-ja">映像の棚</span><span class="reel-lead">頼んだら、こういうものが届きます。</span></div>
+    <a class="reel-row" href="video/">
+      <span class="r-item wide"><img src="video/media/akazonae.jpg" alt="赤備え — 3DCGの朱漆の具足" loading="lazy"><em>赤備え｜3DCG</em></span>
+      <span class="r-item tall"><img src="video/media/haniwa.jpg" alt="机の上の古墳 — 踊る埴輪" loading="lazy"><em>埴輪｜3DCG</em></span>
+      <span class="r-item tall"><img src="video/media/kamakura.jpg" alt="動く歴史地図 鎌倉" loading="lazy"><em>動く歴史地図</em></span>
+      <span class="r-item wide"><img src="https://i.ytimg.com/vi/rqw45fghx-0/maxresdefault.jpg" alt="ROTON IN THE SUMMER" loading="lazy"><em>MV｜コンテスト2位</em></span>
+    </a>
+    <a class="reel-more" href="video/">映像の棚を見る →</a>
   </div>
 </section>
 
@@ -506,6 +539,7 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
         <li>AI魔法コンテスト 審査員特別賞</li>
         <li>小学校での曲制作（リピート依頼あり）</li>
         <li>ブラウザゲーム・3Dコンテンツ制作（試作版公開中）</li>
+        <li>動く歴史地図（Instagram・2026年10月〜）</li>
       </ul>
     </div>
   </div>
@@ -526,9 +560,15 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
       <div class="p-row"><span class="what">バナー・チラシ等デザイン</span><span class="cost">¥5,000〜/点</span></div>
     </div>
     <div class="p-group">
+      <h3>まるっとサポート</h3>
+      <div class="p-row wrap"><span class="what">フルサポート</span><span class="cost">¥100,000〜/月<small class="term">3か月〜</small></span><p class="p-desc">作るところから、届けるところまで、窓口ひとつで。SNSの運用と投稿づくりを軸に、動画・画像・文章・既存サイトの更新、AIの使い方の相談まで。<br>例：Instagram 週2本＋X 週2〜3本（月10本前後）／リール・ショート動画 月2本／記事 月1本／打ち合わせ 月2回。媒体と本数はご相談で増減します。</p></div>
+      <div class="p-row wrap"><span class="what">AI活用支援</span><span class="cost">¥50,000〜/月</span><p class="p-desc">ツール選び、社内で回す手順づくり、月2回の相談。歴史・文化の分野に限りません。</p></div>
+      <div class="p-row"><span class="what">AI導入ワークショップ（半日・単発）</span><span class="cost">¥50,000〜/回</span></div>
+    </div>
+    <div class="p-group">
       <h3>プロジェクト型のお仕事</h3>
       <div class="p-row"><span class="what">フルMV制作</span><span class="cost">¥50,000〜/本</span></div>
-      <div class="p-row"><span class="what">Webサイト制作／ゲーム制作／AIアニメ／広告動画／ショート動画／オリジナルソング</span><span class="cost soft">内容に応じてご提案</span></div>
+      <div class="p-row"><span class="what">Webサイト制作／ゲーム制作／AIアニメ／広告動画／ショート動画／オリジナルソング／動く歴史地図（3D）</span><span class="cost soft">内容に応じてご提案</span></div>
     </div>
   </div>
   <p class="price-note rv">価格は新規のご依頼の目安です。内容により変動します。<br>まずは無料相談から、お気軽にどうぞ。</p>
@@ -627,6 +667,7 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
   <div class="foot-nav">
     <a href="#top">TOP</a>
     <a href="map/">歴史地図</a>
+    <a href="video/">映像</a>
     <a href="#works">作品</a>
     <a href="#record">実績</a>
     <a href="#price">料金</a>
