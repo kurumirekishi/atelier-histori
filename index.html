@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atelier ひす鳥｜歴史にリスペクトを、AIに好奇心を。</title>
-<meta name="description" content="Atelierひす鳥は、歴史×AIのアトリエ。歴史にリスペクトを、AIに好奇心を。MV・AIアニメ・3D・歴史×アート動画の制作から、記事執筆・SNS運用まで。学芸員資格あり。">
+<meta name="description" content="Atelierひす鳥は、歴史×AIのアトリエ。歴史や地域の魅力を、3D地図・短い動画・アニメ・SNS運用で届けます。自治体・企業・学校・個人、どなたでも。学芸員資格あり。">
 <meta property="og:title" content="Atelier ひす鳥｜歴史にリスペクトを、AIに好奇心を。">
 <meta property="og:description" content="歴史にリスペクトを、AIに好奇心を。歴史×AIのアトリエ。MV・AIアニメ・3D・歴史×アート動画の制作から、発信まで。">
 <meta property="og:image" content="https://his-tori.com/assets/dawn_hero.jpg">
@@ -51,6 +51,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .hero h1{font-family:var(--mincho);font-weight:600;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:0.1em;line-height:1.9;color:var(--ink);margin-top:26px;text-shadow:0 1px 14px rgba(251,245,238,0.8);}
 .hero-sub{margin-top:22px;font-size:0.95rem;line-height:2.4;letter-spacing:0.06em;color:#5C5570;text-shadow:0 1px 10px rgba(251,245,238,0.8);}
 .hero-btns{margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;}
+.hero-who{margin-top:10px;font-size:0.78rem;letter-spacing:0.14em;color:#7A7490;text-shadow:0 1px 10px rgba(251,245,238,0.8);}
 .hero-map{margin-top:22px;display:inline-flex;align-items:center;gap:12px;padding:8px 16px 8px 8px;background:rgba(251,245,238,0.88);border:1px solid rgba(59,52,80,0.18);border-radius:999px;text-decoration:none;color:var(--ink);font-family:var(--mincho);font-weight:600;letter-spacing:0.08em;font-size:0.92rem;box-shadow:0 6px 18px -10px rgba(60,40,80,0.4);transition:transform .2s}
 .hero-map:hover{transform:translateY(-2px)}
 .hero-map img{width:54px;height:54px;border-radius:50%;object-fit:cover;flex:none}
@@ -62,6 +63,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .btn:hover{opacity:0.82;}
 @media(max-width:820px){.hero{align-items:flex-end;}.hero-inner{margin:0 auto;padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,transparent,rgba(251,245,238,0.75) 30%);}.hero-btns{justify-content:center;}.hero h1{font-size:1.55rem;letter-spacing:0.06em;}}
 
+/* ---------- after consult ---------- */
+.after{max-width:760px;margin:36px auto 0;background:#fff;border:0.5px solid rgba(59,52,80,0.12);padding:24px 30px;}
+.after h3{font-family:var(--mincho);font-weight:600;font-size:0.95rem;letter-spacing:0.2em;color:var(--peri-deep);margin-bottom:10px;}
+.after ul{list-style:none;}
+.after li{font-size:0.86rem;padding:5px 0 5px 22px;position:relative;line-height:1.8;}
+.after li::before{content:'';position:absolute;left:0;top:13px;width:10px;height:5px;border-left:2px solid var(--swallow);border-bottom:2px solid var(--swallow);transform:rotate(-45deg);}
 /* ---------- showreel band ---------- */
 .reel{background:#2a2536;color:#F3EEF8;padding:56px 6vw 50px;}
 .reel-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:22px;}
@@ -154,6 +161,7 @@ section{padding:92px 8vw;}
 /* ---------- price ---------- */
 .price{background:var(--lav-soft);}
 .price-wrap{max-width:760px;margin:0 auto;}
+.price-motto{text-align:center;margin-top:14px;font-family:var(--mincho);font-size:0.9rem;letter-spacing:0.08em;color:var(--ink);}
 .p-group{background:#fff;border:0.5px solid rgba(59,52,80,0.12);padding:30px 34px;margin-bottom:20px;position:relative;}
 .p-group::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--vermilion),var(--peri));}
 .p-group h3{font-family:var(--mincho);font-weight:600;font-size:0.95rem;letter-spacing:0.2em;color:var(--peri-deep);margin-bottom:16px;}
@@ -236,7 +244,6 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
     <a href="#works">作品</a>
     <a href="#record">実績</a>
     <a href="#price">料金</a>
-    <a href="#shop">教材</a>
     <a class="nav-cta" href="#contact">ご相談</a>
   </div>
 </nav>
@@ -245,7 +252,8 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
   <div class="hero-inner">
     <p class="hero-en">Atelier His-tori</p>
     <h1>歴史にリスペクトを、<br>AIに好奇心を。</h1>
-    <p class="hero-sub">歴史×AIのアトリエ。<br>MV・AIアニメ・3D・歴史×アート動画<br>作るところから、届けるところまで。</p>
+    <p class="hero-sub">歴史や地域の魅力を、<br>3D地図・短い動画・アニメ・<br>SNS運用で届けます。</p>
+    <p class="hero-who">自治体・企業・学校・個人、どなたでも</p>
     <div class="hero-btns">
       <a class="btn btn-blue" href="#works">作品を見る</a>
       <a class="btn btn-line" href="#contact">ご相談はこちら</a>
@@ -263,32 +271,6 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
     <div class="stat"><div class="num">12<small>枚</small></div><div class="lab">音楽アルバム制作</div></div>
   </div>
 </div>
-
-<section class="greeting" id="greeting">
-  <div class="wrap rv">
-    <div class="sec-head">
-      <div class="sec-en">Greeting</div>
-      <div class="sec-ja">ごあいさつ</div>
-      <div class="sec-line"></div>
-    </div>
-    <p class="greet-body">城や縄文、戦国の話になると、<br>つい前のめりになってしまいます。<br><br>歴史にリスペクトを、<br>AIに好奇心を。<br>MVも、アニメも、3Dも、<br>歴史×アートの動画も、<br>そんな実験から生まれてきました。<br><br>遊び心は全開。<br>でも、史実の確かさと<br>元になった作品への敬意は、<br>いつも手放しません。<br><br>「歴史や文化を、もっと面白く」<br>「AIを取り入れてみたい」<br>そんな方と一緒に作って、<br>届けていけたら嬉しいです。</p>
-    <p class="greet-sign">Atelier ひす鳥<b>くるみ</b></p>
-  </div>
-</section>
-
-<section class="flow" id="flow">
-  <div class="sec-head rv">
-    <div class="sec-en">Process</div>
-    <div class="sec-ja">制作の流れ</div>
-    <div class="sec-line"></div>
-  </div>
-  <div class="steps rv">
-    <div class="step"><span class="no">01</span><h3>ご相談</h3><p>フォームからどうぞ。「こんなこと頼めるかな？」の段階で大丈夫です。雑談から始めましょう。</p></div>
-    <div class="step"><span class="no">02</span><h3>ご提案</h3><p>目的と想いを伺って、方向性・スケジュール・お見積もりをご提案します。</p></div>
-    <div class="step"><span class="no">03</span><h3>制作</h3><p>途中経過を共有しながら制作します。修正のご相談もこの段階で気軽に。</p></div>
-    <div class="step"><span class="no">04</span><h3>お届け</h3><p>納品してお渡し。公開後の小さな手直しまで伴走します。</p></div>
-  </div>
-</section>
 
 <section class="reel" id="reel">
   <div class="wrap rv">
@@ -410,15 +392,6 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
             <span class="work-link">ブラウザで遊ぶ</span>
           </div>
         </a>
-        <a class="work" href="https://museum.his-tori.com/model/" target="_blank" rel="noopener">
-          <div class="work-media"><img src="assets/model3d-thumb.jpg" alt="欲望博物館の3D建築模型 — ドームと回廊と13の展示室" loading="lazy"></div>
-          <div class="work-body">
-            <span class="work-badge">3D Model</span>
-            <div class="work-title">欲望博物館 立体模型</div>
-            <p class="work-desc">MVに登場する博物館を、回して眺められる建築模型に。番号をクリックすると各展示室の解説が読めます。</p>
-            <span class="work-link">模型を回してみる</span>
-          </div>
-        </a>
       </div>
     </div>
 
@@ -501,12 +474,21 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
   </div>
   <div class="rec-grid rv">
     <div class="rec">
+      <h3>歴史・地域</h3>
+      <ul>
+        <li>京丹波町の山城・古墳36か所を3D地図に</li>
+        <li>動く歴史地図（Instagram・2026年10月〜）</li>
+        <li>地域の伝統の踊り「文七踊り」をロックにアレンジ（文七ロック）——保存会の方にも好評、イベントで再演の声</li>
+        <li>小学校の地域史資料づくり（京都府内）</li>
+        <li>松江市 観光振興課インタビュー記事</li>
+      </ul>
+    </div>
+    <div class="rec">
       <h3>執筆・編集</h3>
       <ul>
         <li>神社関係ECサイトのコラム執筆 200記事以上（継続中）</li>
         <li>地方創生メディア Mediall様：歴史・観光・インタビュー記事</li>
         <li>たまひよオンライン様（ベネッセ）21記事</li>
-        <li>松江市 観光振興課インタビュー記事</li>
         <li>ジャンル：歴史・観光・教育・育児・NFT/Web3・食・心理学ほか</li>
       </ul>
     </div>
@@ -537,9 +519,8 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
         <li>Studio VIBE 所属アニメーター・参加5作品</li>
         <li>CryptoNinja×AI動画コンテスト2026夏 2位</li>
         <li>AI魔法コンテスト 審査員特別賞</li>
-        <li>小学校での曲制作（リピート依頼あり）</li>
+        <li>小学校の6年生を送る会の曲『おぬしの推しは？』——子どもたちの言葉を歌詞にしたラップ調の曲。しばらく校内で流れ続けた（リピート依頼あり）</li>
         <li>ブラウザゲーム・3Dコンテンツ制作（試作版公開中）</li>
-        <li>動く歴史地図（Instagram・2026年10月〜）</li>
       </ul>
     </div>
   </div>
@@ -556,53 +537,60 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
     <div class="p-group">
       <h3>定型のお仕事</h3>
       <div class="p-row"><span class="what">記事執筆<small>構成・取材など内容により応相談</small></span><span class="cost">¥10,000〜/本</span></div>
-      <div class="p-row"><span class="what">SNS運用代行</span><span class="cost">¥50,000〜/月</span></div>
+      <div class="p-row"><span class="what">SNS運用代行<small>内容・頻度により変動（例：月4本〜）</small></span><span class="cost">¥30,000〜/月</span></div>
       <div class="p-row"><span class="what">バナー・チラシ等デザイン</span><span class="cost">¥5,000〜/点</span></div>
+      <div class="p-row"><span class="what">ショート動画・AIアニメ<small>SNS用・1分以内</small></span><span class="cost">¥30,000〜/本</span></div>
+      <div class="p-row"><span class="what">動く歴史地図<small>1か所・Webに埋め込み。時代の層・動画化までなら ¥150,000〜</small></span><span class="cost">¥50,000〜</span></div>
     </div>
     <div class="p-group">
       <h3>まるっとサポート</h3>
-      <div class="p-row wrap"><span class="what">フルサポート</span><span class="cost">¥100,000〜/月<small class="term">3か月〜</small></span><p class="p-desc">作るところから、届けるところまで、窓口ひとつで。SNSの運用と投稿づくりを軸に、動画・画像・文章・既存サイトの更新、AIの使い方の相談まで。<br>例：Instagram 週2本＋X 週2〜3本（月10本前後）／リール・ショート動画 月2本／記事 月1本／打ち合わせ 月2回。媒体と本数はご相談で増減します。</p></div>
+      <div class="p-row wrap"><span class="what">フルサポート</span><span class="cost">¥100,000〜/月</span><p class="p-desc">作るところから、届けるところまで、窓口ひとつで。SNSの運用と投稿づくりを軸に、動画・画像・文章・既存サイトの更新、AIの使い方の相談まで。<br>例：Instagram 週2本＋X 週2〜3本（月10本前後）／リール・ショート動画 月2本／記事 月1本／打ち合わせ 月2回。媒体と本数はご相談で増減します。</p></div>
       <div class="p-row wrap"><span class="what">AI活用支援</span><span class="cost">¥50,000〜/月</span><p class="p-desc">ツール選び、社内で回す手順づくり、月2回の相談。歴史・文化の分野に限りません。</p></div>
       <div class="p-row"><span class="what">AI導入ワークショップ（半日・単発）</span><span class="cost">¥50,000〜/回</span></div>
     </div>
     <div class="p-group">
       <h3>プロジェクト型のお仕事</h3>
       <div class="p-row"><span class="what">フルMV制作</span><span class="cost">¥50,000〜/本</span></div>
-      <div class="p-row"><span class="what">Webサイト制作／ゲーム制作／AIアニメ／広告動画／ショート動画／オリジナルソング／動く歴史地図（3D）</span><span class="cost soft">内容に応じてご提案</span></div>
+      <div class="p-row"><span class="what">Webサイト制作／ゲーム制作／AIアニメ／広告動画／オリジナルソング</span><span class="cost soft">内容に応じてご提案</span></div>
     </div>
   </div>
   <p class="price-note rv">価格は新規のご依頼の目安です。内容により変動します。<br>まずは無料相談から、お気軽にどうぞ。</p>
+  <p class="price-motto rv">AIは道具、判断は人。史実の確認と最終チェックは、必ず自分の目でおこないます。</p>
 </section>
 
-<section class="shop" id="shop">
+<section class="flow" id="flow">
   <div class="sec-head rv">
-    <div class="sec-en">Learn</div>
-    <div class="sec-ja">教材の棚</div>
+    <div class="sec-en">Process</div>
+    <div class="sec-ja">制作の流れ</div>
     <div class="sec-line"></div>
   </div>
-  <div class="shelf rv">
-    <div class="item">
-      <span class="tag">TEXTBOOK｜NEW</span>
-      <h3>AIは、私を書けるのか？<br><small style="font-size:0.8rem;font-weight:400;">文体探偵事務所の捜査記録</small></h3>
-      <p>AIに、自分の文体は書けるのか。複数のAIに書かせて比べた、文体の捜査記録。特典：指紋採取キット付き。</p>
-      <p class="price-tag">¥1,980（note／Brain）</p>
-      <a class="go" href="https://note.com/rssh613k/n/n002cada16907" target="_blank" rel="noopener">noteで見る</a>
-      <a class="go" style="margin-left:18px;" href="https://brmk.io/cFHfCe" target="_blank" rel="noopener">Brainで見る</a>
+  <div class="steps rv">
+    <div class="step"><span class="no">01</span><h3>ご相談</h3><p>フォームからどうぞ。「こんなこと頼めるかな？」の段階で大丈夫です。雑談から始めましょう。</p></div>
+    <div class="step"><span class="no">02</span><h3>ご提案</h3><p>目的と想いを伺って、方向性・スケジュール・お見積もりをご提案します。</p></div>
+    <div class="step"><span class="no">03</span><h3>制作</h3><p>途中経過を共有しながら制作します。修正のご相談もこの段階で気軽に。</p></div>
+    <div class="step"><span class="no">04</span><h3>お届け</h3><p>納品してお渡し。公開後の小さな手直しまで伴走します。</p></div>
+  </div>
+  <div class="after rv">
+    <h3>ご相談のあとに</h3>
+    <ul>
+      <li>2営業日以内にお返事します</li>
+      <li>お見積もりは無料です</li>
+      <li>請求書払い・契約書・NDAに対応します</li>
+      <li>納品はmp4・画像・HTMLなど、用途に合わせて。権利の扱いはお見積もりに明記します</li>
+      <li>全国オンラインで対応。京都府内は伺えます</li>
+    </ul>
+  </div>
+</section>
+
+<section class="greeting" id="greeting">
+  <div class="wrap rv">
+    <div class="sec-head">
+      <div class="sec-en">Greeting</div>
+      <div class="sec-ja">ごあいさつ</div>
+      <div class="sec-line"></div>
     </div>
-    <div class="item">
-      <span class="tag">TEXTBOOK</span>
-      <h3>想いを曲にして叫ぶ方法</h3>
-      <p>言葉にならない想いを、歌詞にして、Sunoで曲にするまでの全工程。実例6曲つき。</p>
-      <p class="price-tag">¥1,980（有料note）</p>
-      <a class="go" href="https://note.com/rssh613k/n/n2bd091b2e51c" target="_blank" rel="noopener">教材を見る</a>
-    </div>
-    <div class="item">
-      <span class="tag">FREE</span>
-      <h3>Metal Cabinet ─ Sunoメタル辞典 ─</h3>
-      <p>ジャンル・楽器・スタイルワードを引ける無料の辞典。欲望博物館 別館。</p>
-      <p class="price-tag">無料</p>
-      <a class="go" href="https://cabinet.his-tori.com/" target="_blank" rel="noopener">辞典をひらく</a>
-    </div>
+    <p class="greet-body">城や縄文、戦国の話になると、<br>つい前のめりになってしまいます。<br><br>遊び心は全開。<br>でも、史実の確かさと<br>元になった作品への敬意は、<br>いつも手放しません。<br><br>歴史や文化を、もっと面白く。<br>そんな方と一緒に作って、<br>届けていけたら嬉しいです。</p>
+    <p class="greet-sign">Atelier ひす鳥<b>くるみ</b></p>
   </div>
 </section>
 
@@ -624,6 +612,38 @@ footer{background:var(--peri-deep);color:#D8D5EC;text-align:center;padding:44px 
         <p>AIと出会ってからは、MV・AIアニメ・3D・歴史×アート動画など、歴史を「見て、触れて、楽しめる」かたちにする実験の毎日。Studio VIBEのアニメーターとしてチームでの制作にも参加しています。</p>
         <p>秋田県出身。京都の田舎で暮らす、5児の母です。</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="shop" id="shop">
+  <div class="sec-head rv">
+    <div class="sec-en">Learn</div>
+    <div class="sec-ja">教材の棚</div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="shelf rv">
+    <div class="item">
+      <span class="tag">TEXTBOOK</span>
+      <h3>AIは、私を書けるのか？<br><small style="font-size:0.8rem;font-weight:400;">文体探偵事務所の捜査記録</small></h3>
+      <p>AIに、自分の文体は書けるのか。複数のAIに書かせて比べた、文体の捜査記録。特典：指紋採取キット付き。</p>
+      <p class="price-tag">¥1,980（note／Brain）</p>
+      <a class="go" href="https://note.com/rssh613k/n/n002cada16907" target="_blank" rel="noopener">noteで見る</a>
+      <a class="go" style="margin-left:18px;" href="https://brmk.io/cFHfCe" target="_blank" rel="noopener">Brainで見る</a>
+    </div>
+    <div class="item">
+      <span class="tag">TEXTBOOK</span>
+      <h3>想いを曲にして叫ぶ方法</h3>
+      <p>言葉にならない想いを、歌詞にして、Sunoで曲にするまでの全工程。実例6曲つき。</p>
+      <p class="price-tag">¥1,980（有料note）</p>
+      <a class="go" href="https://note.com/rssh613k/n/n2bd091b2e51c" target="_blank" rel="noopener">教材を見る</a>
+    </div>
+    <div class="item">
+      <span class="tag">FREE</span>
+      <h3>Metal Cabinet ─ Sunoメタル辞典 ─</h3>
+      <p>ジャンル・楽器・スタイルワードを引ける無料の辞典。欲望博物館 別館。</p>
+      <p class="price-tag">無料</p>
+      <a class="go" href="https://cabinet.his-tori.com/" target="_blank" rel="noopener">辞典をひらく</a>
     </div>
   </div>
 </section>
