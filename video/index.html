@@ -308,5 +308,6 @@ document.querySelectorAll('.yt').forEach(function(el){
 // ひとつ再生したら、ほかの動画は止める
 document.querySelectorAll('video').forEach(function(v){ v.addEventListener('play',function(){ document.querySelectorAll('video').forEach(function(o){ if(o!==v) o.pause(); }); }); });
 </script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "7c3249dbaec143cf8943cc8c2cf31450"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
