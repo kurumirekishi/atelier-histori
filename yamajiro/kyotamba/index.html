@@ -87,7 +87,15 @@ textarea{width:100%;font:11px/1.4 ui-monospace,Menlo,monospace;background:var(--
 #pop .x{position:absolute;top:8px;right:8px;width:28px;height:28px;border:0;border-radius:50%;background:var(--panel2);color:var(--text);font-size:16px;line-height:1;cursor:pointer}
 #pop .src{color:var(--muted);font-size:11.5px;margin-top:10px}
 #pop a{color:#9fd8c6}
-@media (max-width:760px){#pop{left:8px!important;right:8px;top:auto!important;bottom:8px;width:auto;max-height:58%}}
+#pop.wide{width:min(460px,calc(100% - 24px));max-height:82%}
+#pop .ph{margin:2px 0 10px}
+#pop .ph .main{width:100%;height:270px;object-fit:contain;background:#0d120f;border-radius:6px;display:block}
+#pop .ph .cap{color:var(--muted);font-size:11.5px;margin:5px 0 6px}
+#pop .ph .thumbs{display:flex;gap:6px}
+#pop .ph .thumbs img{width:58px;height:58px;object-fit:cover;border-radius:4px;cursor:pointer;opacity:.6;border:2px solid transparent}
+#pop .ph .thumbs img.on{opacity:1;border-color:#9fd8c6}
+#pop .lead{margin:0 0 12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+@media (max-width:760px){#pop,#pop.wide{left:8px!important;right:8px;top:auto!important;bottom:8px;width:auto;max-height:72%}#pop .ph .main{height:200px}}
 </style>
 
 <div id="app">
@@ -370,7 +378,10 @@ const eraGroups={}; const eraLabels={};
 })();
 
 function showPop(it,el){ const pop=document.getElementById('pop');
-  pop.innerHTML='<button class="x" aria-label="閉じる">×</button><h3>'+it.name+'</h3><div>'+(it.note||'').replace(/^<br>/,'')+'</div>'+(it.src?'<div class="src">出典: '+it.src+'</div>':'');
+  let gal=''; if(it.photos&&it.photos.length){ gal='<div class="ph"><img class="main" src="'+it.photos[0].src+'" alt=""><div class="cap">'+it.photos[0].cap+'</div><div class="thumbs">'+it.photos.map((q,k)=>'<img src="'+q.src+'" data-k="'+k+'" class="'+(k?'':'on')+'" alt="">').join('')+'</div></div>'; }
+  pop.classList.toggle('wide',!!gal);
+  pop.innerHTML='<button class="x" aria-label="閉じる">×</button><h3>'+it.name.replace(' 📷','')+'</h3>'+gal+(it.lead?'<div class="lead">'+it.lead+'</div>':'')+'<div>'+(it.note||'').replace(/^<br>/,'')+'</div>'+(it.src?'<div class="src">出典: '+it.src+'</div>':'');
+  pop.querySelectorAll('.thumbs img').forEach(t=>{ t.onclick=()=>{ const q=it.photos[+t.dataset.k]; pop.querySelector('.main').src=q.src; pop.querySelector('.cap').textContent=q.cap; pop.querySelectorAll('.thumbs img').forEach(u=>u.classList.toggle('on',u===t)); }; });
   pop.hidden=false; pop.scrollTop=0; pop.querySelector('.x').onclick=()=>{ pop.hidden=true; };
   const s=stage.getBoundingClientRect(), r=el.getBoundingClientRect(), pw=pop.offsetWidth, ph=pop.offsetHeight;
   let x=r.right-s.left+12; if(x+pw>s.width-12) x=r.left-s.left-pw-12; if(x<12) x=12;
@@ -408,6 +419,7 @@ function addLabel(text, v, user, id, far){
 }
 presets.forEach(p=>addLabel(p.n, worldAt(p.i,p.j), false, null, p.far));
 deferredLabels.forEach(f=>f());
+{ const _o=new URLSearchParams(location.search).get('open'); if(_o) setTimeout(()=>{ const _l=labels.find(L=>L.text&&L.text.indexOf(_o)===0); if(_l) _l.el.click(); },1800); }
 document.querySelectorAll('#eras button').forEach(b=>{ b.onclick=()=>setEra(b.dataset.era); }); if(document.getElementById('eras')) setEra('山城');
 LINES.filter(L=>L._label).forEach(L=>{ addLabel(L.n, new THREE.Vector3(L._label.x,L._label.y,L._label.z), false, null, true); const el=labels[labels.length-1].el; el.style.background=(L.k==='rail'?'rgba(59,52,80,.85)':L.k==='road'?'rgba(180,100,60,.85)':'rgba(46,134,200,.85)'); });
 function updateLabels(){
